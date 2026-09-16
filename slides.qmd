@@ -419,11 +419,11 @@ The rest of the zoo: [vis-society.github.io/lectures/interaction-zoo](https://vi
 :::
 
 ::: {.qrow .qrow-live}
-::: {.fragment data-fragment-index="6"}
+::: {.fragment data-fragment-index="7"}
 [?]{.qmark}
 :::
 
-::: {.fragment data-fragment-index="6"}
+::: {.fragment data-fragment-index="7"}
 [?]{.qmark}
 :::
 

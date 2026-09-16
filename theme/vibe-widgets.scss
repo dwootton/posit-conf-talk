@@ -620,9 +620,10 @@ $wide-w:  814px; $wide-h:  548px;   // the map + panel widgets
 // shrunk cards drop their gloss rather than set it below the floor.
 .taxo:has(.st-grow.visible) .taxo-item.sel { flex-basis: 42.85%; }
 .taxo:has(.st-grow.visible) .taxo-item:not(.sel) { flex-basis: 14.28%; }
-// the four glosses simply go -- animating them out only pulls the eye away
-// from the card that is actually growing
-.taxo:has(.st-grow.visible) .taxo-item:not(.sel) .gl { display: none; }
+// every gloss goes at the grown stage, the selection's included: animating
+// them out pulls the eye off the card that is growing, and the one on the
+// growing card reflows as it widens, which reads as a glitch
+.taxo:has(.st-grow.visible) .taxo-item .gl { display: none; }
 // step 3: selection lights, the rest recede
 .taxo:has(.st-lit.visible) .taxo-item:not(.sel) { filter: grayscale(1); opacity: 0.45; }
 .taxo:has(.st-lit.visible) .taxo-item.sel {
@@ -893,7 +894,13 @@ $wide-w:  814px; $wide-h:  548px;   // the map + panel widgets
   font-weight: 700;
   color: $vw-accent;
 }
-.qrow-live .widget-wrap { box-shadow: 4px 4px 0 $vw-ink; }
+.qrow-live .widget-wrap {
+  box-shadow: 4px 4px 0 $vw-ink;
+  // it lands in the bottom-right corner, where reveal's slide number (z-index
+  // 31) would otherwise sit on top of the live demo
+  position: relative;
+  z-index: 40;
+}
 
 // ------------------------------------------------------------ the recap ----
 // Three bands, each carrying its principle as a full sentence. The equation
