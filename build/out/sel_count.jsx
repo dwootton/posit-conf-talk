@@ -10,11 +10,18 @@ export const SummaryCard = ({ box, selected, unselected, React }) => {
 
   if (maxX - minX < 3 && maxY - minY < 3) return null;
 
-  const cardW = 128;
-  const cardH = 88;
+  const cardW = 180;
+  const cardH = 92;
   
-  const left = Math.max(50, Math.min(minX, 332 - cardW));
-  const top = Math.max(20, Math.min(minY, 350 - cardH));
+  const midX = minX + (maxX - minX) / 2;
+  let left = midX - cardW / 2;
+  left = Math.max(50, Math.min(left, 332 - cardW));
+
+  let top = minY - cardH - 12;
+  if (top < 20) {
+    top = maxY + 12;
+  }
+  top = Math.max(20, Math.min(top, 350 - cardH));
 
   const hasSel = selected.length > 0;
   const hasUnsel = unselected.length > 0;
@@ -27,10 +34,32 @@ export const SummaryCard = ({ box, selected, unselected, React }) => {
   const waitDiff = inWait - outWait;
   const revDiff = inRev - outRev;
 
-  const fmt = (v, d) => isNaN(v) ? "-" : v.toFixed(d);
-  const fmtDiff = (v, d) => {
-    if (isNaN(v)) return "-";
-    return (v > 0 ? "+" : "") + v.toFixed(d);
+  const renderRow = (diff, unit, decimals) => {
+    if (!hasSel || isNaN(diff)) {
+      return <div style={{ fontSize: 16, lineHeight: '22px' }}>-</div>;
+    }
+    
+    const isUp = diff > 0;
+    const isDown = diff < 0;
+    const color = isUp ? '#ea580c' : (isDown ? '#3f8bdb' : '#1a1a1a');
+    
+    const valStr = Math.abs(diff).toFixed(decimals);
+    const displayVal = (isUp ? "+" : (isDown ? "-" : "")) + valStr;
+
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: 16, lineHeight: '22px' }}>
+        {isUp || isDown ? (
+          <svg width="12" height="12" viewBox="0 0 12 12" style={{ flexShrink: 0 }}>
+            {isUp ? (
+              <polygon points="1,9 11,9 6,2" fill={color} />
+            ) : (
+              <polygon points="1,3 11,3 6,10" fill={color} />
+            )}
+          </svg>
+        ) : <div style={{ width: 12, height: 12 }} />}
+        <span>{displayVal} {unit}</span>
+      </div>
+    );
   };
 
   return (
@@ -41,38 +70,21 @@ export const SummaryCard = ({ box, selected, unselected, React }) => {
       backgroundColor: '#f7f0e6',
       border: '2px solid #1a1a1a',
       boxShadow: '3px 3px 0px #1a1a1a',
-      padding: '6px',
+      padding: '8px 12px',
       boxSizing: 'border-box',
       pointerEvents: 'none',
       display: 'flex',
       flexDirection: 'column',
-      gap: '4px'
+      justifyContent: 'center',
+      fontFamily: 'JetBrains Mono, monospace',
+      color: '#1a1a1a',
+      whiteSpace: 'nowrap'
     }}>
-      <div style={{ textAlign: 'center' }}>
-        <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 20, fontWeight: 'bold', color: '#1a1a1a', lineHeight: 1 }}>
-          {selected.length}
-        </div>
-        <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 8, textTransform: 'uppercase', color: '#1a1a1a', marginTop: 2 }}>
-          {selected.length === 1 ? 'shop' : 'shops'}
-        </div>
+      <div style={{ fontSize: 28, fontWeight: 'bold', lineHeight: '32px', marginBottom: 4 }}>
+        {selected.length} {selected.length === 1 ? 'shop' : 'shops'}
       </div>
-      <div style={{ height: 1, backgroundColor: '#1a1a1a', opacity: 0.2 }} />
-      <div style={{ display: 'grid', gridTemplateColumns: '24px 1fr 1fr 1fr', gap: '2px', fontSize: 8, fontFamily: 'JetBrains Mono, monospace', textAlign: 'right', alignItems: 'center' }}>
-        <div style={{ textAlign: 'left', color: '#6b7280' }}></div>
-        <div style={{ color: '#6b7280' }}>IN</div>
-        <div style={{ color: '#6b7280' }}>OUT</div>
-        <div style={{ color: '#6b7280' }}>Δ</div>
-
-        <div style={{ textAlign: 'left', fontWeight: 'bold', color: '#1a1a1a' }}>WAIT</div>
-        <div style={{ color: '#1a1a1a' }}>{fmt(inWait, 1)}</div>
-        <div style={{ color: '#6b7280' }}>{fmt(outWait, 1)}</div>
-        <div style={{ color: waitDiff > 0 ? '#ea580c' : (waitDiff < 0 ? '#059669' : '#1a1a1a') }}>{fmtDiff(waitDiff, 1)}</div>
-
-        <div style={{ textAlign: 'left', fontWeight: 'bold', color: '#1a1a1a' }}>REV</div>
-        <div style={{ color: '#1a1a1a' }}>{fmt(inRev, 0)}</div>
-        <div style={{ color: '#6b7280' }}>{fmt(outRev, 0)}</div>
-        <div style={{ color: revDiff > 0 ? '#ea580c' : (revDiff < 0 ? '#059669' : '#1a1a1a') }}>{fmtDiff(revDiff, 0)}</div>
-      </div>
+      {renderRow(waitDiff, 'min', 1)}
+      {renderRow(revDiff, 'reviews', 0)}
     </div>
   );
 };
@@ -87,11 +99,13 @@ export default function Widget({ model, React }) {
   }, [model]);
 
   const parsedData = React.useMemo(() => {
-    return data.map(d => ({
-      ...d,
-      review_count: Number(d.review_count),
-      weekend_wait_min: Number(d.weekend_wait_min)
-    }));
+    return data
+      .map(d => ({
+        ...d,
+        review_count: Number(d.review_count),
+        weekend_wait_min: Number(d.weekend_wait_min)
+      }))
+      .filter(d => d.review_count <= 3000);
   }, [data]);
 
   const svgRef = React.useRef(null);
@@ -101,7 +115,6 @@ export default function Widget({ model, React }) {
   const xMax = React.useMemo(() => d3.max(parsedData, d => d.review_count) || 100, [parsedData]);
   const yMax = React.useMemo(() => d3.max(parsedData, d => d.weekend_wait_min) || 100, [parsedData]);
   
-  // Pad the domains by 5% before calling .nice() to ensure the largest/smallest circles clear the plot edges
   const xScale = React.useMemo(() => d3.scaleLinear().domain([0, xMax * 1.05]).nice().range([50, 332]), [xMax]);
   const yScale = React.useMemo(() => d3.scaleLinear().domain([0, yMax * 1.05]).nice().range([350, 20]), [yMax]);
 
@@ -152,7 +165,7 @@ export default function Widget({ model, React }) {
   });
 
   return (
-    <div style={{ width: 352, height: 400, backgroundColor: '#f2f0e9', position: 'relative', overflow: 'hidden', userSelect: 'none' }}>
+    <div style={{ width: 352, height: 400, backgroundColor: '#f7f0e6', position: 'relative', overflow: 'hidden', userSelect: 'none' }}>
       <svg
         ref={svgRef}
         width={352} height={400}
@@ -165,21 +178,21 @@ export default function Widget({ model, React }) {
         <line x1={50} x2={332} y1={350} y2={350} stroke="#1a1a1a" />
         <line x1={50} x2={50} y1={20} y2={350} stroke="#1a1a1a" />
 
-        {xScale.ticks(5).map(tick => (
+        {xScale.ticks(4).map(tick => (
           <g key={`x-${tick}`} transform={`translate(${xScale(tick)}, 350)`}>
             <line y2={4} stroke="#1a1a1a" />
-            <text y={16} textAnchor="middle" fontSize={10} fontFamily="JetBrains Mono, monospace" fill="#1a1a1a">{tick}</text>
+            <text y={20} textAnchor="middle" fontSize={14} fontFamily="JetBrains Mono, monospace" fill="#1a1a1a">{tick}</text>
           </g>
         ))}
-        {yScale.ticks(5).map(tick => (
+        {yScale.ticks(4).map(tick => (
           <g key={`y-${tick}`} transform={`translate(50, ${yScale(tick)})`}>
             <line x2={-4} stroke="#1a1a1a" />
-            <text x={-8} dominantBaseline="middle" textAnchor="end" fontSize={10} fontFamily="JetBrains Mono, monospace" fill="#1a1a1a">{tick}</text>
+            <text x={-8} dominantBaseline="middle" textAnchor="end" fontSize={14} fontFamily="JetBrains Mono, monospace" fill="#1a1a1a">{tick}</text>
           </g>
         ))}
 
-        <text x={50} y={388} fontSize={10} fontFamily="JetBrains Mono, monospace" fill="#1a1a1a" fontWeight="bold">REVIEWS</text>
-        <text x={16} y={350} transform="rotate(-90, 16, 350)" fontSize={10} fontFamily="JetBrains Mono, monospace" fill="#1a1a1a" fontWeight="bold">WEEKEND WAIT / MIN</text>
+        <text x={50} y={392} fontSize={15} fontFamily="JetBrains Mono, monospace" fill="#1a1a1a" fontWeight="bold">REVIEWS</text>
+        <text x={14} y={350} transform="rotate(-90, 14, 350)" fontSize={15} fontFamily="JetBrains Mono, monospace" fill="#1a1a1a" fontWeight="bold">WEEKEND WAIT / MIN</text>
 
         {parsedData.map((d, i) => {
           const cx = xScale(d.review_count);
@@ -208,10 +221,6 @@ export default function Widget({ model, React }) {
           />
         )}
       </svg>
-
-      <div style={{ position: 'absolute', top: 24, left: 56, fontSize: 10, fontFamily: 'Space Grotesk, sans-serif', color: '#6b7280', pointerEvents: 'none' }}>
-        drag a region
-      </div>
 
       <SummaryCard box={hasBox ? box : null} selected={selected} unselected={unselected} React={React} />
     </div>

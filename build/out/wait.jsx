@@ -94,8 +94,8 @@ export default function Widget({ model, React }) {
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
         
-        const tw = 160;
-        const th = 70;
+        const tw = 200;
+        const th = 100;
         const pad = 12;
         let left = x + pad;
         let top = y + pad;
@@ -125,7 +125,7 @@ export default function Widget({ model, React }) {
       .attr("class", "top-label")
       .text((d) => d.name)
       .attr("font-family", "'Space Grotesk', sans-serif")
-      .attr("font-size", "10px")
+      .attr("font-size", "15px")
       .attr("font-weight", "600")
       .attr("fill", "#1e293b")
       .style("pointer-events", "none")
@@ -200,10 +200,10 @@ export default function Widget({ model, React }) {
     gLegend
       .append("text")
       .attr("x", 0)
-      .attr("y", -rScale(40) * 2 - 12)
+      .attr("y", -rScale(40) * 2 - 16)
       .text("WAIT (MIN)")
       .attr("font-family", "'JetBrains Mono', monospace")
-      .attr("font-size", "9px")
+      .attr("font-size", "15px")
       .attr("fill", "#1e293b")
       .attr("font-weight", "bold");
 
@@ -239,7 +239,7 @@ export default function Widget({ model, React }) {
       .attr("dy", "0.35em")
       .text((d) => d)
       .attr("font-family", "'JetBrains Mono', monospace")
-      .attr("font-size", "9px")
+      .attr("font-size", "15px")
       .attr("fill", "#1e293b");
 
     return () => {
@@ -278,7 +278,7 @@ export default function Widget({ model, React }) {
             style={{
               fontFamily: "'Space Grotesk', sans-serif",
               fontWeight: 700,
-              fontSize: "13px",
+              fontSize: "15px",
               color: "#1e293b",
               lineHeight: 1.2,
             }}
@@ -288,7 +288,7 @@ export default function Widget({ model, React }) {
           <div
             style={{
               fontFamily: "'JetBrains Mono', monospace",
-              fontSize: "9px",
+              fontSize: "15px",
               color: "#475569",
               marginTop: "2px",
               textTransform: "uppercase",
@@ -301,19 +301,21 @@ export default function Widget({ model, React }) {
               marginTop: "8px",
               display: "flex",
               justifyContent: "space-between",
-              alignItems: "center",
+              alignItems: "baseline",
               fontFamily: "'JetBrains Mono', monospace",
-              fontSize: "11px",
+              fontSize: "15px",
               color: "#1e293b",
             }}
           >
             <span>
               Wait:{" "}
               <span style={{ color: "#f97316", fontWeight: 700 }}>
-                {hovered.weekend_wait_min}m
+                <span style={{ fontSize: "28px" }}>{hovered.weekend_wait_min}</span>m
               </span>
             </span>
-            <span>★ {hovered.rating}</span>
+            <span>
+              ★ <span style={{ fontSize: "28px" }}>{hovered.rating}</span>
+            </span>
           </div>
         </div>
       )}

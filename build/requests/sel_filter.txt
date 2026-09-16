@@ -1,0 +1,5 @@
+Legibility only -- this widget is projected on a large screen, so nothing about its behaviour should change.
+
+Set axis tick labels to 14px, axis titles to 15px, tooltip text to 15px, and the reset button's label to 15px. Show at most four ticks on each axis.
+
+Change nothing else. Keep the high-review-count outlier in the data (it is the point of this widget), keep the drag-to-remove interaction, keep the axes re-fitting and animating over about 400 ms after a removal, and keep the reset button's behaviour.

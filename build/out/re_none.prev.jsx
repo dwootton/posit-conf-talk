@@ -113,7 +113,7 @@ export default function Widget({ model, React }) {
 
     const count = selectedShops.length;
     const meanWait = count > 0 ? d3.mean(selectedShops, d => d.weekend_wait_min) : null;
-    const meanWaitStr = meanWait !== null ? meanWait.toFixed(1) : "-";
+    const meanWaitStr = meanWait !== null ? `${meanWait.toFixed(1)} min wait` : "-- min wait";
 
     const textShadow = '1px 1px 0 #f2f0e9, -1px -1px 0 #f2f0e9, 1px -1px 0 #f2f0e9, -1px 1px 0 #f2f0e9, 0px 2px 4px rgba(0,0,0,0.15)';
 

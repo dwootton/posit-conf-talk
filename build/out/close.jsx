@@ -84,18 +84,19 @@ export default function Widget({ model, React }) {
       const distStr = `${shop.dist.toFixed(2)}mi`;
       const distLen = distStr.length;
       
-      const w = Math.max(nameLen * 6, distLen * 4.8);
-      const h = 24;
+      const w = Math.max(nameLen * 9.5, distLen * 17);
+      const h = 48;
+      const gap = 12;
       
       const candidates = [
-        { box: [cx + 9, cy - h/2, w, h], anchor: "start", textX: cx + 9, textY: cy - h/2 + 10 },
-        { box: [cx - 9 - w, cy - h/2, w, h], anchor: "end", textX: cx - 9, textY: cy - h/2 + 10 },
-        { box: [cx - w/2, cy - 9 - h, w, h], anchor: "middle", textX: cx, textY: cy - 9 - h + 10 },
-        { box: [cx - w/2, cy + 9, w, h], anchor: "middle", textX: cx, textY: cy + 9 + 10 },
-        { box: [cx + 9 + h, cy - h/2, w, h], anchor: "start", textX: cx + 9 + h, textY: cy - h/2 + 10 },
-        { box: [cx - 9 - w - h, cy - h/2, w, h], anchor: "end", textX: cx - 9 - h, textY: cy - h/2 + 10 },
-        { box: [cx - w/2, cy - 9 - h - h, w, h], anchor: "middle", textX: cx, textY: cy - 9 - h - h + 10 },
-        { box: [cx - w/2, cy + 9 + h, w, h], anchor: "middle", textX: cx, textY: cy + 9 + h + 10 }
+        { box: [cx + gap, cy - h/2, w, h], anchor: "start", textX: cx + gap, textY: cy - h/2 + 15 },
+        { box: [cx - gap - w, cy - h/2, w, h], anchor: "end", textX: cx - gap, textY: cy - h/2 + 15 },
+        { box: [cx - w/2, cy - gap - h, w, h], anchor: "middle", textX: cx, textY: cy - gap - h + 15 },
+        { box: [cx - w/2, cy + gap, w, h], anchor: "middle", textX: cx, textY: cy + gap + 15 },
+        { box: [cx + gap + h, cy - h/2, w, h], anchor: "start", textX: cx + gap + h, textY: cy - h/2 + 15 },
+        { box: [cx - gap - w - h, cy - h/2, w, h], anchor: "end", textX: cx - gap - h, textY: cy - h/2 + 15 },
+        { box: [cx - w/2, cy - gap - h - h, w, h], anchor: "middle", textX: cx, textY: cy - gap - h - h + 15 },
+        { box: [cx - w/2, cy + gap + h, w, h], anchor: "middle", textX: cx, textY: cy + gap + h + 15 }
       ];
       
       for (const cand of candidates) {
@@ -226,10 +227,10 @@ export default function Widget({ model, React }) {
                 strokeWidth={3}
                 strokeLinejoin="round"
               >
-                <tspan x={shop.label.textX} y={shop.label.textY} fontSize={10} fill="#1e293b" fontWeight="bold">
+                <tspan x={shop.label.textX} y={shop.label.textY} fontSize={15} fill="#1e293b" fontWeight="bold">
                   {shop.name}
                 </tspan>
-                <tspan x={shop.label.textX} y={shop.label.textY + 12} fontSize={8} fill="#475569">
+                <tspan x={shop.label.textX} y={shop.label.textY + 28} fontSize={28} fill="#475569">
                   {shop.label.distStr}
                 </tspan>
               </text>
@@ -253,24 +254,24 @@ export default function Widget({ model, React }) {
       {hoveredShop && (
         <div style={{
           position: 'absolute',
-          left: Math.min(hoveredShop.px[0] + 12, 352 - 150),
-          top: Math.min(hoveredShop.px[1] + 12, 400 - 70),
+          left: Math.min(hoveredShop.px[0] + 12, 352 - 200),
+          top: Math.min(hoveredShop.px[1] + 12, 400 - 100),
           background: '#f7f0e6',
           border: '2px solid #1e293b',
           boxShadow: '4px 4px 0px #1e293b',
-          padding: '8px 12px',
+          padding: '12px 16px',
           pointerEvents: 'none',
           zIndex: 10,
           width: 'max-content',
-          maxWidth: 140
+          maxWidth: 220
         }}>
-          <div style={{ fontSize: 12, fontWeight: 700, color: '#1e293b', marginBottom: 2, lineHeight: 1.2 }}>
+          <div style={{ fontSize: 15, fontWeight: 700, color: '#1e293b', marginBottom: 4, lineHeight: 1.2 }}>
             {hoveredShop.name}
           </div>
-          <div style={{ fontSize: 10, fontFamily: '"JetBrains Mono", monospace', color: '#475569', marginBottom: 4 }}>
+          <div style={{ fontSize: 15, fontFamily: '"JetBrains Mono", monospace', color: '#475569', marginBottom: 8 }}>
             {hoveredShop.neighborhood}
           </div>
-          <div style={{ fontSize: 11, fontFamily: '"JetBrains Mono", monospace', color: '#f97316', fontWeight: 600 }}>
+          <div style={{ fontSize: 28, fontFamily: '"JetBrains Mono", monospace', color: '#f97316', fontWeight: 600, lineHeight: 1 }}>
             {hoveredShop.dist.toFixed(2)} mi
           </div>
         </div>

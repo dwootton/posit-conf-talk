@@ -20,7 +20,6 @@ export default function Widget({ model, React }) {
   const width = 352;
   const height = 400;
 
-  // Configure projection to fit exactly the given bounding box
   const proj = React.useMemo(() => {
     return d3.geoMercator().fitExtent(
       [[0, 0], [width, height]],
@@ -28,14 +27,12 @@ export default function Widget({ model, React }) {
     );
   }, []);
 
-  // Compute exact on-screen bounds for the basemap image
   const imgBounds = React.useMemo(() => {
     const nw = proj([-95.615, 29.880]);
     const se = proj([-95.255, 29.600]);
     return { x: nw[0], y: nw[1], w: se[0] - nw[0], h: se[1] - nw[1] };
   }, [proj]);
 
-  // Project all data points
   const projectedData = React.useMemo(() => {
     return data.map(d => {
       const [x, y] = proj([d.longitude, d.latitude]);
@@ -60,7 +57,10 @@ export default function Widget({ model, React }) {
 
   const onPointerDown = (e) => {
     const { x, y } = getCoords(e);
-    if (svgRef.current) svgRef.current.setPointerCapture(e.pointerId);
+    if (svgRef.current) {
+      svgRef.current.setPointerCapture(e.pointerId);
+      svgRef.current.focus();
+    }
 
     if (selection && x >= selection.x && x <= selection.x + selection.w && y >= selection.y && y <= selection.y + selection.h) {
       dragState.current = {
@@ -97,7 +97,6 @@ export default function Widget({ model, React }) {
       
       setSelection({ ...sel, x: newX, y: newY });
     } else {
-      // Hover styling
       if (svgRef.current) {
         if (selection && x >= selection.x && x <= selection.x + selection.w && y >= selection.y && y <= selection.y + selection.h) {
           if (svgRef.current.style.cursor !== 'move') svgRef.current.style.cursor = 'move';
@@ -119,6 +118,44 @@ export default function Widget({ model, React }) {
     dragState.current.type = null;
   };
 
+  const onKeyDown = (e) => {
+    if (!selection) return;
+
+    let dx = 0;
+    let dy = 0;
+    const step = e.shiftKey ? 32 : 8;
+
+    switch (e.key) {
+      case 'ArrowUp':
+        dy = -step;
+        break;
+      case 'ArrowDown':
+        dy = step;
+        break;
+      case 'ArrowLeft':
+        dx = -step;
+        break;
+      case 'ArrowRight':
+        dx = step;
+        break;
+      default:
+        return;
+    }
+
+    e.preventDefault();
+
+    setSelection(prev => {
+      if (!prev) return prev;
+      let newX = prev.x + dx;
+      let newY = prev.y + dy;
+      
+      newX = Math.max(0, Math.min(newX, width - prev.w));
+      newY = Math.max(0, Math.min(newY, height - prev.h));
+      
+      return { ...prev, x: newX, y: newY };
+    });
+  };
+
   const selected = [];
   const unselected = [];
 
@@ -131,12 +168,23 @@ export default function Widget({ model, React }) {
   });
 
   const count = selection ? selected.length : 0;
-  const meanWait = selection && count > 0 ? d3.mean(selected, d => d.weekend_wait_min).toFixed(1) : "-";
+  const meanWait = selection && count > 0 ? d3.mean(selected, d => d.weekend_wait_min).toFixed(1) : "--";
 
   return (
     <div style={{ width, height, position: 'relative', background: '#f2f0e9', overflow: 'hidden' }}>
+      <style>{`
+        .map-svg:focus {
+          outline: none;
+        }
+        .map-svg:focus-visible {
+          outline: 2px solid #ea580c;
+          outline-offset: -2px;
+        }
+      `}</style>
       <svg
         ref={svgRef}
+        className="map-svg"
+        tabIndex="0"
         width={width}
         height={height}
         style={{ position: 'absolute', top: 0, left: 0, touchAction: 'none', cursor: 'crosshair' }}
@@ -144,6 +192,7 @@ export default function Widget({ model, React }) {
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
         onPointerCancel={onPointerUp}
+        onKeyDown={onKeyDown}
       >
         {basemapImage && (
           <image
@@ -206,7 +255,7 @@ export default function Widget({ model, React }) {
         color: '#1e293b'
       }}>
         <div style={{ fontSize: 32, fontWeight: 700, lineHeight: 1 }}>{count}</div>
-        <div style={{ fontSize: 14, marginTop: 4, fontWeight: 500, color: '#475569' }}>{meanWait}</div>
+        <div style={{ fontSize: 14, marginTop: 4, fontWeight: 500, color: '#475569' }}>{meanWait} min wait</div>
       </div>
 
       <div style={{
@@ -215,10 +264,10 @@ export default function Widget({ model, React }) {
         left: 12, 
         pointerEvents: 'none',
         fontFamily: "'Space Grotesk', sans-serif", 
-        fontSize: 12, 
+        fontSize: 15, 
         color: '#64748b'
       }}>
-        drag to select, drag it to move
+        drag it, or use the arrow keys
       </div>
     </div>
   );

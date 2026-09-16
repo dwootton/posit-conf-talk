@@ -81,7 +81,7 @@ export default function Widget({ model, React }) {
   const count = clickState > 0 ? selectedShops.length : 0;
   const meanWait = count > 0
     ? (selectedShops.reduce((sum, d) => sum + d.weekend_wait_min, 0) / count).toFixed(1)
-    : "-";
+    : "--";
 
   const instructionText = clickState === 1 ? "click the opposite corner" : "click two corners";
 
@@ -157,7 +157,7 @@ export default function Widget({ model, React }) {
           {count}
         </div>
         <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 14, color: "#475569", lineHeight: 1 }}>
-          {meanWait !== "-" ? `${meanWait} min` : "-"}
+          {meanWait} min wait
         </div>
       </div>
 

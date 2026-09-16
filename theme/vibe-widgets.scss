@@ -375,10 +375,13 @@ $wide-w:  814px; $wide-h:  548px;   // the map + panel widgets
 .reveal .progress { color: $vw-accent; height: 5px; background: rgba(26,26,26,.14); }
 .reveal .controls { color: $vw-ink; }
 
-// centered chapter cards
+// Centred chapter cards. `height: 100%` is the whole section, so it centres
+// against the title as well and pushes the figure below the optical centre --
+// and overflows the slide by the height of the title. This leaves room for it.
 .chapter {
   display: flex; flex-direction: column;
-  justify-content: center; height: 100%;
+  justify-content: center;
+  height: 78%;
 }
 
 // ---------------------------------------------- questions & their answers --
@@ -835,9 +838,9 @@ $wide-w:  814px; $wide-h:  548px;   // the map + panel widgets
   border: 3px solid $vw-ink;
   border-radius: 999px;
   font-family: $font-family-monospace;
-  font-size: 0.62em;
+  font-size: $floor;
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0;
 }
 .band-dot.b-data    { background: #e8a33d; }
 .band-dot.b-visuals { background: #c2410c; color: #fff; }

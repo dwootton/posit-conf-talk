@@ -138,13 +138,9 @@ export default function Widget({ model, React }) {
         <div style={{ fontSize: 32, fontWeight: 700, color: "#0f172a", lineHeight: 1, textShadow: "0 1px 2px rgba(255,255,255,0.8)" }}>
           {count}
         </div>
-        <div style={{ fontSize: 13, color: "#334155", marginTop: 4, fontWeight: 600, textShadow: "0 1px 2px rgba(255,255,255,0.8)" }}>
-          {avgWait} min wait
+        <div style={{ color: "#334155", marginTop: 4, fontWeight: 600, textShadow: "0 1px 2px rgba(255,255,255,0.8)" }}>
+          <span style={{ fontSize: 28 }}>{avgWait}</span> <span style={{ fontSize: 15 }}>min wait</span>
         </div>
-      </div>
-
-      <div style={{ position: "absolute", bottom: 12, left: 12, pointerEvents: "none", fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: "#475569", fontWeight: 500, textShadow: "0 1px 2px rgba(255,255,255,0.8)" }}>
-        drag to select
       </div>
     </div>
   );

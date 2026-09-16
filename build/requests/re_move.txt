@@ -1,0 +1,3 @@
+Legibility only, one change: in the two-line readout in the top-left corner, the second line (the mean weekend wait, e.g. "24.1 min wait") is currently too small to read from across a room. Set it to 18px. The count above it stays as it is.
+
+Change nothing else at all.

@@ -1,0 +1,10 @@
+Layout fix only, and the previous attempt did not work -- the content is still 555px tall inside a widget that is exactly 814 x 548, so the bottom 7px is clipped off.
+
+Find the outermost container of the right-hand panel and make the whole right column a flex column with a FIXED height of 548px, boxSizing 'border-box', overflow 'hidden', and its vertical padding reduced to 10px top and bottom. Then remove roughly 10px of vertical space from inside it: cut the gaps between the slider row, the 2x2 stat tile grid and the ranked list, and cut the padding inside each ranked-list row. If after that the content still does not fit, render four ranked shops instead of five.
+
+Do not change any font size: all text stays at 15px or larger and the stat-tile numbers stay at 28px or larger. Do not change the map, the marks, the drag behaviour, the slider, or any computed value.
+
+NOTE: after two failed attempts this was fixed by hand in build/out/parameterize.jsx
+instead -- the outer frame is 814x548 border-box with a 2px border, so its content
+box is only 544px tall, and the inner columns were hard-coded to 548px. They are
+now height:100%. Re-running make_widgets.py would undo this.

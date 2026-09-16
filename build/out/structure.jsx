@@ -5,12 +5,12 @@ export const ToolbarButton = ({ React, label, active, color, isAction, onClick }
         onClick={onClick}
         style={{
             flex: isAction ? 0 : 1,
-            padding: '4px 8px',
+            padding: '6px 10px',
             border: '2px solid #1a1a1a',
             background: active ? color : (isAction ? '#e5e2d9' : 'transparent'),
             color: active ? '#f2f0e9' : '#1a1a1a',
             fontFamily: 'JetBrains Mono, monospace',
-            fontSize: '10px',
+            fontSize: '15px',
             textTransform: 'uppercase',
             cursor: 'pointer',
             fontWeight: 'bold',
@@ -38,22 +38,22 @@ export const MetricCard = ({ React, name, color, metrics }) => (
         <div style={{ color, fontWeight: 'bold', fontFamily: 'Space Grotesk, sans-serif', fontSize: '16px', marginBottom: 12 }}>
             {name}
         </div>
-        <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '12px', display: 'flex', flexDirection: 'column', gap: 6, color: '#1a1a1a' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '15px', display: 'flex', flexDirection: 'column', gap: 12, color: '#1a1a1a' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap' }}>
                 <span style={{ color: '#57534e' }}>Shops</span> 
-                <span style={{ fontWeight: 'bold' }}>{metrics.count}</span>
+                <span style={{ fontWeight: 'bold', fontSize: '28px' }}>{metrics.count}</span>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap' }}>
                 <span style={{ color: '#57534e' }}>Mean Wait</span> 
-                <span style={{ fontWeight: 'bold' }}>{metrics.meanWait ? metrics.meanWait.toFixed(1) : '-'}</span>
+                <span style={{ fontWeight: 'bold', fontSize: '28px' }}>{metrics.meanWait ? metrics.meanWait.toFixed(1) : '-'}</span>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap' }}>
                 <span style={{ color: '#57534e' }}>Med Wait</span> 
-                <span style={{ fontWeight: 'bold' }}>{metrics.medWait || '-'}</span>
+                <span style={{ fontWeight: 'bold', fontSize: '28px' }}>{metrics.medWait || '-'}</span>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap' }}>
                 <span style={{ color: '#57534e' }}>Rating</span> 
-                <span style={{ fontWeight: 'bold' }}>{metrics.meanRating ? metrics.meanRating.toFixed(1) : '-'}</span>
+                <span style={{ fontWeight: 'bold', fontSize: '28px' }}>{metrics.meanRating ? metrics.meanRating.toFixed(1) : '-'}</span>
             </div>
         </div>
     </div>
@@ -294,17 +294,22 @@ export default function Widget({ model, React }) {
     const maxWait = Math.max(metricsA.meanWait || 0, metricsB.meanWait || 0);
     const chartWidth = 292;
     const maxBarWidth = 240;
-    const scaleX = maxWait > 0 ? maxBarWidth / (maxWait * 1.2) : 1;
+    const xDomainMax = maxWait > 0 ? maxWait * 1.2 : 10;
+    const xScale = d3.scaleLinear().domain([0, xDomainMax]).range([0, maxBarWidth]);
+    
+    // Request 3 ticks to typically get 3-4 nice round numbers
+    let ticks = xScale.ticks(3);
+    if (ticks.length > 4) ticks = ticks.slice(0, 4);
 
-    let comparisonText = "Assign shops to both groups";
+    let comparisonNode = <span>Assign shops to both groups</span>;
     if (metricsA.count > 0 && metricsB.count > 0) {
         const diff = Math.abs(metricsA.meanWait - metricsB.meanWait).toFixed(1);
         if (metricsA.meanWait > metricsB.meanWait) {
-            comparisonText = `Group A waits ${diff} min longer`;
+            comparisonNode = <span>Group A waits <span style={{ fontSize: '28px', fontWeight: 'bold' }}>{diff}</span> min longer</span>;
         } else if (metricsB.meanWait > metricsA.meanWait) {
-            comparisonText = `Group B waits ${diff} min longer`;
+            comparisonNode = <span>Group B waits <span style={{ fontSize: '28px', fontWeight: 'bold' }}>{diff}</span> min longer</span>;
         } else {
-            comparisonText = `Both groups have the same wait time`;
+            comparisonNode = <span>Both groups have the same wait time</span>;
         }
     }
 
@@ -324,8 +329,8 @@ export default function Widget({ model, React }) {
             
             <div style={{ width: 2, height: 548, background: '#1a1a1a' }} />
             
-            <div style={{ width: 340, height: 548, padding: 24, display: 'flex', flexDirection: 'column', boxSizing: 'border-box' }}>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 24 }}>
+            <div style={{ width: 340, height: 548, padding: 16, display: 'flex', flexDirection: 'column', boxSizing: 'border-box' }}>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 12 }}>
                     <ToolbarButton React={React} label="Group A" active={activeTool === 'A'} color="#478d4b" onClick={() => setActiveTool('A')} />
                     <ToolbarButton React={React} label="Group B" active={activeTool === 'B'} color="#9f2d1f" onClick={() => setActiveTool('B')} />
                     <ToolbarButton React={React} label="Clear" active={activeTool === 'Clear'} color="#78716c" onClick={() => setActiveTool('Clear')} />
@@ -342,37 +347,43 @@ export default function Widget({ model, React }) {
                     }} />
                 </div>
 
-                <div style={{ display: 'flex', gap: 16, marginBottom: 32 }}>
+                <div style={{ display: 'flex', gap: 16, marginBottom: 14 }}>
                     <MetricCard React={React} name="Group A" color="#478d4b" metrics={metricsA} />
                     <MetricCard React={React} name="Group B" color="#9f2d1f" metrics={metricsB} />
                 </div>
 
                 <div style={{ flex: 1 }}>
-                    <svg width={chartWidth} height={80} style={{ overflow: 'visible' }}>
+                    <svg width={chartWidth} height={90} style={{ overflow: 'visible' }}>
                         <line x1={0} y1={0} x2={0} y2={60} stroke="#1a1a1a" strokeWidth={2} />
                         
-                        <rect x={2} y={10} width={(metricsA.meanWait || 0) * scaleX} height={16} fill="#478d4b" />
-                        <text x={Math.max((metricsA.meanWait || 0) * scaleX + 8, 8)} y={23} fontFamily="JetBrains Mono, monospace" fontSize={11} fill="#1a1a1a" alignmentBaseline="middle">
-                            {metricsA.meanWait ? metricsA.meanWait.toFixed(1) + 'm' : ''}
-                        </text>
+                        <rect x={2} y={10} width={xScale(metricsA.meanWait || 0)} height={16} fill="#478d4b" />
+                        <rect x={2} y={34} width={xScale(metricsB.meanWait || 0)} height={16} fill="#9f2d1f" />
                         
-                        <rect x={2} y={34} width={(metricsB.meanWait || 0) * scaleX} height={16} fill="#9f2d1f" />
-                        <text x={Math.max((metricsB.meanWait || 0) * scaleX + 8, 8)} y={47} fontFamily="JetBrains Mono, monospace" fontSize={11} fill="#1a1a1a" alignmentBaseline="middle">
-                            {metricsB.meanWait ? metricsB.meanWait.toFixed(1) + 'm' : ''}
-                        </text>
-
                         <line x1={0} y1={60} x2={chartWidth} y2={60} stroke="#1a1a1a" strokeWidth={2} />
+
+                        {ticks.map(t => (
+                            <g key={t} transform={`translate(${xScale(t)}, 60)`}>
+                                <line y2={6} stroke="#1a1a1a" strokeWidth={1.5} />
+                                <text y={22} fontSize={14} fontFamily="JetBrains Mono, monospace" fill="#1a1a1a" textAnchor="middle">
+                                    {t}
+                                </text>
+                            </g>
+                        ))}
                     </svg>
                     
                     <div style={{ 
-                        marginTop: 16, 
+                        marginTop: 10, 
                         fontFamily: 'JetBrains Mono, monospace', 
-                        fontSize: '12px', 
+                        fontSize: '15px', 
                         color: '#1a1a1a',
                         textAlign: 'center',
-                        fontWeight: 'bold'
+                        fontWeight: 'bold',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '6px'
                     }}>
-                        {comparisonText}
+                        {comparisonNode}
                     </div>
                 </div>
             </div>
@@ -386,19 +397,19 @@ export default function Widget({ model, React }) {
                     background: '#f7f0e6',
                     border: '2px solid #1a1a1a',
                     boxShadow: '4px 4px 0px rgba(26,26,26,0.15)',
-                    padding: '10px 14px',
+                    padding: '12px 16px',
                     pointerEvents: 'none',
                     zIndex: 10,
                     fontFamily: 'JetBrains Mono, monospace',
-                    fontSize: '11px',
+                    fontSize: '15px',
                     color: '#1a1a1a',
                     width: 'max-content'
                 }}>
-                    <div style={{ fontWeight: 'bold', fontSize: '14px', fontFamily: 'Space Grotesk, sans-serif' }}>
+                    <div style={{ fontWeight: 'bold', fontSize: '18px', fontFamily: 'Space Grotesk, sans-serif' }}>
                         {hover.shop.name}
                     </div>
-                    <div style={{ color: '#57534e', marginTop: 2 }}>{hover.shop.neighborhood}</div>
-                    <div style={{ marginTop: 8, display: 'flex', justifyContent: 'space-between', gap: 16 }}>
+                    <div style={{ color: '#57534e', marginTop: 4 }}>{hover.shop.neighborhood}</div>
+                    <div style={{ marginTop: 12, display: 'flex', justifyContent: 'space-between', gap: 16 }}>
                         <span>Weekend Wait</span>
                         <span style={{ fontWeight: 'bold' }}>{hover.shop.weekend_wait_min}m</span>
                     </div>
@@ -406,7 +417,7 @@ export default function Widget({ model, React }) {
                         <div style={{
                             color: assignments[hover.shop.shop_id] === 'A' ? '#478d4b' : '#9f2d1f',
                             fontWeight: 'bold',
-                            marginTop: 6,
+                            marginTop: 8,
                             textTransform: 'uppercase'
                         }}>
                             Group {assignments[hover.shop.shop_id]}

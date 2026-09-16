@@ -1,0 +1,7 @@
+Layout fix only, nothing else changes.
+
+This widget must fit exactly 352 x 400 pixels. Right now its content is 462px tall, so the dropdown below the plot is pushed off the bottom and clipped away entirely -- it cannot be seen or used.
+
+Fix it by making the plot area shorter so that the plot and the dropdown together fit inside 400px: reserve about 46px at the bottom for the dropdown row plus its margin, and give the SVG the remaining height (about 350px) instead of a fixed taller height. Reduce the SVG's height, not the widget's width, and do not let anything scroll.
+
+Keep every font size where it is: tick labels 14px, axis titles 15px, dropdown text 15px, tooltip 15px. Keep the dropdown's options exactly as they are ("Highlight a group...", the three price tiers, then the five largest neighborhoods), keep the highlight colours and the 200ms transition, and keep the rule that a highlight changes fill colour and nothing else.

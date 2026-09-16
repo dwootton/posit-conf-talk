@@ -69,14 +69,22 @@ def main(name: str, request: str) -> int:
     spec = mw.SPECS[name]
     w, h = spec["size"]
     df = pd.read_csv(mw.ROOT / "data" / "houston_donut_shops.csv")
-    basemap_image = mw._basemap_data_url()
+    # Hand the widget back exactly the inputs it was generated with, or the edit
+    # drops whatever it read from the missing one: `augment` joins `reviews`, and
+    # the four non-map widgets never had a basemap to begin with.
+    inputs: dict = {}
+    if name not in mw.NO_MAP:
+        inputs["basemap_image"] = mw._basemap_data_url()
+    reviews_path = mw.ROOT / "data" / "houston_donut_reviews.csv"
+    if name == "augment" and reviews_path.exists():
+        inputs["reviews"] = pd.read_csv(reviews_path).to_dict(orient="records")
     vw.config(model=mw.MODEL, theme="vibe-widgets", execution="auto")
 
     src = mw.VW_DIR / f"{name}.vw"
     base = vw.load(src, approval=False, display=False)
     print(f"== revising {name} from {src.name} ({len(base.code)} chars) via {mw.MODEL}", flush=True)
     t0 = time.time()
-    widget = vw.edit(request, base, data=df, inputs={"basemap_image": basemap_image},
+    widget = vw.edit(request, base, data=df, inputs=inputs,
                      theme="vibe-widgets", display=False, cache=False)
     status = mw.wait_for(widget, name)
     dt = time.time() - t0
@@ -88,7 +96,8 @@ def main(name: str, request: str) -> int:
         print(f"?? {name} finished with status {status}; keeping revised code", flush=True)
     shutil.copy(mw.OUT / f"{name}.jsx", mw.OUT / f"{name}.prev.jsx")
     prompt = json.loads((mw.OUT / f"{name}.meta.json").read_text())["prompt"] + "\n\nREVISION: " + request
-    mw.write_outputs(name, code, prompt, (w, h), dt)
+    extra = {"reviews": "<input>"} if "reviews" in inputs else None
+    mw.write_outputs(name, code, prompt, (w, h), dt, extra_inputs=extra)
     print(f"ok {name}: {len(code)} chars in {dt:.0f}s", flush=True)
     return 0
 

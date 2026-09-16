@@ -2,7 +2,7 @@ import * as d3 from "https://esm.sh/d3@7";
 
 export const PriceLegend = ({ filterPrice, setFilterPrice, React }) => {
   return (
-    <div style={{ position: 'absolute', top: 12, right: 12, display: 'flex', gap: 6, zIndex: 5 }}>
+    <div style={{ position: 'absolute', top: 12, right: 12, display: 'flex', gap: 8, zIndex: 5 }}>
       {[1, 2, 3].map(level => {
         const isActive = filterPrice === level;
         return (
@@ -12,8 +12,8 @@ export const PriceLegend = ({ filterPrice, setFilterPrice, React }) => {
             style={{
               cursor: 'pointer',
               fontFamily: '"JetBrains Mono", monospace',
-              fontSize: 11,
-              padding: '2px 8px',
+              fontSize: 15,
+              padding: '4px 12px',
               background: isActive ? '#f97316' : '#f7f0e6',
               color: isActive ? '#fff' : '#1a1a1a',
               border: '2px solid #1a1a1a',
@@ -34,10 +34,9 @@ export const PriceLegend = ({ filterPrice, setFilterPrice, React }) => {
 
 export const HoverTooltip = ({ data, pointer, width, height, React }) => {
   if (!data) return null;
-  const ttWidth = 160;
-  const ttHeight = 64;
+  const ttWidth = 220;
+  const ttHeight = 110;
   
-  // Ensure tooltip stays within widget bounds
   const x = pointer.x + 12 > width - ttWidth ? pointer.x - ttWidth - 4 : pointer.x + 12;
   const y = pointer.y + 12 > height - ttHeight ? pointer.y - ttHeight - 4 : pointer.y + 12;
 
@@ -49,7 +48,7 @@ export const HoverTooltip = ({ data, pointer, width, height, React }) => {
         top: y,
         background: '#f7f0e6',
         border: '2px solid #1a1a1a',
-        padding: '8px',
+        padding: '12px',
         pointerEvents: 'none',
         boxShadow: '4px 4px 0px #1a1a1a',
         width: ttWidth,
@@ -59,10 +58,10 @@ export const HoverTooltip = ({ data, pointer, width, height, React }) => {
     >
       <div style={{
         fontFamily: '"Space Grotesk", sans-serif',
-        fontSize: 13,
+        fontSize: 15,
         fontWeight: 'bold',
         color: '#1a1a1a',
-        marginBottom: 6,
+        marginBottom: 8,
         lineHeight: 1.1,
         whiteSpace: 'nowrap',
         overflow: 'hidden',
@@ -70,13 +69,13 @@ export const HoverTooltip = ({ data, pointer, width, height, React }) => {
       }}>
         {data.name}
       </div>
-      <div style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 10, color: '#1a1a1a', display: 'flex', justifyContent: 'space-between', marginBottom: 2 }}>
-        <span>RATING</span>
-        <span style={{ fontWeight: 'bold' }}>{data.rating.toFixed(1)}</span>
+      <div style={{ fontFamily: '"JetBrains Mono", monospace', color: '#1a1a1a', display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 4 }}>
+        <span style={{ fontSize: 15 }}>RATING</span>
+        <span style={{ fontSize: 28, fontWeight: 'bold' }}>{data.rating.toFixed(1)}</span>
       </div>
-      <div style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 10, color: '#1a1a1a', display: 'flex', justifyContent: 'space-between' }}>
-        <span>REVIEWS</span>
-        <span style={{ fontWeight: 'bold' }}>{data.review_count}</span>
+      <div style={{ fontFamily: '"JetBrains Mono", monospace', color: '#1a1a1a', display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+        <span style={{ fontSize: 15 }}>REVIEWS</span>
+        <span style={{ fontSize: 28, fontWeight: 'bold' }}>{data.review_count}</span>
       </div>
     </div>
   );
@@ -97,7 +96,7 @@ export default function Widget({ model, React }) {
 
   const width = 352;
   const height = 400;
-  const margin = { top: 24, right: 24, bottom: 32, left: 36 };
+  const margin = { top: 24, right: 24, bottom: 36, left: 40 };
   const innerW = width - margin.left - margin.right;
   const innerH = height - margin.top - margin.bottom;
 
@@ -144,12 +143,12 @@ export default function Widget({ model, React }) {
     });
   }, [data, hoveredId]);
 
-  // Filter log scale ticks to prevent crowding
   const xTicks = xScale.ticks().filter(t => {
     const s = t.toString();
     return s.startsWith('1') || s.startsWith('5');
-  });
-  const yTicks = yScale.ticks(6);
+  }).slice(0, 4);
+  
+  const yTicks = yScale.ticks(4);
 
   const hoveredData = React.useMemo(() => data.find(d => d.shop_id === hoveredId), [data, hoveredId]);
 
@@ -180,12 +179,12 @@ export default function Widget({ model, React }) {
             <g key={t} transform={`translate(0,${yScale(t)})`}>
               <line x2={-5} stroke="#1a1a1a" strokeWidth={2} />
               <text
-                x={-8}
-                y={4}
+                x={-10}
+                y={5}
                 textAnchor="end"
                 fill="#1a1a1a"
                 fontFamily='"JetBrains Mono", monospace'
-                fontSize={10}
+                fontSize={14}
               >
                 {t.toFixed(1)}
               </text>
@@ -194,12 +193,12 @@ export default function Widget({ model, React }) {
           ))}
           <line x1={0} x2={0} y1={0} y2={innerH} stroke="#1a1a1a" strokeWidth={2} />
           <text
-            x={8}
-            y={12}
+            x={10}
+            y={18}
             textAnchor="start"
             fill="#1a1a1a"
             fontFamily='"JetBrains Mono", monospace'
-            fontSize={10}
+            fontSize={15}
             fontWeight="bold"
           >
             RATING
@@ -209,11 +208,11 @@ export default function Widget({ model, React }) {
             <g key={t} transform={`translate(${xScale(t)},${innerH})`}>
               <line y2={5} stroke="#1a1a1a" strokeWidth={2} />
               <text
-                y={16}
+                y={22}
                 textAnchor="middle"
                 fill="#1a1a1a"
                 fontFamily='"JetBrains Mono", monospace'
-                fontSize={10}
+                fontSize={14}
               >
                 {d3.format("~s")(t)}
               </text>
@@ -222,11 +221,11 @@ export default function Widget({ model, React }) {
           <line x1={0} x2={innerW} y1={innerH} y2={innerH} stroke="#1a1a1a" strokeWidth={2} />
           <text
             x={innerW}
-            y={innerH - 8}
+            y={innerH - 12}
             textAnchor="end"
             fill="#1a1a1a"
             fontFamily='"JetBrains Mono", monospace'
-            fontSize={10}
+            fontSize={15}
             fontWeight="bold"
           >
             REVIEWS

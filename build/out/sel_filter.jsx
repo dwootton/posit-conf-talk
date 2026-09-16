@@ -13,7 +13,8 @@ export default function Widget({ model, React }) {
 
   const width = 352;
   const height = 400;
-  const margin = { top: 20, right: 20, bottom: 45, left: 55 };
+  // Margins increased slightly to accommodate larger 14px/15px text
+  const margin = { top: 20, right: 20, bottom: 55, left: 65 };
   const innerWidth = width - margin.left - margin.right;
   const innerHeight = height - margin.top - margin.bottom;
 
@@ -32,7 +33,6 @@ export default function Widget({ model, React }) {
   const maxY = d3.max(visibleData, d => d.weekend_wait_min) || 10;
   const minY = d3.min(visibleData, d => d.weekend_wait_min) || 0;
 
-  // Add ~15px of padding in domain units so marks fully clear the edges
   const xPad = ((maxX - Math.min(0, minX)) * 15) / Math.max(1, innerWidth - 15);
   const yPad = ((maxY - Math.min(0, minY)) * 15) / Math.max(1, innerHeight - 15);
 
@@ -49,8 +49,17 @@ export default function Widget({ model, React }) {
   React.useEffect(() => {
     if (!xAxisRef.current || !yAxisRef.current) return;
 
-    const xAxis = d3.axisBottom(xScale).ticks(4).tickSizeOuter(0);
-    const yAxis = d3.axisLeft(yScale).ticks(5).tickSizeOuter(0);
+    // Helper to strictly enforce "at most four ticks"
+    const getAtMostFourTicks = (scale) => {
+      let ticks = scale.ticks(4);
+      if (ticks.length <= 4) return ticks;
+      ticks = scale.ticks(3);
+      if (ticks.length <= 4) return ticks;
+      return scale.ticks(2);
+    };
+
+    const xAxis = d3.axisBottom(xScale).tickValues(getAtMostFourTicks(xScale)).tickSizeOuter(0);
+    const yAxis = d3.axisLeft(yScale).tickValues(getAtMostFourTicks(yScale)).tickSizeOuter(0);
 
     const xGroup = d3.select(xAxisRef.current);
     const yGroup = d3.select(yAxisRef.current);
@@ -63,7 +72,7 @@ export default function Widget({ model, React }) {
       group.selectAll('.tick line').attr('stroke', '#1a1a1a');
       group.selectAll('.tick text')
         .attr('font-family', '"JetBrains Mono", monospace')
-        .attr('font-size', '10px')
+        .attr('font-size', '14px') // Increased to 14px
         .attr('fill', '#1a1a1a');
     };
 
@@ -130,10 +139,11 @@ export default function Widget({ model, React }) {
     setTooltip({ visible: true, data: d, x: rawX, y: rawY });
   };
 
+  // Adjusted bounds checking for slightly larger tooltip
   let tipX = tooltip.x + 12;
   let tipY = tooltip.y + 12;
-  if (tipX + 180 > width) tipX = tooltip.x - 192;
-  if (tipY + 100 > height) tipY = tooltip.y - 112;
+  if (tipX + 220 > width) tipX = tooltip.x - 232;
+  if (tipY + 120 > height) tipY = tooltip.y - 132;
 
   return (
     <div
@@ -163,20 +173,20 @@ export default function Widget({ model, React }) {
 
           <text
             x={innerWidth / 2}
-            y={innerHeight + 32}
+            y={innerHeight + 46}
             textAnchor="middle"
             fill="#1a1a1a"
-            style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: '10px', fontWeight: 600 }}
+            style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: '15px', fontWeight: 600 }}
           >
             REVIEWS
           </text>
           <text
             transform="rotate(-90)"
             x={-innerHeight / 2}
-            y={-38}
+            y={-48}
             textAnchor="middle"
             fill="#1a1a1a"
-            style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: '10px', fontWeight: 600 }}
+            style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: '15px', fontWeight: 600 }}
           >
             WEEKEND WAIT / MIN
           </text>
@@ -242,19 +252,19 @@ export default function Widget({ model, React }) {
           top: tipY,
           background: '#f7f0e6',
           border: '2px solid #1a1a1a',
-          padding: '8px 12px',
+          padding: '10px 14px',
           boxShadow: '4px 4px 0px #1a1a1a',
           pointerEvents: 'none',
           zIndex: 10,
-          minWidth: 160
+          minWidth: 200
         }}>
-          <div style={{ fontWeight: 700, fontSize: '13px', color: '#1a1a1a', marginBottom: 2, lineHeight: 1.2 }}>
+          <div style={{ fontWeight: 700, fontSize: '15px', color: '#1a1a1a', marginBottom: 4, lineHeight: 1.2 }}>
             {tooltip.data.name.replace(/'/g, '')}
           </div>
-          <div style={{ fontSize: '11px', color: '#4b5563', marginBottom: 8, fontFamily: '"JetBrains Mono", monospace' }}>
+          <div style={{ fontSize: '15px', color: '#4b5563', marginBottom: 10, fontFamily: '"JetBrains Mono", monospace' }}>
             {tooltip.data.neighborhood.replace(/'/g, '')}
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '4px 12px', fontSize: '11px', fontFamily: '"JetBrains Mono", monospace', color: '#1a1a1a' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '6px 12px', fontSize: '15px', fontFamily: '"JetBrains Mono", monospace', color: '#1a1a1a' }}>
             <span>REVIEWS:</span>
             <span style={{ fontWeight: 700 }}>{tooltip.data.review_count}</span>
             <span>WAIT (WKND):</span>
@@ -273,9 +283,9 @@ export default function Widget({ model, React }) {
             right: 12,
             background: '#f7f0e6',
             border: '2px solid #1a1a1a',
-            padding: '4px 8px',
+            padding: '6px 12px',
             fontFamily: '"JetBrains Mono", monospace',
-            fontSize: '10px',
+            fontSize: '15px',
             fontWeight: 700,
             color: '#1a1a1a',
             cursor: 'pointer',

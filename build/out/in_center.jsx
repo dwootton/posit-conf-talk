@@ -34,8 +34,8 @@ export default function Widget({ model, React }) {
 
   const width = 352;
   const height = 400;
-  const rectW = 106; // ~30% of 352
-  const rectH = 120; // 30% of 400
+  const rectW = 106; 
+  const rectH = 120; 
 
   const projection = React.useMemo(() => {
     return d3.geoMercator().fitExtent(
@@ -198,23 +198,9 @@ export default function Widget({ model, React }) {
         <span style={{ fontSize: 40, lineHeight: 1, fontWeight: 600, letterSpacing: '-0.02em' }}>
           {selectedShops.length}
         </span>
-        <span style={{ fontSize: 14, color: '#334155', fontWeight: 600 }}>
+        <span style={{ fontSize: 28, color: '#334155', fontWeight: 600 }}>
           {meanWait}
         </span>
-      </div>
-
-      <div style={{
-        position: 'absolute',
-        bottom: 14,
-        left: 16,
-        pointerEvents: 'none',
-        fontFamily: "'Space Grotesk', sans-serif",
-        fontSize: 13,
-        color: '#0f172a',
-        fontWeight: 600,
-        textShadow: textHalo
-      }}>
-        click to place
       </div>
     </div>
   );

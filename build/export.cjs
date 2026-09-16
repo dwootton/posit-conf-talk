@@ -95,7 +95,7 @@ function hostHtml(name, meta) {
 </head>
 <body>
 <div id="root"></div>
-<script src="${name}.js"></script>
+<script src="${name}.js?v=${meta.built || Date.now()}"></script>
 </body>
 </html>
 `;
@@ -139,6 +139,9 @@ createRoot(document.getElementById("root")).render(React.createElement(Widget, {
     legalComments: "none",
     define: { "process.env.NODE_ENV": '"production"' },
   });
+  // stamp the bundle reference so a re-export is never served from a stale
+  // browser cache -- the page name does not change, only the bundle behind it
+  meta.built = Date.now();
   fs.writeFileSync(path.join(WIDGETS, `${name}.html`), hostHtml(name, meta));
   fs.rmSync(work, { recursive: true, force: true });
   const kb = Math.round(fs.statSync(path.join(WIDGETS, `${name}.js`)).size / 1024);

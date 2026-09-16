@@ -4,7 +4,7 @@ export const Toggle = ({ checked, onChange, label, React }) => {
   return (
     <label style={{
       display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer',
-      fontFamily: "'JetBrains Mono', monospace", fontSize: '10px', color: '#1a1a1a', textTransform: 'uppercase',
+      fontFamily: "'JetBrains Mono', monospace", fontSize: '15px', color: '#1a1a1a', textTransform: 'uppercase',
       background: '#f7f0e6', padding: '6px 8px', border: '2px solid #1a1a1a', boxShadow: '2px 2px 0 #1a1a1a'
     }}>
       {label}
@@ -45,7 +45,7 @@ export const Tooltip = ({ shop, x, y, React }) => {
     pointerEvents: 'none',
     zIndex: 20,
     width: 'max-content',
-    maxWidth: '180px',
+    maxWidth: '250px',
     display: 'flex',
     flexDirection: 'column',
     gap: '4px'
@@ -53,16 +53,16 @@ export const Tooltip = ({ shop, x, y, React }) => {
 
   return (
     <div style={style}>
-      <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: '700', fontSize: '13px', color: '#1a1a1a', lineHeight: 1.1 }}>
+      <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: '700', fontSize: '15px', color: '#1a1a1a', lineHeight: 1.1 }}>
         {shop.name}
       </div>
-      <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '9px', color: '#64748b', textTransform: 'uppercase' }}>
+      <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '15px', color: '#64748b', textTransform: 'uppercase' }}>
         {shop.neighborhood}
       </div>
-      <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '11px', color: '#1a1a1a', marginTop: '2px' }}>
+      <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '15px', color: '#1a1a1a', marginTop: '2px' }}>
         {shop.signature_donut}
       </div>
-      <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '11px', color: '#f97316', fontWeight: 'bold' }}>
+      <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '28px', color: '#f97316', fontWeight: 'bold' }}>
         ★ {Number(shop.rating).toFixed(1)}
       </div>
     </div>
@@ -142,7 +142,7 @@ export default function Widget({ model, React }) {
     shopGroups.append("text")
       .text(d => d.name)
       .attr("font-family", "'Space Grotesk', sans-serif")
-      .attr("font-size", "10px")
+      .attr("font-size", "15px")
       .attr("fill", "#1a1a1a")
       .attr("font-weight", "600")
       .attr("stroke", "#f7f0e6")
@@ -154,14 +154,14 @@ export default function Widget({ model, React }) {
         const node = d3.select(this);
         const [cx, cy] = projection([d.longitude, d.latitude]);
         
-        let w = d.name.length * 6;
+        let w = d.name.length * 9;
         try {
           const bbox = this.getBBox();
           if (bbox.width) w = bbox.width;
         } catch(e) {}
         
-        const h = 10;
-        const gap = 8.5;
+        const h = 15;
+        const gap = 10;
 
         const candidates = [
           { x: gap, y: 0, anchor: "start", baseline: "central", box: [cx + gap, cy - h/2, cx + gap + w, cy + h/2] },

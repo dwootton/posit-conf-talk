@@ -73,16 +73,26 @@ export default function Widget({ model, React }) {
     const r = 8; // hit radius for handles
     const dist = (x1, y1, x2, y2) => Math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2);
 
+    // Corners
     if (dist(x, y, nb.minX, nb.minY) < r) return 'nw';
     if (dist(x, y, nb.maxX, nb.minY) < r) return 'ne';
     if (dist(x, y, nb.minX, nb.maxY) < r) return 'sw';
     if (dist(x, y, nb.maxX, nb.maxY) < r) return 'se';
 
+    // Edges
+    const midX = (nb.minX + nb.maxX) / 2;
+    const midY = (nb.minY + nb.maxY) / 2;
+    if (dist(x, y, midX, nb.minY) < r) return 'n';
+    if (dist(x, y, midX, nb.maxY) < r) return 's';
+    if (dist(x, y, nb.maxX, midY) < r) return 'e';
+    if (dist(x, y, nb.minX, midY) < r) return 'w';
+
+    // Interior
     if (x >= nb.minX && x <= nb.maxX && y >= nb.minY && y <= nb.maxY) return 'inside';
     return 'none';
   };
 
-  // Safe coordinate extraction (avoids getScreenCTM bugs in scaled iframes)
+  // Safe coordinate extraction
   const getCoords = (e) => {
     const rect = svgRef.current.getBoundingClientRect();
     return [e.clientX - rect.left, e.clientY - rect.top];
@@ -103,11 +113,16 @@ export default function Widget({ model, React }) {
       dragState.current = { mode: 'move', startX: x, startY: y, startBox: { ...box }, target: null };
     } else {
       dragState.current = { mode: 'resize', target };
-      // Pin the opposite corner as the anchor (x1, y1)
+      // Pin the opposite corner or edge as the anchor (x1, y1)
       if (target === 'nw') setBox({ x1: normBox.maxX, y1: normBox.maxY, x2: x, y2: y });
       if (target === 'ne') setBox({ x1: normBox.minX, y1: normBox.maxY, x2: x, y2: y });
       if (target === 'sw') setBox({ x1: normBox.maxX, y1: normBox.minY, x2: x, y2: y });
       if (target === 'se') setBox({ x1: normBox.minX, y1: normBox.minY, x2: x, y2: y });
+      
+      if (target === 'n') setBox({ x1: normBox.minX, y1: normBox.maxY, x2: normBox.maxX, y2: y });
+      if (target === 's') setBox({ x1: normBox.minX, y1: normBox.minY, x2: normBox.maxX, y2: y });
+      if (target === 'e') setBox({ x1: normBox.minX, y1: normBox.minY, x2: x, y2: normBox.maxY });
+      if (target === 'w') setBox({ x1: normBox.maxX, y1: normBox.minY, x2: x, y2: normBox.maxY });
     }
   };
 
@@ -118,8 +133,14 @@ export default function Widget({ model, React }) {
 
     if (isDragging) {
       const state = dragState.current;
-      if (state.mode === 'draw' || state.mode === 'resize') {
+      if (state.mode === 'draw') {
         setBox(prev => ({ ...prev, x2: cx, y2: cy }));
+      } else if (state.mode === 'resize') {
+        setBox(prev => {
+          const newX2 = ['n', 's'].includes(state.target) ? prev.x2 : cx;
+          const newY2 = ['e', 'w'].includes(state.target) ? prev.y2 : cy;
+          return { ...prev, x2: newX2, y2: newY2 };
+        });
       } else if (state.mode === 'move') {
         let dx = x - state.startX;
         let dy = y - state.startY;
@@ -142,6 +163,8 @@ export default function Widget({ model, React }) {
       const target = getHitTarget(x, y, normBox);
       if (target === 'nw' || target === 'se') setHoverCursor('nwse-resize');
       else if (target === 'ne' || target === 'sw') setHoverCursor('nesw-resize');
+      else if (target === 'e' || target === 'w') setHoverCursor('ew-resize');
+      else if (target === 'n' || target === 's') setHoverCursor('ns-resize');
       else if (target === 'inside') setHoverCursor('move');
       else setHoverCursor('crosshair');
     }
@@ -160,10 +183,12 @@ export default function Widget({ model, React }) {
 
   const getCursor = () => {
     if (isDragging) {
-      const { mode } = dragState.current;
+      const { mode, target } = dragState.current;
       if (mode === 'move') return 'move';
       if (mode === 'draw') return 'crosshair';
       if (mode === 'resize') {
+        if (['e', 'w'].includes(target)) return 'ew-resize';
+        if (['n', 's'].includes(target)) return 'ns-resize';
         const dx = box.x2 - box.x1;
         const dy = box.y2 - box.y1;
         if (dx === 0 || dy === 0) return 'crosshair';
@@ -249,10 +274,16 @@ export default function Widget({ model, React }) {
               strokeWidth={2}
             />
             {[
+              // Corners
               [normBox.minX, normBox.minY],
               [normBox.maxX, normBox.minY],
               [normBox.minX, normBox.maxY],
-              [normBox.maxX, normBox.maxY]
+              [normBox.maxX, normBox.maxY],
+              // Edges
+              [(normBox.minX + normBox.maxX) / 2, normBox.minY],
+              [(normBox.minX + normBox.maxX) / 2, normBox.maxY],
+              [normBox.maxX, (normBox.minY + normBox.maxY) / 2],
+              [normBox.minX, (normBox.minY + normBox.maxY) / 2]
             ].map(([hx, hy], i) => (
               <rect
                 key={i}
@@ -308,7 +339,7 @@ export default function Widget({ model, React }) {
         <div style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 32, fontWeight: 600, color: '#1a1a1a', lineHeight: 1, letterSpacing: '-0.02em' }}>
           {normBox ? selectedShops.length : 0}
         </div>
-        <div style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 12, color: '#4a4a4a', lineHeight: 1 }}>
+        <div style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 18, color: '#4a4a4a', lineHeight: 1 }}>
           {normBox && selectedShops.length > 0 ? `${meanWait} min wait` : '-- min wait'}
         </div>
       </div>
@@ -320,12 +351,12 @@ export default function Widget({ model, React }) {
         left: 12,
         pointerEvents: 'none',
         fontFamily: '"Space Grotesk", sans-serif',
-        fontSize: 12,
+        fontSize: 15,
         fontWeight: 500,
         color: '#1a1a1a',
         textShadow: '0 1px 2px rgba(242,240,233,0.9), 0 -1px 2px rgba(242,240,233,0.9), 1px 0 2px rgba(242,240,233,0.9), -1px 0 2px rgba(242,240,233,0.9)'
       }}>
-        drag the box or its corners
+        drag the box, a corner, or a side
       </div>
     </div>
   );

@@ -64,7 +64,7 @@ export default function Widget({ model, React }) {
 
   const { selectedShops, unselectedShops, meanWait } = React.useMemo(() => {
     if (!center) {
-      return { selectedShops: [], unselectedShops: shops, meanWait: "-" };
+      return { selectedShops: [], unselectedShops: shops, meanWait: "-- min wait" };
     }
     
     const selected = [];
@@ -80,8 +80,8 @@ export default function Widget({ model, React }) {
       }
     }
 
-    const mean = selected.length > 0 ? (waitSum / selected.length).toFixed(1) : "-";
-    return { selectedShops: selected, unselectedShops: unselected, meanWait: mean };
+    const mean = selected.length > 0 ? (waitSum / selected.length).toFixed(1) : "--";
+    return { selectedShops: selected, unselectedShops: unselected, meanWait: `${mean} min wait` };
   }, [shops, center, rectW, rectH]);
 
   React.useEffect(() => {

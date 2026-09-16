@@ -3,14 +3,14 @@ import * as d3 from "https://esm.sh/d3@7";
 export const ReviewCard = ({ review, React }) => (
   <div style={{ marginTop: 16, paddingBottom: 16, borderBottom: '1px solid rgba(26,26,26,0.1)' }}>
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 8 }}>
-      <span style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 'bold', color: '#1a1a1a', fontSize: 14 }}>
+      <span style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 'bold', color: '#1a1a1a', fontSize: 16 }}>
         {review.reviewer}
       </span>
-      <span style={{ fontFamily: 'JetBrains Mono, monospace', color: '#1a1a1a', fontSize: 12 }}>
+      <span style={{ fontFamily: 'JetBrains Mono, monospace', color: '#1a1a1a', fontSize: 15 }}>
         {review.stars}/5 &middot; {review.date}
       </span>
     </div>
-    <div style={{ fontFamily: 'Space Grotesk, sans-serif', color: '#1a1a1a', fontSize: 14, lineHeight: 1.4 }}>
+    <div style={{ fontFamily: 'Space Grotesk, sans-serif', color: '#1a1a1a', fontSize: 15, lineHeight: 1.4 }}>
       {review.text}
     </div>
   </div>
@@ -30,10 +30,9 @@ export default function Widget({ model, React }) {
 
   const width = 814;
   const height = 548;
-  const mapWidth = width * 0.58; // 472.12
-  const panelWidth = width - mapWidth; // 341.88
+  const mapWidth = width * 0.58;
+  const panelWidth = width - mapWidth;
 
-  // Subscribe to model changes
   React.useEffect(() => {
     const onData = () => setData(model.get("data") || []);
     const onReviews = () => setReviews(model.get("reviews") || []);
@@ -50,7 +49,6 @@ export default function Widget({ model, React }) {
     };
   }, [model]);
 
-  // Cache SVG bounding rect as requested
   React.useEffect(() => {
     const updateRect = () => {
       if (svgRef.current) {
@@ -58,7 +56,6 @@ export default function Widget({ model, React }) {
       }
     };
     
-    // Initial measure after mount
     const timer = setTimeout(updateRect, 50);
     window.addEventListener("resize", updateRect);
     window.addEventListener("scroll", updateRect, true); 
@@ -70,7 +67,6 @@ export default function Widget({ model, React }) {
     };
   }, []);
 
-  // Base map and marks rendering
   React.useEffect(() => {
     if (!svgRef.current || !data.length || !basemapImage) return;
 
@@ -82,10 +78,9 @@ export default function Widget({ model, React }) {
         coordinates: [[-95.615, 29.600], [-95.255, 29.880]]
       });
 
-    const [x1, y1] = projection([-95.615, 29.880]); // NW
-    const [x2, y2] = projection([-95.255, 29.600]); // SE
+    const [x1, y1] = projection([-95.615, 29.880]);
+    const [x2, y2] = projection([-95.255, 29.600]);
 
-    // Render Image
     let image = svg.select("image.basemap");
     if (image.empty()) {
       image = svg.append("image").attr("class", "basemap");
@@ -97,14 +92,12 @@ export default function Widget({ model, React }) {
       .attr("height", y2 - y1)
       .attr("preserveAspectRatio", "none");
 
-    // Project and store marks data
     const marksData = data.map(d => {
       const [cx, cy] = projection([d.longitude, d.latitude]);
       return { ...d, cx, cy };
     });
     marksRef.current = marksData;
 
-    // Render Marks Layer
     let marksLayer = svg.select("g.marks-layer");
     if (marksLayer.empty()) {
       marksLayer = svg.append("g").attr("class", "marks-layer");
@@ -124,7 +117,6 @@ export default function Widget({ model, React }) {
 
   }, [data, basemapImage, mapWidth, height]);
 
-  // Selection styling update
   React.useEffect(() => {
     if (!svgRef.current) return;
     const marks = d3.select(svgRef.current).selectAll("circle.shop-mark");
@@ -136,7 +128,6 @@ export default function Widget({ model, React }) {
     marks.filter(d => d.shop_id === selectedShopId).raise();
   }, [selectedShopId, data]);
 
-  // Manual pointer event handlers
   const handlePointerMove = (e) => {
     if (!rectRef.current && svgRef.current) {
       rectRef.current = svgRef.current.getBoundingClientRect();
@@ -147,7 +138,7 @@ export default function Widget({ model, React }) {
     const y = e.clientY - rectRef.current.top;
 
     let closest = null;
-    let minDist = 12; // Snap radius
+    let minDist = 12;
 
     for (const mark of marksRef.current) {
       const dist = Math.hypot(mark.cx - x, mark.cy - y);
@@ -197,7 +188,6 @@ export default function Widget({ model, React }) {
         .reviews-scroll { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
 
-      {/* Map Column */}
       <div style={{ position: 'relative', width: mapWidth, height: height }}>
         <svg 
           ref={svgRef} 
@@ -209,7 +199,6 @@ export default function Widget({ model, React }) {
           style={{ cursor: hoverState ? 'pointer' : 'default', display: 'block' }}
         />
         
-        {/* Tooltip Overlay */}
         {hoverState && (
           <div style={{
             position: 'absolute',
@@ -222,17 +211,16 @@ export default function Widget({ model, React }) {
             pointerEvents: 'none',
             zIndex: 10
           }}>
-            <div style={{ fontFamily: 'Space Grotesk, sans-serif', fontSize: 14, fontWeight: 'bold', color: '#1a1a1a' }}>
+            <div style={{ fontFamily: 'Space Grotesk, sans-serif', fontSize: 16, fontWeight: 'bold', color: '#1a1a1a' }}>
               {hoverState.shop.name}
             </div>
-            <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 12, color: '#1a1a1a', marginTop: 2 }}>
+            <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 15, color: '#1a1a1a', marginTop: 2 }}>
               {hoverState.shop.neighborhood}
             </div>
           </div>
         )}
       </div>
 
-      {/* Panel Column */}
       <div style={{ 
         width: panelWidth, 
         height: height, 
@@ -242,40 +230,40 @@ export default function Widget({ model, React }) {
       }}>
         {!selectedShop ? (
           <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
-            <span style={{ fontFamily: 'Space Grotesk, sans-serif', color: '#1a1a1a', fontSize: 14 }}>
+            <span style={{ fontFamily: 'Space Grotesk, sans-serif', color: '#1a1a1a', fontSize: 16 }}>
               Click a shop on the map to pull its reviews.
             </span>
           </div>
         ) : (
           <>
             <div style={{ padding: '24px 24px 16px', borderBottom: '1px solid #1a1a1a', flexShrink: 0 }}>
-              <div style={{ fontFamily: 'Space Grotesk, sans-serif', fontSize: 24, fontWeight: 'bold', color: '#1a1a1a', marginBottom: 4 }}>
+              <div style={{ fontFamily: 'Space Grotesk, sans-serif', fontSize: 28, fontWeight: 'bold', color: '#1a1a1a', marginBottom: 4 }}>
                 {selectedShop.name}
               </div>
-              <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 13, color: '#1a1a1a', marginBottom: 12 }}>
+              <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 15, color: '#1a1a1a', marginBottom: 12 }}>
                 {selectedShop.neighborhood}
               </div>
               <div style={{ display: 'flex', gap: 10 }}>
                 <div style={{ background: '#f7f0e6', border: '2px solid #1a1a1a', boxShadow: '2px 2px 0 #1a1a1a', padding: '8px 12px', flex: 1 }}>
-                  <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 9, textTransform: 'uppercase', color: '#4b5563', letterSpacing: 0.5 }}>Rating</div>
-                  <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 18, fontWeight: 600, color: '#1a1a1a' }}>{selectedShop.rating}</div>
+                  <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 15, textTransform: 'uppercase', color: '#4b5563', letterSpacing: 0.5 }}>Rating</div>
+                  <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 28, fontWeight: 600, color: '#1a1a1a' }}>{selectedShop.rating}</div>
                 </div>
                 <div style={{ background: '#f7f0e6', border: '2px solid #1a1a1a', boxShadow: '2px 2px 0 #1a1a1a', padding: '8px 12px', flex: 1 }}>
-                  <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 9, textTransform: 'uppercase', color: '#4b5563', letterSpacing: 0.5 }}>Price Level</div>
-                  <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 18, fontWeight: 600, color: '#1a1a1a' }}>{'$'.repeat(selectedShop.price_level)}</div>
+                  <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 15, textTransform: 'uppercase', color: '#4b5563', letterSpacing: 0.5 }}>Price Level</div>
+                  <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 28, fontWeight: 600, color: '#1a1a1a' }}>{'$'.repeat(selectedShop.price_level)}</div>
                 </div>
               </div>
             </div>
             
             <div style={{ padding: '16px 24px 8px', background: '#e8e5d9', flexShrink: 0 }}>
-              <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 11, fontWeight: 'bold', letterSpacing: 1, color: '#1a1a1a' }}>
+              <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 15, fontWeight: 'bold', letterSpacing: 1, color: '#1a1a1a' }}>
                 REVIEWS
               </span>
             </div>
             
             <div className="reviews-scroll" style={{ flex: 1, overflowY: 'auto', padding: '0 24px 24px', background: '#e8e5d9' }}>
               {shopReviews.length === 0 ? (
-                <div style={{ fontFamily: 'Space Grotesk, sans-serif', color: '#6b7280', fontSize: 14, marginTop: 16 }}>
+                <div style={{ fontFamily: 'Space Grotesk, sans-serif', color: '#6b7280', fontSize: 15, marginTop: 16 }}>
                   No reviews yet
                 </div>
               ) : (

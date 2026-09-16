@@ -177,14 +177,8 @@ export default function Widget({ model, React }) {
                 <span style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 32, fontWeight: 700, color: '#1e293b', lineHeight: 1, textShadow }}>
                     {count}
                 </span>
-                <span style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 14, color: '#1e293b', marginTop: 4, fontWeight: 600, textShadow }}>
+                <span style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 28, color: '#1e293b', marginTop: 4, fontWeight: 600, textShadow }}>
                     {meanWaitStr}
-                </span>
-            </div>
-
-            <div style={{ position: 'absolute', bottom: 12, left: 12, pointerEvents: 'none' }}>
-                <span style={{ fontFamily: '"Space Grotesk", sans-serif', fontSize: 13, color: '#1e293b', fontWeight: 600, textShadow }}>
-                    drag to select
                 </span>
             </div>
         </div>

@@ -10,8 +10,8 @@ export const SummaryCard = ({ box, selected, unselected, React }) => {
 
   if (maxX - minX < 3 && maxY - minY < 3) return null;
 
-  const cardW = 132;
-  const cardH = 104;
+  const cardW = 128;
+  const cardH = 88;
   
   const left = Math.max(50, Math.min(minX, 332 - cardW));
   const top = Math.max(20, Math.min(minY, 350 - cardH));
@@ -41,23 +41,23 @@ export const SummaryCard = ({ box, selected, unselected, React }) => {
       backgroundColor: '#f7f0e6',
       border: '2px solid #1a1a1a',
       boxShadow: '3px 3px 0px #1a1a1a',
-      padding: '8px',
+      padding: '6px',
       boxSizing: 'border-box',
       pointerEvents: 'none',
       display: 'flex',
       flexDirection: 'column',
-      gap: '6px'
+      gap: '4px'
     }}>
       <div style={{ textAlign: 'center' }}>
-        <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 24, fontWeight: 'bold', color: '#1a1a1a', lineHeight: 1 }}>
+        <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 20, fontWeight: 'bold', color: '#1a1a1a', lineHeight: 1 }}>
           {selected.length}
         </div>
-        <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 10, textTransform: 'uppercase', color: '#1a1a1a', marginTop: 4 }}>
+        <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 8, textTransform: 'uppercase', color: '#1a1a1a', marginTop: 2 }}>
           {selected.length === 1 ? 'shop' : 'shops'}
         </div>
       </div>
       <div style={{ height: 1, backgroundColor: '#1a1a1a', opacity: 0.2 }} />
-      <div style={{ display: 'grid', gridTemplateColumns: '28px 1fr 1fr 1fr', gap: '4px', fontSize: 9, fontFamily: 'JetBrains Mono, monospace', textAlign: 'right', alignItems: 'center' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '24px 1fr 1fr 1fr', gap: '2px', fontSize: 8, fontFamily: 'JetBrains Mono, monospace', textAlign: 'right', alignItems: 'center' }}>
         <div style={{ textAlign: 'left', color: '#6b7280' }}></div>
         <div style={{ color: '#6b7280' }}>IN</div>
         <div style={{ color: '#6b7280' }}>OUT</div>
@@ -101,8 +101,9 @@ export default function Widget({ model, React }) {
   const xMax = React.useMemo(() => d3.max(parsedData, d => d.review_count) || 100, [parsedData]);
   const yMax = React.useMemo(() => d3.max(parsedData, d => d.weekend_wait_min) || 100, [parsedData]);
   
-  const xScale = React.useMemo(() => d3.scaleLinear().domain([0, xMax]).range([50, 332]), [xMax]);
-  const yScale = React.useMemo(() => d3.scaleLinear().domain([0, yMax]).range([350, 20]), [yMax]);
+  // Pad the domains by 5% before calling .nice() to ensure the largest/smallest circles clear the plot edges
+  const xScale = React.useMemo(() => d3.scaleLinear().domain([0, xMax * 1.05]).nice().range([50, 332]), [xMax]);
+  const yScale = React.useMemo(() => d3.scaleLinear().domain([0, yMax * 1.05]).nice().range([350, 20]), [yMax]);
 
   const handlePointerDown = React.useCallback((e) => {
     if (!svgRef.current) return;
@@ -208,7 +209,7 @@ export default function Widget({ model, React }) {
         )}
       </svg>
 
-      <div style={{ position: 'absolute', bottom: 12, left: 12, fontSize: 10, fontFamily: 'Space Grotesk, sans-serif', color: '#6b7280', pointerEvents: 'none' }}>
+      <div style={{ position: 'absolute', top: 24, left: 56, fontSize: 10, fontFamily: 'Space Grotesk, sans-serif', color: '#6b7280', pointerEvents: 'none' }}>
         drag a region
       </div>
 

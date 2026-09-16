@@ -17,7 +17,6 @@ export default function Widget({ model, React }) {
     };
   }, [model]);
 
-  // Interaction state: 0 = init, 1 = first click (preview), 2 = second click (complete)
   const [clickState, setClickState] = React.useState(0);
   const [p1, setP1] = React.useState(null);
   const [p2, setP2] = React.useState(null);
@@ -82,8 +81,6 @@ export default function Widget({ model, React }) {
   const meanWait = count > 0
     ? (selectedShops.reduce((sum, d) => sum + d.weekend_wait_min, 0) / count).toFixed(1)
     : "--";
-
-  const instructionText = clickState === 1 ? "click the opposite corner" : "click two corners";
 
   return (
     <div
@@ -152,17 +149,18 @@ export default function Widget({ model, React }) {
         })}
       </svg>
 
-      <div style={{ position: "absolute", top: 12, left: 12, pointerEvents: "none", display: "flex", flexDirection: "column", gap: 2 }}>
+      <div style={{ position: "absolute", top: 12, left: 12, pointerEvents: "none", display: "flex", flexDirection: "column", gap: 4 }}>
         <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 32, fontWeight: 700, color: "#1e293b", lineHeight: 1 }}>
           {count}
         </div>
-        <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 14, color: "#475569", lineHeight: 1 }}>
-          {meanWait} min wait
+        <div style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
+          <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 28, fontWeight: 700, color: "#1e293b", lineHeight: 1 }}>
+            {meanWait}
+          </div>
+          <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 15, color: "#475569", lineHeight: 1 }}>
+            min wait
+          </div>
         </div>
-      </div>
-
-      <div style={{ position: "absolute", bottom: 12, left: 12, pointerEvents: "none", fontSize: 13, fontWeight: 600, color: "#1e293b", textShadow: "0 1px 2px rgba(242, 240, 233, 0.8)" }}>
-        {instructionText}
       </div>
     </div>
   );

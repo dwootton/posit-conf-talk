@@ -27,11 +27,24 @@ export default function Widget({ model, React }) {
 
   const visibleData = data.filter(d => !removedIds.has(d.shop_id));
 
-  const xMax = d3.max(visibleData, d => d.review_count) || 10;
-  const yMax = d3.max(visibleData, d => d.weekend_wait_min) || 10;
+  const maxX = d3.max(visibleData, d => d.review_count) || 10;
+  const minX = d3.min(visibleData, d => d.review_count) || 0;
+  const maxY = d3.max(visibleData, d => d.weekend_wait_min) || 10;
+  const minY = d3.min(visibleData, d => d.weekend_wait_min) || 0;
 
-  const xScale = d3.scaleLinear().domain([0, xMax]).range([0, innerWidth]);
-  const yScale = d3.scaleLinear().domain([0, yMax]).range([innerHeight, 0]);
+  // Add ~15px of padding in domain units so marks fully clear the edges
+  const xPad = ((maxX - Math.min(0, minX)) * 15) / Math.max(1, innerWidth - 15);
+  const yPad = ((maxY - Math.min(0, minY)) * 15) / Math.max(1, innerHeight - 15);
+
+  const xScale = d3.scaleLinear()
+    .domain([Math.min(0, minX - xPad), maxX + xPad])
+    .nice()
+    .range([0, innerWidth]);
+
+  const yScale = d3.scaleLinear()
+    .domain([Math.min(0, minY - yPad), maxY + yPad])
+    .nice()
+    .range([innerHeight, 0]);
 
   React.useEffect(() => {
     if (!xAxisRef.current || !yAxisRef.current) return;
@@ -56,7 +69,7 @@ export default function Widget({ model, React }) {
 
     styleAxis(xGroup);
     styleAxis(yGroup);
-  }, [xMax, yMax, innerWidth, innerHeight]);
+  }, [maxX, minX, maxY, minY, innerWidth, innerHeight]);
 
   const getPointerCoords = (e) => {
     if (!containerRef.current) return { x: 0, y: 0, rawX: 0, rawY: 0 };
@@ -92,17 +105,17 @@ export default function Widget({ model, React }) {
     if (!brush?.active) return;
     e.target.releasePointerCapture(e.pointerId);
 
-    const xMin = Math.min(brush.x1, brush.x2);
-    const xMax = Math.max(brush.x1, brush.x2);
-    const yMin = Math.min(brush.y1, brush.y2);
-    const yMax = Math.max(brush.y1, brush.y2);
+    const bXMin = Math.min(brush.x1, brush.x2);
+    const bXMax = Math.max(brush.x1, brush.x2);
+    const bYMin = Math.min(brush.y1, brush.y2);
+    const bYMax = Math.max(brush.y1, brush.y2);
 
-    if (xMax > xMin && yMax > yMin) {
+    if (bXMax > bXMin && bYMax > bYMin) {
       const newlyRemoved = new Set(removedIds);
       visibleData.forEach(d => {
         const cx = xScale(d.review_count);
         const cy = yScale(d.weekend_wait_min);
-        if (cx >= xMin && cx <= xMax && cy >= yMin && cy <= yMax) {
+        if (cx >= bXMin && cx <= bXMax && cy >= bYMin && cy <= bYMax) {
           newlyRemoved.add(d.shop_id);
         }
       });
@@ -175,11 +188,11 @@ export default function Widget({ model, React }) {
 
             let isHoveredByBrush = false;
             if (brush?.active && !isRemoved) {
-              const xMin = Math.min(brush.x1, brush.x2);
-              const xMax = Math.max(brush.x1, brush.x2);
-              const yMin = Math.min(brush.y1, brush.y2);
-              const yMax = Math.max(brush.y1, brush.y2);
-              if (cx >= xMin && cx <= xMax && cy >= yMin && cy <= yMax) {
+              const bXMin = Math.min(brush.x1, brush.x2);
+              const bXMax = Math.max(brush.x1, brush.x2);
+              const bYMin = Math.min(brush.y1, brush.y2);
+              const bYMax = Math.max(brush.y1, brush.y2);
+              if (cx >= bXMin && cx <= bXMax && cy >= bYMin && cy <= bYMax) {
                 isHoveredByBrush = true;
               }
             }

@@ -1,44 +1,15 @@
 import * as d3 from "https://esm.sh/d3@7";
 
-export const Sidebar = ({ neighborhoods, selected, onSelect }) => (
-  <div style={{ width: 90, display: 'flex', flexDirection: 'column', gap: '4px', paddingTop: 15, paddingLeft: 8, paddingRight: 8, flexShrink: 0 }}>
-    {neighborhoods.map(nb => (
-      <div
-        key={nb}
-        onClick={() => onSelect(nb === selected ? null : nb)}
-        style={{
-          fontFamily: "'JetBrains Mono', monospace",
-          fontSize: '10px',
-          padding: '4px 6px',
-          cursor: 'pointer',
-          borderLeft: nb === selected ? '2px solid #1a1a1a' : '2px solid transparent',
-          fontWeight: nb === selected ? 'bold' : 'normal',
-          color: '#1a1a1a',
-          userSelect: 'none',
-          whiteSpace: 'nowrap',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          lineHeight: 1.2
-        }}
-        title={nb}
-      >
-        {nb}
-      </div>
-    ))}
-  </div>
-);
-
 export const Tooltip = ({ hoverState }) => {
   if (!hoverState) return null;
   const { shop, x, y } = hoverState;
 
-  const tooltipW = 140;
-  const tooltipH = 70;
+  const tooltipW = 210;
+  const tooltipH = 100;
   let left = x + 15;
   let top = y + 15;
 
-  // Keep within chart bounds (chart width is 262, height 400)
-  if (left + tooltipW > 262) left = x - tooltipW - 15;
+  if (left + tooltipW > 352) left = x - tooltipW - 15;
   if (top + tooltipH > 400) top = y - tooltipH - 15;
 
   return (
@@ -49,19 +20,19 @@ export const Tooltip = ({ hoverState }) => {
       background: '#f7f0e6',
       border: '1px solid #1a1a1a',
       boxShadow: '3px 3px 0px rgba(26,26,26,1)',
-      padding: '8px',
+      padding: '10px',
       pointerEvents: 'none',
       zIndex: 10,
       width: tooltipW,
       boxSizing: 'border-box'
     }}>
-      <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: '11px', fontWeight: 'bold', color: '#1a1a1a', marginBottom: '6px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+      <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: '15px', fontWeight: 'bold', color: '#1a1a1a', marginBottom: '8px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
         {shop.name}
       </div>
-      <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '9px', color: '#1a1a1a', display: 'flex', flexDirection: 'column', gap: '2px' }}>
+      <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '15px', color: '#1a1a1a', display: 'flex', flexDirection: 'column', gap: '4px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <span style={{ opacity: 0.6 }}>AREA</span>
-          <span style={{ textAlign: 'right', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '80px' }}>{shop.neighborhood}</span>
+          <span style={{ textAlign: 'right', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '100px' }}>{shop.neighborhood}</span>
         </div>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <span style={{ opacity: 0.6 }}>REVIEWS</span>
@@ -86,37 +57,47 @@ export default function Widget({ model, React }) {
     return () => model.off("change:data", onDataChange);
   }, [model]);
 
+  const filteredData = useMemo(() => {
+    return data.filter(d => d.review_count <= 3000);
+  }, [data]);
+
   const topNeighborhoods = useMemo(() => {
-    const counts = d3.rollup(data, v => v.length, d => d.neighborhood);
+    const counts = d3.rollup(filteredData, v => v.length, d => d.neighborhood);
     return Array.from(counts, ([name, count]) => ({ name, count }))
       .sort((a, b) => b.count - a.count)
       .slice(0, 5)
       .map(d => d.name);
-  }, [data]);
+  }, [filteredData]);
 
-  const [selectedNeighborhood, setSelectedNeighborhood] = useState(null);
+  const [selectedGroup, setSelectedGroup] = useState("");
   const [hoverState, setHoverState] = useState(null);
   
   const svgRef = useRef(null);
   const rectRef = useRef(null);
 
   const width = 352;
-  const height = 400;
-  const sidebarW = 90;
-  const chartW = width - sidebarW;
-  const margin = { top: 15, right: 15, bottom: 45, left: 40 };
-  const innerW = chartW - margin.left - margin.right;
-  const innerH = height - margin.top - margin.bottom;
+  const chartH = 400;
+  
+  const margin = { top: 20, right: 25, bottom: 60, left: 50 };
+  const innerW = width - margin.left - margin.right;
+  const innerH = chartH - margin.top - margin.bottom;
 
   const xScale = useMemo(() => {
-    const maxRev = d3.max(data, d => d.review_count) || 0;
-    return d3.scaleLinear().domain([0, maxRev]).range([0, innerW]);
-  }, [data, innerW]);
+    const maxRev = d3.max(filteredData, d => d.review_count) || 0;
+    const pad = maxRev > 0 ? (maxRev / innerW) * 15 : 0;
+    return d3.scaleLinear().domain([0, maxRev + pad]).nice().range([0, innerW]);
+  }, [filteredData, innerW]);
 
   const yScale = useMemo(() => {
-    const maxWait = d3.max(data, d => d.weekend_wait_min) || 0;
-    return d3.scaleLinear().domain([0, maxWait]).nice().range([innerH, 0]);
-  }, [data, innerH]);
+    const minWait = d3.min(filteredData, d => d.weekend_wait_min) || 0;
+    const maxWait = d3.max(filteredData, d => d.weekend_wait_min) || 0;
+    const rangeWait = maxWait - minWait || maxWait || 1;
+    const pad = (rangeWait / innerH) * 15;
+    return d3.scaleLinear()
+      .domain([Math.max(0, minWait - pad), maxWait + pad])
+      .nice()
+      .range([innerH, 0]);
+  }, [filteredData, innerH]);
 
   useEffect(() => {
     const updateRect = () => {
@@ -137,18 +118,16 @@ export default function Widget({ model, React }) {
     if (!rectRef.current) return;
     const rect = rectRef.current;
     
-    // Compute raw offset from SVG container
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
-    // Convert to data coordinate space
     const dataX = x - margin.left;
     const dataY = y - margin.top;
 
     let closest = null;
-    let minDist = 15; // Hover snap distance
+    let minDist = 15;
     
-    for (const d of data) {
+    for (const d of filteredData) {
       const cx = xScale(d.review_count);
       const cy = yScale(d.weekend_wait_min);
       const dist = Math.sqrt((cx - dataX) ** 2 + (cy - dataY) ** 2);
@@ -166,26 +145,26 @@ export default function Widget({ model, React }) {
   };
 
   const getFill = (d) => {
-    if (!selectedNeighborhood) return "#6b7280";
-    return d.neighborhood === selectedNeighborhood ? "#0f766e" : "#cbd5e1";
+    if (!selectedGroup) return "#6b7280";
+    if (selectedGroup === "price_1") return Number(d.price_level) === 1 ? "#0f766e" : "#cbd5e1";
+    if (selectedGroup === "price_2") return Number(d.price_level) === 2 ? "#0f766e" : "#cbd5e1";
+    if (selectedGroup === "price_3") return Number(d.price_level) === 3 ? "#0f766e" : "#cbd5e1";
+    if (selectedGroup.startsWith("nb_")) {
+      return d.neighborhood === selectedGroup.slice(3) ? "#0f766e" : "#cbd5e1";
+    }
+    return "#cbd5e1";
   };
 
   const xTicks = xScale.ticks(4);
-  const yTicks = yScale.ticks(5);
+  const yTicks = yScale.ticks(4);
 
   return (
-    <div style={{ width, height, background: '#f2f0e9', display: 'flex', margin: 0, padding: 0, boxSizing: 'border-box', overflow: 'hidden' }}>
-      <Sidebar
-        neighborhoods={topNeighborhoods}
-        selected={selectedNeighborhood}
-        onSelect={setSelectedNeighborhood}
-      />
-      
-      <div style={{ width: chartW, height, position: 'relative' }}>
+    <div style={{ width, background: '#f2f0e9', display: 'flex', flexDirection: 'column', margin: 0, padding: 0, boxSizing: 'border-box', overflow: 'hidden' }}>
+      <div style={{ width, height: chartH, position: 'relative' }}>
         <svg
           ref={svgRef}
-          width={chartW}
-          height={height}
+          width={width}
+          height={chartH}
           onPointerMove={handlePointerMove}
           onPointerLeave={() => setHoverState(null)}
           style={{ display: 'block', touchAction: 'none' }}
@@ -197,7 +176,7 @@ export default function Widget({ model, React }) {
             {xTicks.map(tick => (
               <g key={tick} transform={`translate(${xScale(tick)},${innerH})`}>
                 <line y2={5} stroke="#1a1a1a" strokeWidth={1} />
-                <text y={15} textAnchor="middle" style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '9px', fill: '#1a1a1a' }}>
+                <text y={20} textAnchor="middle" style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '14px', fill: '#1a1a1a' }}>
                   {tick}
                 </text>
               </g>
@@ -208,22 +187,22 @@ export default function Widget({ model, React }) {
             {yTicks.map(tick => (
               <g key={tick} transform={`translate(0,${yScale(tick)})`}>
                 <line x1={-5} stroke="#1a1a1a" strokeWidth={1} />
-                <text x={-8} y={3} textAnchor="end" style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '9px', fill: '#1a1a1a' }}>
+                <text x={-8} y={5} textAnchor="end" style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '14px', fill: '#1a1a1a' }}>
                   {tick}
                 </text>
               </g>
             ))}
             
             {/* Axis Titles */}
-            <text x={innerW} y={innerH + 30} textAnchor="end" style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '9px', fill: '#1a1a1a' }}>
+            <text x={innerW} y={innerH + 45} textAnchor="end" style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '15px', fill: '#1a1a1a' }}>
               REVIEWS
             </text>
-            <text transform="rotate(-90)" x={0} y={-25} textAnchor="end" style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '9px', fill: '#1a1a1a' }}>
+            <text transform="rotate(-90)" x={0} y={-38} textAnchor="end" style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '15px', fill: '#1a1a1a' }}>
               WEEKEND WAIT / MIN
             </text>
 
             {/* Scatter Marks */}
-            {data.map(d => (
+            {filteredData.map(d => (
               <circle
                 key={d.shop_id}
                 cx={xScale(d.review_count)}
@@ -240,6 +219,35 @@ export default function Widget({ model, React }) {
         </svg>
         
         <Tooltip hoverState={hoverState} />
+      </div>
+
+      <div style={{ padding: '0 15px 20px 15px', width: '100%', boxSizing: 'border-box' }}>
+        <select
+          value={selectedGroup}
+          onChange={(e) => setSelectedGroup(e.target.value)}
+          style={{
+            width: '100%',
+            display: 'block',
+            borderRadius: 0,
+            border: '2px solid #1a1a1a',
+            background: '#fbfaf6',
+            fontFamily: "'JetBrains Mono', monospace",
+            fontSize: '15px',
+            padding: '8px',
+            color: '#1a1a1a',
+            outline: 'none',
+            cursor: 'pointer',
+            boxSizing: 'border-box'
+          }}
+        >
+          <option value="">Highlight a group...</option>
+          <option value="price_1">$ shops</option>
+          <option value="price_2">$$ shops</option>
+          <option value="price_3">$$$ shops</option>
+          {topNeighborhoods.map(nb => (
+            <option key={nb} value={`nb_${nb}`}>{nb}</option>
+          ))}
+        </select>
       </div>
     </div>
   );

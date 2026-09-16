@@ -30,15 +30,15 @@ export const StatTile = ({ React, label, value }) => (
   <div style={{
     background: "#f7f0e6",
     border: "2px solid #1a1a1a",
-    padding: "12px",
+    padding: "8px 12px",
     boxShadow: "2px 2px 0 #1a1a1a",
     display: "flex",
     flexDirection: "column",
-    gap: "4px"
+    gap: "2px"
   }}>
     <div style={{
       fontFamily: "'JetBrains Mono', monospace",
-      fontSize: "10px",
+      fontSize: "15px",
       textTransform: "uppercase",
       color: "#4b5563",
       letterSpacing: "0.5px"
@@ -47,7 +47,7 @@ export const StatTile = ({ React, label, value }) => (
     </div>
     <div style={{
       fontFamily: "'JetBrains Mono', monospace",
-      fontSize: "20px",
+      fontSize: "28px",
       fontWeight: 600,
       color: "#1a1a1a"
     }}>
@@ -57,7 +57,7 @@ export const StatTile = ({ React, label, value }) => (
 );
 
 export const SliderRow = ({ React, value, onChange }) => (
-  <div style={{ display: "flex", alignItems: "center", gap: "16px", paddingBottom: "16px", borderBottom: "2px solid #1a1a1a" }}>
+  <div style={{ display: "flex", alignItems: "center", gap: "12px", paddingBottom: "8px", borderBottom: "2px solid #1a1a1a" }}>
     <input
       type="range"
       min="0.25"
@@ -69,10 +69,10 @@ export const SliderRow = ({ React, value, onChange }) => (
     />
     <div style={{
       fontFamily: "'JetBrains Mono', monospace",
-      fontSize: "14px",
+      fontSize: "28px",
       fontWeight: 600,
       color: "#1a1a1a",
-      width: "64px",
+      width: "140px",
       textAlign: "right"
     }}>
       {value.toFixed(2)} mi
@@ -81,7 +81,10 @@ export const SliderRow = ({ React, value, onChange }) => (
 );
 
 const WIDTH = 472;
-const HEIGHT = 548;
+// The widget frame is 814x548 border-box with a 2px border, so the map column's
+// content box is 4px shorter than the frame. The SVG has to match that, not the
+// frame, or it overhangs and the panel beside it is clipped at the bottom.
+const HEIGHT = 544;
 const NW = [-95.615, 29.880];
 const SE = [-95.255, 29.600];
 
@@ -107,8 +110,6 @@ export default function Widget({ model, React }) {
   const [hovered, setHovered] = React.useState(null);
 
   const mapRef = React.useRef(null);
-  // Persistent handles into the one-time-built SVG: the update effect below
-  // writes to these on every interaction instead of tearing the SVG down.
   const sceneRef = React.useRef(null);
   const setTargetRef = React.useRef(setTarget);
   setTargetRef.current = setTarget;
@@ -133,7 +134,6 @@ export default function Widget({ model, React }) {
       .sort((a, b) => a.distance - b.distance);
   }, [shopsWithDist, radius]);
 
-
   const handleKeyDown = (e) => {
     const step = 0.005;
     if (e.key === 'ArrowUp') { e.preventDefault(); setTarget(t => [t[0], t[1] + step]); }
@@ -142,11 +142,6 @@ export default function Widget({ model, React }) {
     if (e.key === 'ArrowRight') { e.preventDefault(); setTarget(t => [t[0] + step, t[1]]); }
   };
 
-  // ---- Build the SVG shell ONCE. This must not depend on `target`/`radius`/
-  // `shopsWithDist`: those change on every drag tick, and rebuilding the SVG
-  // (and re-attaching the drag behavior) mid-gesture would detach the very
-  // node the in-progress drag is bound to, freezing or misplacing it. Only
-  // `basemapImage` (which the host sets once) can safely trigger a rebuild. ----
   React.useEffect(() => {
     if (!mapRef.current) return;
 
@@ -164,7 +159,6 @@ export default function Widget({ model, React }) {
     );
     const path = d3.geoPath().projection(projection);
 
-    // Drag capture rect: attached once, persists across every state update.
     const drag = d3.drag().on("drag", (event) => {
       const svgNode = svg.node();
       const rect = svgNode.getBoundingClientRect();
@@ -235,9 +229,6 @@ export default function Widget({ model, React }) {
     };
   }, [basemapImage]);
 
-  // ---- Update the already-built scene on every interaction: move the
-  // crosshair, resize the search region, and redraw the shop marks. This
-  // never touches the SVG root or the drag behavior. ----
   React.useEffect(() => {
     const scene = sceneRef.current;
     if (!scene) return;
@@ -272,8 +263,8 @@ export default function Widget({ model, React }) {
   if (hovered) {
     ttLeft = hovered.px + 12;
     ttTop = hovered.py + 12;
-    if (ttLeft + 180 > WIDTH) ttLeft = hovered.px - 192;
-    if (ttTop + 80 > HEIGHT) ttTop = hovered.py - 92;
+    if (ttLeft + 280 > WIDTH) ttLeft = hovered.px - 292;
+    if (ttTop + 100 > HEIGHT) ttTop = hovered.py - 112;
   }
 
   return (
@@ -303,19 +294,19 @@ export default function Widget({ model, React }) {
             background: "#f7f0e6",
             border: "2px solid #1a1a1a",
             boxShadow: "2px 2px 0 #1a1a1a",
-            padding: "8px 12px",
+            padding: "12px",
             pointerEvents: "none",
             zIndex: 10,
             width: "max-content",
-            maxWidth: "180px"
+            maxWidth: "280px"
           }}>
-            <div style={{ fontWeight: 700, fontSize: "14px", lineHeight: 1.2, marginBottom: "2px" }}>
+            <div style={{ fontWeight: 700, fontSize: "15px", lineHeight: 1.2, marginBottom: "4px" }}>
               {hovered.shop.name}
             </div>
-            <div style={{ fontSize: "12px", color: "#4b5563", marginBottom: "6px" }}>
+            <div style={{ fontSize: "15px", color: "#4b5563", marginBottom: "8px" }}>
               {hovered.shop.neighborhood}
             </div>
-            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "12px", color: "#f97316", fontWeight: 600 }}>
+            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "28px", color: "#f97316", fontWeight: 600 }}>
               {hovered.shop.distance.toFixed(2)} mi
             </div>
           </div>
@@ -324,34 +315,42 @@ export default function Widget({ model, React }) {
 
       <div style={{ width: "2px", height: "100%", background: "#1a1a1a", flexShrink: 0 }} />
 
-      <div style={{ flex: 1, padding: "20px", display: "flex", flexDirection: "column", overflow: "hidden" }}>
+      <div style={{
+        flex: 1,
+        height: "100%",
+        boxSizing: "border-box",
+        padding: "10px 12px",
+        display: "flex",
+        flexDirection: "column",
+        overflow: "hidden"
+      }}>
         <SliderRow React={React} value={radius} onChange={setRadius} />
 
-        <div style={{ marginTop: "24px", display: "flex", flexDirection: "column", gap: "8px" }}>
+        <div style={{ marginTop: "8px", display: "flex", flexDirection: "column", gap: "4px" }}>
           {inRange.length === 0 ? (
-            <div style={{ fontFamily: "'JetBrains Mono', monospace", color: "#6b7280", fontSize: "13px" }}>
+            <div style={{ fontFamily: "'JetBrains Mono', monospace", color: "#6b7280", fontSize: "15px" }}>
               No shops in range
             </div>
           ) : (
-            inRange.slice(0, 5).map(s => (
+            inRange.slice(0, 4).map(s => (
               <div key={s.shop_id} style={{
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
                 borderBottom: "1px dashed #a0a5a8",
-                paddingBottom: "8px"
+                paddingBottom: "4px"
               }}>
                 <div style={{ overflow: "hidden", paddingRight: "12px" }}>
-                  <div style={{ fontWeight: 600, fontSize: "14px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                  <div style={{ fontWeight: 600, fontSize: "15px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                     {s.name}
                   </div>
-                  <div style={{ fontSize: "12px", color: "#4b5563" }}>
+                  <div style={{ fontSize: "15px", color: "#4b5563", marginTop: "2px" }}>
                     {s.neighborhood}
                   </div>
                 </div>
                 <div style={{
                   fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: "13px",
+                  fontSize: "28px",
                   color: "#1a1a1a",
                   flexShrink: 0
                 }}>

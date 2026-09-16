@@ -1,0 +1,7 @@
+Legibility only -- this widget is projected on a large screen from the back of a conference room, so nothing about its behaviour, layout or colours should change.
+
+Raise every piece of text in the widget to at least 15px. Any number that is the result of the interaction -- a count, a mean, a headline figure -- goes to at least 28px. Tooltip text 15px. Axis tick labels 14px and axis titles 15px, with at most four ticks on each axis. Legend and button labels 15px.
+
+Where a label is only decoration and is not needed to read the result, remove it rather than shrink anything else to make room. Do not add any new text.
+
+Change nothing else: same marks, same colours, same interactions, same panel structure, same computed values.
