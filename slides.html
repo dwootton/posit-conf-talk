@@ -34,7 +34,7 @@
     }
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
   </style>
-  <link rel="stylesheet" href="slides_files/libs/revealjs/dist/theme/quarto-c8c077d5ef0c96fc69f5127943f1c20c.css">
+  <link rel="stylesheet" href="slides_files/libs/revealjs/dist/theme/quarto-8296ff8c14da683a8d34ad2c62282b40.css">
   <link href="slides_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="slides_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="slides_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -142,9 +142,11 @@
 <h2></h2>
 <div class="title-slide title-slide--noart center">
 <div class="title-copy">
+<div class="eyebrow-group">
 <span class="eyebrow">posit::conf</span>
 <div class="rule-accent">
 
+</div>
 </div>
 <h1 class="big-title">
 Principles for Effective Interactive Visualizations
@@ -170,8 +172,8 @@ Dylan Wootton, Ryan Yen &nbsp;·&nbsp; MIT Visualization Group
   <figure class="excard" style="--i:2;left:-54px;top:386px;width:248px;--rot:0.68deg" data-label="Hover a bar → sparkline popup">
     <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/bar-hover-sparkline.jpg" width="1106" height="714"><source src="media/bar-hover-sparkline.mp4" type="video/mp4"></video>
   </figure>
-  <figure class="excard" style="--i:3;left:-61px;top:569px;width:248px;--rot:-1.02deg" data-label="Snapped pointer drives a reference line">
-    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/snapped-pointer.jpg" width="1130" height="756"><source src="media/snapped-pointer.mp4" type="video/mp4"></video>
+  <figure class="excard" style="--i:3;left:-61px;top:569px;width:248px;--rot:-1.02deg" data-label="Table lens over 4,000 trial sites">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/vw-tablelens.jpg" width="1440" height="964"><source src="media/vw-tablelens.mp4" type="video/mp4"></video>
   </figure>
   <figure class="excard" style="--i:4;left:217px;top:-6px;width:275px;--rot:-2.38deg" data-label="Re-binning a linked histogram">
     <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/histogram-binning.jpg" width="1230" height="516"><source src="media/histogram-binning.mp4" type="video/mp4"></video>
@@ -179,14 +181,14 @@ Dylan Wootton, Ryan Yen &nbsp;·&nbsp; MIT Visualization Group
   <figure class="excard" style="--i:5;left:221px;top:133px;width:275px;--rot:0.8deg" data-label="SPLOM cohort brushing">
     <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/splom-cohort-brush.jpg" width="1190" height="1080"><source src="media/splom-cohort-brush.mp4" type="video/mp4"></video>
   </figure>
-  <figure class="excard" style="--i:6;left:208px;top:403px;width:275px;--rot:-2.52deg" data-label="Wind grid probe → nearest history">
-    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/wind-grid-probe.jpg" width="1440" height="794"><source src="media/wind-grid-probe.mp4" type="video/mp4"></video>
+  <figure class="excard" style="--i:6;left:208px;top:403px;width:275px;--rot:-2.52deg" data-label="Sea ice residuals against CO2">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/vw-seaice.jpg" width="1440" height="850"><source src="media/vw-seaice.mp4" type="video/mp4"></video>
   </figure>
-  <figure class="excard" style="--i:7;left:206px;top:575px;width:275px;--rot:-1.61deg" data-label="Horizontal band brush">
-    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/horizontal-band.jpg" width="1130" height="730"><source src="media/horizontal-band.mp4" type="video/mp4"></video>
+  <figure class="excard" style="--i:7;left:206px;top:575px;width:275px;--rot:-1.61deg" data-label="Spike raster and its PSTH">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/vw-spike.jpg" width="1292" height="806"><source src="media/vw-spike.mp4" type="video/mp4"></video>
   </figure>
-  <figure class="excard" style="--i:8;left:508px;top:-31px;width:261px;--rot:-0.31deg" data-label="Brush to zoom">
-    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/brush-to-zoom.jpg" width="1130" height="724"><source src="media/brush-to-zoom.mp4" type="video/mp4"></video>
+  <figure class="excard" style="--i:8;left:508px;top:-31px;width:261px;--rot:-0.31deg" data-label="Genome browser: pan and zoom">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/vw-genome.jpg" width="1440" height="950"><source src="media/vw-genome.mp4" type="video/mp4"></video>
   </figure>
   <figure class="excard" style="--i:9;left:509px;top:159px;width:261px;--rot:0.73deg" data-label="Multi-lasso heatmap → per-lasso histograms">
     <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/multi-lasso-heatmap.jpg" width="1314" height="662"><source src="media/multi-lasso-heatmap.mp4" type="video/mp4"></video>
@@ -200,11 +202,11 @@ Dylan Wootton, Ryan Yen &nbsp;·&nbsp; MIT Visualization Group
   <figure class="excard" style="--i:12;left:787px;top:-16px;width:280px;--rot:-1.41deg" data-label="Crosshair grid partition → region counts">
     <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/grid-partition.jpg" width="1440" height="588"><source src="media/grid-partition.mp4" type="video/mp4"></video>
   </figure>
-  <figure class="excard" style="--i:13;left:783px;top:117px;width:280px;--rot:1.38deg" data-label="Crosshair">
-    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/crosshair.jpg" width="1130" height="722"><source src="media/crosshair.mp4" type="video/mp4"></video>
+  <figure class="excard" style="--i:13;left:783px;top:117px;width:280px;--rot:1.38deg" data-label="Phase portrait of a damped pendulum">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/vw-pendulum.jpg" width="1296" height="860"><source src="media/vw-pendulum.mp4" type="video/mp4"></video>
   </figure>
-  <figure class="excard" style="--i:14;left:795px;top:315px;width:280px;--rot:-0.59deg" data-label="Draggable thresholds on grouped bars">
-    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/grouped-bar-thresholds.jpg" width="834" height="578"><source src="media/grouped-bar-thresholds.mp4" type="video/mp4"></video>
+  <figure class="excard" style="--i:14;left:795px;top:315px;width:280px;--rot:-0.59deg" data-label="Robotic grasp candidates in 3D">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/vw-grip.jpg" width="1372" height="930"><source src="media/vw-grip.mp4" type="video/mp4"></video>
   </figure>
   <figure class="excard" style="--i:15;left:795px;top:533px;width:280px;--rot:-2.6deg" data-label="Threshold slider on a histogram">
     <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/threshold-histogram.jpg" width="808" height="632"><source src="media/threshold-histogram.mp4" type="video/mp4"></video>
@@ -215,8 +217,8 @@ Dylan Wootton, Ryan Yen &nbsp;·&nbsp; MIT Visualization Group
   <figure class="excard" style="--i:17;left:1083px;top:172px;width:245px;--rot:0.67deg" data-label="Draggable histogram bin edges">
     <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/draggable-bin-edges.jpg" width="860" height="730"><source src="media/draggable-bin-edges.mp4" type="video/mp4"></video>
   </figure>
-  <figure class="excard" style="--i:18;left:1086px;top:402px;width:245px;--rot:-2.15deg" data-label="Hover reveals a country trajectory">
-    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/trajectory-hover.jpg" width="1130" height="806"><source src="media/trajectory-hover.mp4" type="video/mp4"></video>
+  <figure class="excard" style="--i:18;left:1086px;top:402px;width:245px;--rot:-2.15deg" data-label="Comparing generations from a model">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/vw-llm.jpg" width="1440" height="1024"><source src="media/vw-llm.mp4" type="video/mp4"></video>
   </figure>
   <figure class="excard" style="--i:19;left:1097px;top:596px;width:245px;--rot:1.34deg" data-label="Brush over bars">
     <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/brush-bars.jpg" width="1130" height="730"><source src="media/brush-bars.mp4" type="video/mp4"></video>
@@ -306,7 +308,7 @@ We are entering the golden age of interactive graphics
 </iframe>
 </div>
 <div class="vwcard hyp">
-<p><span class="qtext">…but do they have pumpkin spice?</span></p>
+<p><span class="qtext">…do they have pumpkin spice?</span></p>
 </div>
 </div>
 </div>
@@ -411,7 +413,7 @@ We are entering the golden age of interactive graphics
 <div class="fragment" data-fragment-index="5">
 <p><span class="qq">“what are the average weekend waits in the Heights?”</span></p>
 </div>
-<pre class="sqlblock fragment" data-fragment-index="5"><code><span class="kw">SELECT</span> <span class="hl"><span class="tx">AVG</span></span>(<span class="sel">weekend_wait</span>)
+<pre class="sqlblock fragment" data-fragment-index="5"><code><span class="kw">SELECT</span> <span class="sel">AVG</span>(<span class="sel">weekend_wait</span>)
 <span class="kw">FROM</span> shops
 <span class="tx">WHERE</span> neighborhood = :hood</code></pre>
 <div class="fragment" data-fragment-index="5">
@@ -596,7 +598,6 @@ We are entering the golden age of interactive graphics
 <div class="vwcard hyp" style="--hyp:#9f2d1f">
 <p><span class="qtext">What is the relationship of this data with outliers removed?</span></p>
 </div>
-<p><span class="mech">brush → gone → the axes re-fit</span></p>
 </div>
 </div>
 </section>
@@ -614,7 +615,6 @@ We are entering the golden age of interactive graphics
 <div class="vwcard hyp" style="--hyp:#0f766e">
 <p><span class="qtext">How do the selected items compare against my baseline?</span></p>
 </div>
-<p><span class="mech">pick a group → only colour changes</span></p>
 </div>
 </div>
 </section>
@@ -632,7 +632,6 @@ We are entering the golden age of interactive graphics
 <div class="vwcard hyp" style="--hyp:#ea580c">
 <p><span class="qtext">What simpler calculations help to show these comparisons?</span></p>
 </div>
-<p><span class="mech">region → a new mark with the numbers</span></p>
 </div>
 </div>
 </section>
@@ -841,8 +840,8 @@ We are entering the golden age of interactive graphics
   <figure class="excard" style="--i:2;left:-54px;top:386px;width:248px;--rot:0.68deg" data-label="Hover a bar → sparkline popup">
     <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/bar-hover-sparkline.jpg" width="1106" height="714"><source src="media/bar-hover-sparkline.mp4" type="video/mp4"></video>
   </figure>
-  <figure class="excard" style="--i:3;left:-61px;top:569px;width:248px;--rot:-1.02deg" data-label="Snapped pointer drives a reference line">
-    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/snapped-pointer.jpg" width="1130" height="756"><source src="media/snapped-pointer.mp4" type="video/mp4"></video>
+  <figure class="excard" style="--i:3;left:-61px;top:569px;width:248px;--rot:-1.02deg" data-label="Table lens over 4,000 trial sites">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/vw-tablelens.jpg" width="1440" height="964"><source src="media/vw-tablelens.mp4" type="video/mp4"></video>
   </figure>
   <figure class="excard" style="--i:4;left:217px;top:-6px;width:275px;--rot:-2.38deg" data-label="Re-binning a linked histogram">
     <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/histogram-binning.jpg" width="1230" height="516"><source src="media/histogram-binning.mp4" type="video/mp4"></video>
@@ -850,14 +849,14 @@ We are entering the golden age of interactive graphics
   <figure class="excard" style="--i:5;left:221px;top:133px;width:275px;--rot:0.8deg" data-label="SPLOM cohort brushing">
     <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/splom-cohort-brush.jpg" width="1190" height="1080"><source src="media/splom-cohort-brush.mp4" type="video/mp4"></video>
   </figure>
-  <figure class="excard" style="--i:6;left:208px;top:403px;width:275px;--rot:-2.52deg" data-label="Wind grid probe → nearest history">
-    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/wind-grid-probe.jpg" width="1440" height="794"><source src="media/wind-grid-probe.mp4" type="video/mp4"></video>
+  <figure class="excard" style="--i:6;left:208px;top:403px;width:275px;--rot:-2.52deg" data-label="Sea ice residuals against CO2">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/vw-seaice.jpg" width="1440" height="850"><source src="media/vw-seaice.mp4" type="video/mp4"></video>
   </figure>
-  <figure class="excard" style="--i:7;left:206px;top:575px;width:275px;--rot:-1.61deg" data-label="Horizontal band brush">
-    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/horizontal-band.jpg" width="1130" height="730"><source src="media/horizontal-band.mp4" type="video/mp4"></video>
+  <figure class="excard" style="--i:7;left:206px;top:575px;width:275px;--rot:-1.61deg" data-label="Spike raster and its PSTH">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/vw-spike.jpg" width="1292" height="806"><source src="media/vw-spike.mp4" type="video/mp4"></video>
   </figure>
-  <figure class="excard" style="--i:8;left:508px;top:-31px;width:261px;--rot:-0.31deg" data-label="Brush to zoom">
-    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/brush-to-zoom.jpg" width="1130" height="724"><source src="media/brush-to-zoom.mp4" type="video/mp4"></video>
+  <figure class="excard" style="--i:8;left:508px;top:-31px;width:261px;--rot:-0.31deg" data-label="Genome browser: pan and zoom">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/vw-genome.jpg" width="1440" height="950"><source src="media/vw-genome.mp4" type="video/mp4"></video>
   </figure>
   <figure class="excard" style="--i:9;left:509px;top:159px;width:261px;--rot:0.73deg" data-label="Multi-lasso heatmap → per-lasso histograms">
     <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/multi-lasso-heatmap.jpg" width="1314" height="662"><source src="media/multi-lasso-heatmap.mp4" type="video/mp4"></video>
@@ -871,11 +870,11 @@ We are entering the golden age of interactive graphics
   <figure class="excard" style="--i:12;left:787px;top:-16px;width:280px;--rot:-1.41deg" data-label="Crosshair grid partition → region counts">
     <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/grid-partition.jpg" width="1440" height="588"><source src="media/grid-partition.mp4" type="video/mp4"></video>
   </figure>
-  <figure class="excard" style="--i:13;left:783px;top:117px;width:280px;--rot:1.38deg" data-label="Crosshair">
-    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/crosshair.jpg" width="1130" height="722"><source src="media/crosshair.mp4" type="video/mp4"></video>
+  <figure class="excard" style="--i:13;left:783px;top:117px;width:280px;--rot:1.38deg" data-label="Phase portrait of a damped pendulum">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/vw-pendulum.jpg" width="1296" height="860"><source src="media/vw-pendulum.mp4" type="video/mp4"></video>
   </figure>
-  <figure class="excard" style="--i:14;left:795px;top:315px;width:280px;--rot:-0.59deg" data-label="Draggable thresholds on grouped bars">
-    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/grouped-bar-thresholds.jpg" width="834" height="578"><source src="media/grouped-bar-thresholds.mp4" type="video/mp4"></video>
+  <figure class="excard" style="--i:14;left:795px;top:315px;width:280px;--rot:-0.59deg" data-label="Robotic grasp candidates in 3D">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/vw-grip.jpg" width="1372" height="930"><source src="media/vw-grip.mp4" type="video/mp4"></video>
   </figure>
   <figure class="excard" style="--i:15;left:795px;top:533px;width:280px;--rot:-2.6deg" data-label="Threshold slider on a histogram">
     <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/threshold-histogram.jpg" width="808" height="632"><source src="media/threshold-histogram.mp4" type="video/mp4"></video>
@@ -886,8 +885,8 @@ We are entering the golden age of interactive graphics
   <figure class="excard" style="--i:17;left:1083px;top:172px;width:245px;--rot:0.67deg" data-label="Draggable histogram bin edges">
     <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/draggable-bin-edges.jpg" width="860" height="730"><source src="media/draggable-bin-edges.mp4" type="video/mp4"></video>
   </figure>
-  <figure class="excard" style="--i:18;left:1086px;top:402px;width:245px;--rot:-2.15deg" data-label="Hover reveals a country trajectory">
-    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/trajectory-hover.jpg" width="1130" height="806"><source src="media/trajectory-hover.mp4" type="video/mp4"></video>
+  <figure class="excard" style="--i:18;left:1086px;top:402px;width:245px;--rot:-2.15deg" data-label="Comparing generations from a model">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/vw-llm.jpg" width="1440" height="1024"><source src="media/vw-llm.mp4" type="video/mp4"></video>
   </figure>
   <figure class="excard" style="--i:19;left:1097px;top:596px;width:245px;--rot:1.34deg" data-label="Brush over bars">
     <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/brush-bars.jpg" width="1130" height="730"><source src="media/brush-bars.mp4" type="video/mp4"></video>

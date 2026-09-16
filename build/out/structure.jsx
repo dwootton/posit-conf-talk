@@ -25,40 +25,6 @@ export const ToolbarButton = ({ React, label, active, color, isAction, onClick }
     </button>
 );
 
-export const MetricCard = ({ React, name, color, metrics }) => (
-    <div style={{ 
-        flex: 1, 
-        border: '2px solid #1a1a1a', 
-        padding: '12px', 
-        background: '#f7f0e6', 
-        boxShadow: '4px 4px 0px rgba(26,26,26,0.15)', 
-        display: 'flex', 
-        flexDirection: 'column' 
-    }}>
-        <div style={{ color, fontWeight: 'bold', fontFamily: 'Space Grotesk, sans-serif', fontSize: '16px', marginBottom: 12 }}>
-            {name}
-        </div>
-        <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '15px', display: 'flex', flexDirection: 'column', gap: 12, color: '#1a1a1a' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap' }}>
-                <span style={{ color: '#57534e' }}>Shops</span> 
-                <span style={{ fontWeight: 'bold', fontSize: '28px' }}>{metrics.count}</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap' }}>
-                <span style={{ color: '#57534e' }}>Mean Wait</span> 
-                <span style={{ fontWeight: 'bold', fontSize: '28px' }}>{metrics.meanWait ? metrics.meanWait.toFixed(1) : '-'}</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap' }}>
-                <span style={{ color: '#57534e' }}>Med Wait</span> 
-                <span style={{ fontWeight: 'bold', fontSize: '28px' }}>{metrics.medWait || '-'}</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap' }}>
-                <span style={{ color: '#57534e' }}>Rating</span> 
-                <span style={{ fontWeight: 'bold', fontSize: '28px' }}>{metrics.meanRating ? metrics.meanRating.toFixed(1) : '-'}</span>
-            </div>
-        </div>
-    </div>
-);
-
 export default function Widget({ model, React }) {
     const [data, setData] = React.useState(model.get("data") || []);
     const [basemapImage, setBasemapImage] = React.useState(model.get("basemap_image") || "");
@@ -297,7 +263,6 @@ export default function Widget({ model, React }) {
     const xDomainMax = maxWait > 0 ? maxWait * 1.2 : 10;
     const xScale = d3.scaleLinear().domain([0, xDomainMax]).range([0, maxBarWidth]);
     
-    // Request 3 ticks to typically get 3-4 nice round numbers
     let ticks = xScale.ticks(3);
     if (ticks.length > 4) ticks = ticks.slice(0, 4);
 
@@ -329,8 +294,8 @@ export default function Widget({ model, React }) {
             
             <div style={{ width: 2, height: 548, background: '#1a1a1a' }} />
             
-            <div style={{ width: 340, height: 548, padding: 16, display: 'flex', flexDirection: 'column', boxSizing: 'border-box' }}>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 12 }}>
+            <div style={{ width: 340, height: 548, padding: 24, display: 'flex', flexDirection: 'column', boxSizing: 'border-box' }}>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 24 }}>
                     <ToolbarButton React={React} label="Group A" active={activeTool === 'A'} color="#478d4b" onClick={() => setActiveTool('A')} />
                     <ToolbarButton React={React} label="Group B" active={activeTool === 'B'} color="#9f2d1f" onClick={() => setActiveTool('B')} />
                     <ToolbarButton React={React} label="Clear" active={activeTool === 'Clear'} color="#78716c" onClick={() => setActiveTool('Clear')} />
@@ -347,44 +312,54 @@ export default function Widget({ model, React }) {
                     }} />
                 </div>
 
-                <div style={{ display: 'flex', gap: 16, marginBottom: 14 }}>
-                    <MetricCard React={React} name="Group A" color="#478d4b" metrics={metricsA} />
-                    <MetricCard React={React} name="Group B" color="#9f2d1f" metrics={metricsB} />
-                </div>
+                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                    <div style={{ color: '#478d4b', fontWeight: 'bold', fontFamily: 'Space Grotesk, sans-serif', fontSize: '24px', marginBottom: 16 }}>
+                        Group A
+                    </div>
+                    
+                    <svg width={chartWidth} height={220} style={{ overflow: 'visible' }}>
+                        <line x1={0} y1={0} x2={0} y2={160} stroke="#1a1a1a" strokeWidth={2} />
+                        
+                        <rect x={2} y={20} width={xScale(metricsA.meanWait || 0)} height={48} fill="#478d4b" />
+                        <text x={xScale(metricsA.meanWait || 0) + 12} y={44} dy="0.35em" fontSize={28} fontWeight="bold" fontFamily="JetBrains Mono, monospace" fill="#1a1a1a">
+                            {metricsA.count > 0 ? metricsA.meanWait.toFixed(1) : ''}
+                        </text>
 
-                <div style={{ flex: 1 }}>
-                    <svg width={chartWidth} height={90} style={{ overflow: 'visible' }}>
-                        <line x1={0} y1={0} x2={0} y2={60} stroke="#1a1a1a" strokeWidth={2} />
+                        <rect x={2} y={92} width={xScale(metricsB.meanWait || 0)} height={48} fill="#9f2d1f" />
+                        <text x={xScale(metricsB.meanWait || 0) + 12} y={116} dy="0.35em" fontSize={28} fontWeight="bold" fontFamily="JetBrains Mono, monospace" fill="#1a1a1a">
+                            {metricsB.count > 0 ? metricsB.meanWait.toFixed(1) : ''}
+                        </text>
                         
-                        <rect x={2} y={10} width={xScale(metricsA.meanWait || 0)} height={16} fill="#478d4b" />
-                        <rect x={2} y={34} width={xScale(metricsB.meanWait || 0)} height={16} fill="#9f2d1f" />
-                        
-                        <line x1={0} y1={60} x2={chartWidth} y2={60} stroke="#1a1a1a" strokeWidth={2} />
+                        <line x1={0} y1={160} x2={chartWidth} y2={160} stroke="#1a1a1a" strokeWidth={2} />
 
                         {ticks.map(t => (
-                            <g key={t} transform={`translate(${xScale(t)}, 60)`}>
-                                <line y2={6} stroke="#1a1a1a" strokeWidth={1.5} />
-                                <text y={22} fontSize={14} fontFamily="JetBrains Mono, monospace" fill="#1a1a1a" textAnchor="middle">
+                            <g key={t} transform={`translate(${xScale(t)}, 160)`}>
+                                <line y2={8} stroke="#1a1a1a" strokeWidth={1.5} />
+                                <text y={28} fontSize={15} fontFamily="JetBrains Mono, monospace" fill="#1a1a1a" textAnchor="middle">
                                     {t}
                                 </text>
                             </g>
                         ))}
                     </svg>
-                    
-                    <div style={{ 
-                        marginTop: 10, 
-                        fontFamily: 'JetBrains Mono, monospace', 
-                        fontSize: '15px', 
-                        color: '#1a1a1a',
-                        textAlign: 'center',
-                        fontWeight: 'bold',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        gap: '6px'
-                    }}>
-                        {comparisonNode}
+
+                    <div style={{ color: '#9f2d1f', fontWeight: 'bold', fontFamily: 'Space Grotesk, sans-serif', fontSize: '24px', marginTop: 16 }}>
+                        Group B
                     </div>
+                </div>
+
+                <div style={{ 
+                    marginTop: 24, 
+                    fontFamily: 'JetBrains Mono, monospace', 
+                    fontSize: '15px', 
+                    color: '#1a1a1a',
+                    textAlign: 'center',
+                    fontWeight: 'bold',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '6px'
+                }}>
+                    {comparisonNode}
                 </div>
             </div>
 

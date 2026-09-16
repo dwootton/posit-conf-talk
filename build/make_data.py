@@ -94,7 +94,7 @@ rows.append({
     "latitude": 29.7565,
     "longitude": -95.3620,
     "rating": 4.6,
-    "review_count": 5600,
+    "review_count": 20000,
     "price_level": 2,
     "weekday_wait_min": 29,
     "weekend_wait_min": 44,
@@ -147,3 +147,13 @@ with open(DATA / "houston_basemap.geojson", "w") as fh:
     json.dump(basemap, fh)
 
 print(f"wrote {len(rows)} shops, {len(features)} basemap features")
+
+# NOTE: this writes data/houston_donut_shops.csv only. The widget bundles embed
+# their own copy at build/out/data.json, which make_widgets.py writes -- so after
+# changing anything here, refresh that file and re-export, or every widget will
+# keep showing the previous dataset:
+#
+#   python -c "import json,pandas as pd; from vibe_widget.utils.serialization import clean_for_json; \
+#     open('build/out/data.json','w').write(json.dumps(clean_for_json( \
+#     pd.read_csv('data/houston_donut_shops.csv').to_dict(orient='records'))))"
+#   VIBE_REPO=<repo> node build/export.cjs

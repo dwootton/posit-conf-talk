@@ -1,7 +1,9 @@
-Legibility only -- this widget is projected on a large screen from the back of a conference room, so nothing about its behaviour, layout or colours should change.
+Remove the two per-group statistic cards from the right-hand panel, and nothing else.
 
-Raise every piece of text in the widget to at least 15px. Any number that is the result of the interaction -- a count, a mean, a headline figure -- goes to at least 28px. Tooltip text 15px. Axis tick labels 14px and axis titles 15px, with at most four ticks on each axis. Legend and button labels 15px.
+Delete, for BOTH Group A and Group B, the rows reading "Shops", "Mean Wait", "Med Wait" and "Rating" together with their numbers, and the card boxes that contain them. What remains in that part of the panel is only each group's name in its own colour, with the horizontal two-bar comparison chart between them.
 
-Where a label is only decoration and is not needed to read the result, remove it rather than shrink anything else to make room. Do not add any new text.
+Keep the bar chart exactly as it is: two bars in the group colours comparing the mean weekend wait, with their values labelled. Keep the single summary line underneath it ("Group A waits 3.6 min longer", or "Assign shops to both groups" when a group is empty) -- that sentence is the point of the slide.
 
-Change nothing else: same marks, same colours, same interactions, same panel structure, same computed values.
+Keep everything else untouched: the map, the marks, the Group A / Group B / Clear / Undo / Reset buttons, click-and-brush assignment, the tooltip, and every font size (15px minimum, and the numbers on the bars stay large).
+
+Use the vertical space the removed cards free up to make the bar chart taller and easier to read from a distance, rather than leaving a gap.

@@ -78,6 +78,7 @@ build/
   make_widgets.py     fifteen vw.create() calls sharing one preamble
   make_augment_v2.py  the sixteenth: its own vw.create() call with a `reviews` input
   make_wall.py        builds _wall.qmd from the Meros deck's laid-out wall block
+  make_demo_clips.py  encodes the vibe-widget demo recordings into wall clips
   revise_widgets.py   vw.edit() one widget with a follow-up request
   revise_queue.sh     run a batch of revisions in parallel, one cwd each
   requests/<name>.txt the revision request each widget was last given
@@ -95,10 +96,10 @@ build/
 | spice | 6 | flip the "pumpkin spice only" toggle · hover a shop |
 | in_center | 11, 23 | click anywhere to place a fixed-size region |
 | parameterize | 12, 15 | drag the target · move the radius slider · arrow keys nudge |
-| structure | 13, 15 | pick Group A / Group B / Clear, then click a shop or drag a brush · Undo · Reset |
+| structure | 13, 15 | pick Group A / Group B / Clear, then click a shop or drag a brush · Undo · Reset (the two group means are compared by one bar chart, no stat tables) |
 | augment | 14, 15 | click a shop to pull its reviews · hover any shop for its name |
 | sel_filter | 17, 20 | drag a region to remove those shops — the axes re-fit · reset brings them back |
-| sel_highlight | 18, 20 | choose a group from the dropdown to recolour its shops · nothing else on the chart moves |
+| sel_highlight | 18, 20 | choose a group from the dropdown to recolour its shops · nothing else on the chart moves (the 20,000-review outlier is excluded here and on sel_count) |
 | sel_count | 19, 20 | drag a region · a card above it shows the count and the signed inside-vs-outside deltas |
 | in_drag | 23 | press, drag, release |
 | in_corner | 23 | click one corner, then the opposite one |
@@ -218,6 +219,15 @@ dots.
 
 ## The example wall
 
+Seven of the twenty slots show vibe-widget's own demos -- a table lens over
+4,000 trial sites, a genome browser, sea ice against CO2, generations from a
+model, robotic grasp candidates, a pendulum phase portrait and a spike raster.
+`build/make_demo_clips.py` encodes those from the recordings in
+`~/Downloads/vw_demo`. Each is dropped into a slot of nearly the same aspect
+ratio, because the layout fixes a card's *width* and lets its height follow the
+clip: a taller clip overlaps its neighbours. The two recordings that are taller
+than they are wide are cropped to the part that carries the interaction.
+
 `build/make_wall.py` lifts the wall block out of the Meros talk deck
 (`~/Downloads/mx-examples/meros-deck/merosdeck.html`), whose `layout.py`
 authored those card positions against the same 1280×720 stage this deck uses, so
@@ -256,11 +266,16 @@ pumpkin spice `#9F2D1F`.
 
 `make_data.py` generates 32 shops from a fixed table under a fixed seed, then
 appends one more by hand: **Bayou City Original**, a tourist-flagship downtown
-shop with 5,600 reviews against everyone else's 237–1,829. It exists for slide
-17: with it in frame the review axis runs to 6,000 and the other 32 shops pile
-into the left third; brush it away and the axes re-fit and the rest spread out,
-which is the whole argument that removal is a *visual* consequence and not just
-a filter.
+shop with 20,000 reviews against everyone else's 237–1,829. It exists for slide
+17: with it in frame the review axis runs to 20,000 and the other 32 shops pile
+into the leftmost tenth of the plot; brush it away and the axes re-fit and the
+rest spread across the full width, which is the whole argument that removal is a
+*visual* consequence and not just a filter.
+
+**Changing the dataset takes two steps.** `make_data.py` writes the CSV, but every
+widget bundle embeds its own copy at `build/out/data.json`, which `make_widgets.py`
+writes. Refresh that file and re-export, or the widgets keep showing the previous
+numbers -- the command is in a comment at the foot of `make_data.py`.
 
 Slides 18 and 19 exclude it, because there the chart is the constant and the
 selection is the variable — an outlier squashing the marks into one corner just

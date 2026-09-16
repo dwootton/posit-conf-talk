@@ -34,6 +34,42 @@ BLOCK = re.compile(r"<!-- WALL:start -->(.*?)<!-- WALL:end -->", re.S)
 WEBM = re.compile(r'<source src="[^"]*\.webm" type="video/webm">')
 AUTOPLAY = re.compile(r"(?<= )autoplay(?= )")
 
+# Seven of the twenty slots show vibe-widget's own demos instead of the
+# borrowed ones. Each substitution is matched to a slot of nearly the same
+# aspect ratio, because the layout fixes a card's WIDTH and lets its height
+# follow the clip -- swap in a taller clip and it overlaps its neighbours.
+SUBS = {
+    # replaced slug           new slug          w     h    label
+    "snapped-pointer":       ("vw-tablelens",  1440,  964, "Table lens over 4,000 trial sites"),
+    "brush-to-zoom":         ("vw-genome",     1440,  950, "Genome browser: pan and zoom"),
+    "trajectory-hover":      ("vw-llm",        1440, 1024, "Comparing generations from a model"),
+    "wind-grid-probe":       ("vw-seaice",     1440,  850, "Sea ice residuals against CO2"),
+    "grouped-bar-thresholds":("vw-grip",       1372,  930, "Robotic grasp candidates in 3D"),
+    "crosshair":             ("vw-pendulum",   1296,  860, "Phase portrait of a damped pendulum"),
+    "horizontal-band":       ("vw-spike",      1292,  806, "Spike raster and its PSTH"),
+}
+
+
+def substitute(cards: str) -> tuple[str, int]:
+    """Point seven cards at the vibe-widget clips, keeping their slots."""
+    done = 0
+    for old, (new, w, h, label) in SUBS.items():
+        if f"media/{old}.mp4" not in cards:
+            sys.exit(f"wall has no card for {old}; the source layout changed")
+        cards = cards.replace(f'poster="media/{old}.jpg"', f'poster="media/{new}.jpg"')
+        cards = cards.replace(f'src="media/{old}.mp4"', f'src="media/{new}.mp4"')
+        # the width/height pair belongs to the <video> that now points at `new`
+        i = cards.index(f'poster="media/{new}.jpg"')
+        j = cards.index('width="', i)
+        k = cards.index(">", j)
+        cards = cards[:j] + f'width="{w}" height="{h}"' + cards[k:]
+        # and the label sits on the <figure> just above it
+        f0 = cards.rindex('data-label="', 0, i)
+        f1 = cards.index('"', f0 + len('data-label="'))
+        cards = cards[:f0] + f'data-label="{label}"' + cards[f1 + 1:]
+        done += 1
+    return cards, done
+
 
 def main() -> int:
     if not SOURCE.exists():
@@ -43,6 +79,7 @@ def main() -> int:
         sys.exit("no <!-- WALL:start --> block in the source deck")
 
     cards = AUTOPLAY.sub("", WEBM.sub("", match.group(1))).strip()
+    cards, swapped = substitute(cards)
     count = cards.count('class="excard"')
 
     missing = [
@@ -61,7 +98,7 @@ def main() -> int:
         '<div class="exveil"></div>\n'
         "```\n"
     )
-    print(f"wrote {OUT.relative_to(ROOT)}: {count} clips")
+    print(f"wrote {OUT.relative_to(ROOT)}: {count} clips ({swapped} of them vibe-widget's own)")
     return 0
 
 

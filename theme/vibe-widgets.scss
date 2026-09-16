@@ -94,6 +94,10 @@ $code-block-font-size: $floor !default;
   margin-bottom: 0.6em;
 }
 
+.eyebrow-group { display: inline-block; }
+.eyebrow-group .eyebrow { margin-bottom: 0.45em; }
+.eyebrow-group .rule-accent { width: 100%; }
+
 .rule-accent {
   width: 88px; height: 6px;
   background: $vw-accent;
@@ -470,7 +474,18 @@ $wide-w:  814px; $wide-h:  548px;   // the map + panel widgets
 }
 .trio .trio-item { min-width: 0; }
 .trio .widget-wrap { box-shadow: 5px 5px 0 $vw-ink; }
-.trio .vwcard.hyp { margin-top: 0.8rem; box-shadow: 3px 3px 0 $vw-ink; padding: 0.45rem 0.7rem; }
+// The dot is redundant in the trio -- the card's own left bar already carries
+// the question's colour -- and it costs the width that keeps "...but do they
+// have pumpkin spice?" on one line.
+.trio .vwcard.hyp {
+  margin-top: 0.8rem;
+  box-shadow: 3px 3px 0 $vw-ink;
+  padding: 0.45rem 0.5rem;
+  border-left-width: 10px;
+  gap: 0;
+  &::before { display: none; }
+  .qtext { white-space: nowrap; }
+}
 // the principle slides put a label above each column
 .colhd {
   display: block;
@@ -568,11 +583,18 @@ $wide-w:  814px; $wide-h:  548px;   // the map + panel widgets
   background: $vw-bone-lift;
   border: 2px solid $vw-ink;
   box-shadow: 4px 4px 0 $vw-ink;
-  transition: flex-grow .6s cubic-bezier(.22,.68,.16,1),
+  transition: flex-grow .7s cubic-bezier(.22, .68, .16, 1),
+              padding .7s cubic-bezier(.22, .68, .16, 1),
               opacity .45s ease, filter .45s ease,
               background .45s ease, box-shadow .45s ease;
 }
-.taxo-item .ico { width: 62%; max-width: 150px; height: auto; flex: none; }
+.taxo-item .ico {
+  width: 62%;
+  max-width: 150px;
+  height: auto;
+  flex: none;
+  transition: max-width .7s cubic-bezier(.22, .68, .16, 1);
+}
 .taxo-item > p {
   display: flex;
   flex-direction: column;
@@ -591,14 +613,25 @@ $wide-w:  814px; $wide-h:  548px;   // the map + panel widgets
   font-size: $floor;
   line-height: 1.3;
   color: $vw-ink-soft;
+  // animatable, unlike height:auto -- the gloss has to fade and collapse with
+  // the card rather than vanishing a beat before it
+  max-height: 8em;
+  overflow: hidden;
+  transition: max-height .7s cubic-bezier(.22, .68, .16, 1),
+              opacity .35s ease,
+              margin .7s cubic-bezier(.22, .68, .16, 1);
 }
 
 // step 2: selection takes three shares of the row, the rest one each. The four
 // shrunk cards drop their gloss rather than set it below the floor.
 .taxo:has(.st-grow.visible) .taxo-item.sel { flex-grow: 3; }
 .taxo:has(.st-grow.visible) .taxo-item:not(.sel) .gl {
-  opacity: 0; height: 0; overflow: hidden;
+  opacity: 0;
+  max-height: 0;
+  margin-top: -0.35rem;
 }
+// the one that grows gets a bigger icon on the way up
+.taxo:has(.st-grow.visible) .taxo-item.sel .ico { max-width: 200px; }
 // step 3: selection lights, the rest recede
 .taxo:has(.st-lit.visible) .taxo-item:not(.sel) { filter: grayscale(1); opacity: 0.45; }
 .taxo:has(.st-lit.visible) .taxo-item.sel {

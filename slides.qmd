@@ -31,8 +31,10 @@ format:
 
 ::: {.title-slide .title-slide--noart}
 ::: {.title-copy}
+::: {.eyebrow-group}
 <span class="eyebrow">posit::conf</span>
 <div class="rule-accent"></div>
+:::
 <h1 class="big-title">Principles for Effective Interactive Visualizations</h1>
 <p class="subtitle fragment">and our search for donuts</p>
 <p class="byline">Dylan Wootton, Ryan Yen &nbsp;·&nbsp; MIT Visualization Group</p>
@@ -176,7 +178,7 @@ format:
         title="Do they have pumpkin spice?"></iframe>
 :::
 ::: {.vwcard .hyp}
-[…but do they have pumpkin spice?]{.qtext}
+[…do they have pumpkin spice?]{.qtext}
 :::
 :::
 :::
@@ -406,7 +408,7 @@ The rest of the zoo: [vis-society.github.io/lectures/interaction-zoo](https://vi
 :::
 
 ```{=html}
-<pre class="sqlblock fragment" data-fragment-index="5"><code><span class="kw">SELECT</span> <span class="hl"><span class="tx">AVG</span></span>(<span class="sel">weekend_wait</span>)
+<pre class="sqlblock fragment" data-fragment-index="5"><code><span class="kw">SELECT</span> <span class="sel">AVG</span>(<span class="sel">weekend_wait</span>)
 <span class="kw">FROM</span> shops
 <span class="tx">WHERE</span> neighborhood = :hood</code></pre>
 ```
@@ -671,7 +673,6 @@ Do they enable access to, and transformation of, the underlying data?
 ::: {.vwcard .hyp style="--hyp:#9f2d1f"}
 [What is the relationship of this data with outliers removed?]{.qtext}
 :::
-[brush → gone → the axes re-fit]{.mech}
 :::
 :::
 
@@ -692,7 +693,6 @@ Do they enable access to, and transformation of, the underlying data?
 ::: {.vwcard .hyp style="--hyp:#0f766e"}
 [How do the selected items compare against my baseline?]{.qtext}
 :::
-[pick a group → only colour changes]{.mech}
 :::
 :::
 
@@ -713,7 +713,6 @@ Do they enable access to, and transformation of, the underlying data?
 ::: {.vwcard .hyp style="--hyp:#ea580c"}
 [What simpler calculations help to show these comparisons?]{.qtext}
 :::
-[region → a new mark with the numbers]{.mech}
 :::
 :::
 
