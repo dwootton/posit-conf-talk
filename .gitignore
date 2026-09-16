@@ -2,3 +2,4 @@ build/.httpcache/
 build/tilecache/
 build/logs/
 build/__pycache__/
+.DS_Store
