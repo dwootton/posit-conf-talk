@@ -34,7 +34,7 @@
     }
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
   </style>
-  <link rel="stylesheet" href="slides_files/libs/revealjs/dist/theme/quarto-76a7f73fc6a11757e6a2884da098414b.css">
+  <link rel="stylesheet" href="slides_files/libs/revealjs/dist/theme/quarto-c8c077d5ef0c96fc69f5127943f1c20c.css">
   <link href="slides_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="slides_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="slides_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -270,7 +270,7 @@ We are entering the golden age of interactive graphics
 <div class="cols c-11" style="align-items:center">
 <div>
 <svg viewbox="0 0 520 340" style="width:100%;max-height:440px">
-<circle cx="300" cy="170" r="135" fill="#e8a33d" stroke="#1a1a1a" stroke-width="3"></circle> <circle cx="185" cy="170" r="118" fill="#ea580c" fill-opacity="0.92" stroke="#1a1a1a" stroke-width="3"></circle> <text x="185" y="161" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="24" font-weight="700" fill="#ffffff">Interactive</text> <text x="185" y="190" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="24" font-weight="700" fill="#ffffff">Vis</text> <text x="382" y="180" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="24" font-weight="700" fill="#1a1a1a">Questions</text> <circle cx="215" cy="140" r="12" fill="#6b3fa0" stroke="#1a1a1a" stroke-width="3"></circle> <g> <line x1="215" y1="104" x2="215" y2="126" stroke="#6b3fa0" stroke-width="2"></line> <rect x="93" y="62" width="244" height="42" fill="#fbfaf6" stroke="#6b3fa0" stroke-width="2"></rect> <text x="215" y="91" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="24" font-weight="700" fill="#6b3fa0">Well, where is close?</text> </g>
+<circle cx="300" cy="170" r="135" fill="#e8a33d" stroke="#1a1a1a" stroke-width="3"></circle> <circle cx="185" cy="170" r="118" fill="#ea580c" fill-opacity="0.92" stroke="#1a1a1a" stroke-width="3"></circle> <text x="185" y="161" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="24" font-weight="700" fill="#ffffff">Interactive</text> <text x="185" y="190" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="24" font-weight="700" fill="#ffffff">Vis</text> <text x="366" y="180" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="24" font-weight="700" fill="#1a1a1a">Questions</text> <circle cx="215" cy="140" r="12" fill="#6b3fa0" stroke="#1a1a1a" stroke-width="3"></circle> <g> <line x1="215" y1="104" x2="215" y2="126" stroke="#6b3fa0" stroke-width="2"></line> <rect x="93" y="62" width="244" height="42" fill="#fbfaf6" stroke="#6b3fa0" stroke-width="2"></rect> <text x="215" y="91" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="24" font-weight="700" fill="#6b3fa0">Well, where is close?</text> </g>
 </svg>
 </div>
 <div class="widget-wrap" style="max-width:352px;margin:0 auto">
@@ -354,7 +354,7 @@ We are entering the golden age of interactive graphics
 <p><span class="nm">Encode</span> <span class="gl">which visual channel carries the value?</span></p>
 </div>
 </div>
-<div class="zoo-link">
+<div class="zoo-link fragment" data-fragment-index="8">
 <p>The rest of the zoo: <a href="https://vis-society.github.io/lectures/interaction-zoo.html">vis-society.github.io/lectures/interaction-zoo</a></p>
 </div>
 </section>
@@ -384,33 +384,52 @@ We are entering the golden age of interactive graphics
 </div>
 <div class="qgrid">
 <p><span class="qhead">Question</span> <span class="qhead">Query</span> <span class="qhead">Answer</span></p>
-<div class="qrow fragment" data-fragment-index="1">
+<div class="qrow">
+<div class="fragment" data-fragment-index="1">
 <p><span class="qq">“what donut shop is closest to me?”</span></p>
-<pre class="sqlblock"><code><span class="kw">SELECT</span> <span class="sel">name</span>, <span class="tx">dist</span>(shop, me)
+</div>
+<pre class="sqlblock fragment" data-fragment-index="2"><code><span class="kw">SELECT</span> <span class="sel">name</span>, <span class="sel">dist</span>(shop, me)
 <span class="kw">FROM</span> shops
-<span class="tx">ORDER BY</span> dist <span class="tx">LIMIT</span> 1</code></pre>
+<span class="tx">ORDER BY</span> <span class="sel">dist</span> <span class="tx">LIMIT</span> 1</code></pre>
+<div class="fragment" data-fragment-index="3">
 <p><span class="qa">Bagby Rings</span> <span class="qau">0.35 mi</span></p>
 </div>
-<div class="qrow fragment" data-fragment-index="2">
+</div>
+<div class="qrow">
+<div class="fragment" data-fragment-index="4">
 <p><span class="qq">“what’s the shop on Westheimer and Dunlavy?”</span></p>
-<pre class="sqlblock"><code><span class="kw">SELECT</span> <span class="sel">name</span>
+</div>
+<pre class="sqlblock fragment" data-fragment-index="4"><code><span class="kw">SELECT</span> <span class="sel">name</span>
 <span class="kw">FROM</span> shops
-<span class="tx">WHERE</span> corner = :corner</code></pre>
+<span class="tx">WHERE</span> <span class="sel">address</span> =
+  'Westheimer &amp; Dunlavy'</code></pre>
+<div class="fragment" data-fragment-index="4">
 <p><span class="qa">Westheimer Crullers</span></p>
 </div>
-<div class="qrow fragment" data-fragment-index="3">
+</div>
+<div class="qrow">
+<div class="fragment" data-fragment-index="5">
 <p><span class="qq">“what are the average weekend waits in the Heights?”</span></p>
-<pre class="sqlblock"><code><span class="kw">SELECT</span> <span class="tx">AVG</span>(<span class="sel">weekend_wait</span>)
+</div>
+<pre class="sqlblock fragment" data-fragment-index="5"><code><span class="kw">SELECT</span> <span class="hl"><span class="tx">AVG</span></span>(<span class="sel">weekend_wait</span>)
 <span class="kw">FROM</span> shops
 <span class="tx">WHERE</span> neighborhood = :hood</code></pre>
+<div class="fragment" data-fragment-index="5">
 <p><span class="qa">28.3 min</span></p>
 </div>
-<div class="qrow qrow-live fragment" data-fragment-index="4">
+</div>
+<div class="qrow qrow-live">
+<div class="fragment" data-fragment-index="6">
 <p><span class="qmark">?</span></p>
+</div>
+<div class="fragment" data-fragment-index="6">
 <p><span class="qmark">?</span></p>
-<div class="widget-wrap sm-45">
+</div>
+<div class="fragment" data-fragment-index="6">
+<div class="widget-wrap crop-q">
 <iframe data-src="widgets/in_center.html" title="A selection: the question nobody typed">
 </iframe>
+</div>
 </div>
 </div>
 </div>
@@ -420,23 +439,26 @@ We are entering the golden age of interactive graphics
 <div class="mini-stages">
 <p><span class="dot s-data is-covered"></span><span class="dot s-visuals"></span><span class="dot s-inputs"></span><span class="lbl">DATA</span></p>
 </div>
-<div class="cols c-13">
-<div class="loop-rail">
-<div class="stage-row s-param is-live">
-<div class="bar">
-
+<div class="railrow">
+<div class="chip s-param is-live">
+<p>Single Selection</p>
 </div>
-<h4 id="single-selection">Single Selection</h4>
+<div class="chip s-struct">
+<p>Multi-Selection</p>
 </div>
-<pre class="sqlblock"><code><span class="kw">SELECT</span> <span class="sel">*</span>
-<span class="kw">FROM</span> shops
-<span class="hl"><span class="tx">WHERE</span> <span class="tx">dist</span>(shop,me) &lt; r</span></code></pre>
+<div class="chip s-aug">
+<p>Selection as Key</p>
 </div>
-<div>
+</div>
+<div class="cols c-sql">
 <div class="widget-wrap wd-92">
 <iframe data-src="widgets/parameterize.html" title="Single selection: move the center, set the radius">
 </iframe>
 </div>
+<div class="sqlpane fragment" data-fragment-index="1">
+<pre class="sqlblock"><code><span class="kw">SELECT</span> <span class="sel">*</span>
+<span class="kw">FROM</span> shops
+<span class="hl"><span class="tx">WHERE</span> <span class="tx">dist</span>(shop,me) &lt; r</span></code></pre>
 </div>
 </div>
 </section>
@@ -445,30 +467,27 @@ We are entering the golden age of interactive graphics
 <div class="mini-stages">
 <p><span class="dot s-data is-covered"></span><span class="dot s-visuals"></span><span class="dot s-inputs"></span><span class="lbl">DATA</span></p>
 </div>
-<div class="cols c-13">
-<div class="loop-rail">
-<div class="stage-row s-param is-dim">
-<div class="bar">
-
+<div class="railrow">
+<div class="chip s-param">
+<p>Single Selection</p>
 </div>
-<h4 id="single-selection-1">Single Selection</h4>
+<div class="chip s-struct is-live">
+<p>Multi-Selection</p>
 </div>
-<div class="stage-row s-struct is-live">
-<div class="bar">
-
+<div class="chip s-aug">
+<p>Selection as Key</p>
 </div>
-<h4 id="multi-selection">Multi-Selection</h4>
 </div>
-<pre class="sqlblock"><code><span class="kw">SELECT</span> <span class="sel">grp</span>, <span class="tx">AVG</span>(<span class="sel">wait</span>)
-<span class="kw">FROM</span> shops
-<span class="tx">WHERE</span> grp <span class="tx">IS NOT NULL</span>
-<span class="hl"><span class="tx">GROUP BY</span> grp</span></code></pre>
-</div>
-<div>
+<div class="cols c-sql">
 <div class="widget-wrap wd-92">
 <iframe data-src="widgets/structure.html" title="Multi-selection: brush shops into two groups and compare them">
 </iframe>
 </div>
+<div class="sqlpane fragment" data-fragment-index="1">
+<pre class="sqlblock"><code><span class="kw">SELECT</span> <span class="sel">grp</span>, <span class="tx">AVG</span>(<span class="sel">wait</span>)
+<span class="kw">FROM</span> shops
+<span class="tx">WHERE</span> grp <span class="tx">IS NOT NULL</span>
+<span class="hl"><span class="tx">GROUP BY</span> grp</span></code></pre>
 </div>
 </div>
 </section>
@@ -477,37 +496,28 @@ We are entering the golden age of interactive graphics
 <div class="mini-stages">
 <p><span class="dot s-data is-covered"></span><span class="dot s-visuals"></span><span class="dot s-inputs"></span><span class="lbl">DATA</span></p>
 </div>
-<div class="cols c-13">
-<div class="loop-rail">
-<div class="stage-row s-param is-dim">
-<div class="bar">
-
+<div class="railrow">
+<div class="chip s-param">
+<p>Single Selection</p>
 </div>
-<h4 id="single-selection-2">Single Selection</h4>
+<div class="chip s-struct">
+<p>Multi-Selection</p>
 </div>
-<div class="stage-row s-struct is-dim">
-<div class="bar">
-
+<div class="chip s-aug is-live">
+<p>Selection as Key</p>
 </div>
-<h4 id="multi-selection-1">Multi-Selection</h4>
 </div>
-<div class="stage-row s-aug is-live">
-<div class="bar">
-
+<div class="cols c-sql">
+<div class="widget-wrap wd-92">
+<iframe data-src="widgets/augment.html" title="Selection as key: click a shop to join in its reviews">
+</iframe>
 </div>
-<h4 id="selection-as-key">Selection as Key</h4>
-</div>
+<div class="sqlpane fragment" data-fragment-index="1">
 <pre class="sqlblock"><code><span class="kw">SELECT</span> <span class="sel">s.name</span>, <span class="sel">r.text</span>
 <span class="kw">FROM</span> shops s
 <span class="hl"><span class="tx">JOIN</span> reviews r
   <span class="tx">USING</span> (shop_id)</span>
 <span class="tx">WHERE</span> s.shop_id = :shop</code></pre>
-</div>
-<div>
-<div class="widget-wrap wd-92">
-<iframe data-src="widgets/augment.html" title="Selection as key: click a shop to join in its reviews">
-</iframe>
-</div>
 </div>
 </div>
 </section>

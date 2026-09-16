@@ -206,36 +206,40 @@ export default function Widget({ model, React }) {
           />
         ))}
 
+        {/* Two passes on purpose: every selected mark is drawn first, then every
+            label on top of all of them. Interleaved, a later shop's circle
+            covers an earlier shop's distance readout. */}
         {top5.map(shop => (
-          <g key={`top-${shop.shop_id}`}>
-            <circle
-              cx={shop.px[0]} cy={shop.px[1]}
-              r={5}
-              fill="#f97316"
-              stroke="#f7f0e6"
-              strokeWidth={1.5}
-              onPointerEnter={() => setHoveredShop(shop)}
-              onPointerLeave={() => setHoveredShop(null)}
-              style={{ cursor: 'pointer' }}
-            />
-            {shop.label && (
-              <text
-                textAnchor={shop.label.anchor}
-                fontFamily='"JetBrains Mono", monospace'
-                style={{ pointerEvents: 'none', paintOrder: 'stroke' }}
-                stroke="#f7f0e6"
-                strokeWidth={3}
-                strokeLinejoin="round"
-              >
-                <tspan x={shop.label.textX} y={shop.label.textY} fontSize={15} fill="#1e293b" fontWeight="bold">
-                  {shop.name}
-                </tspan>
-                <tspan x={shop.label.textX} y={shop.label.textY + 28} fontSize={28} fill="#475569">
-                  {shop.label.distStr}
-                </tspan>
-              </text>
-            )}
-          </g>
+          <circle
+            key={`top-${shop.shop_id}`}
+            cx={shop.px[0]} cy={shop.px[1]}
+            r={5}
+            fill="#f97316"
+            stroke="#f7f0e6"
+            strokeWidth={1.5}
+            onPointerEnter={() => setHoveredShop(shop)}
+            onPointerLeave={() => setHoveredShop(null)}
+            style={{ cursor: 'pointer' }}
+          />
+        ))}
+
+        {top5.map(shop => shop.label && (
+          <text
+            key={`lab-${shop.shop_id}`}
+            textAnchor={shop.label.anchor}
+            fontFamily='"JetBrains Mono", monospace'
+            style={{ pointerEvents: 'none', paintOrder: 'stroke' }}
+            stroke="#f7f0e6"
+            strokeWidth={3}
+            strokeLinejoin="round"
+          >
+            <tspan x={shop.label.textX} y={shop.label.textY} fontSize={15} fill="#1e293b" fontWeight="bold">
+              {shop.name}
+            </tspan>
+            <tspan x={shop.label.textX} y={shop.label.textY + 28} fontSize={28} fill="#475569">
+              {shop.label.distStr}
+            </tspan>
+          </text>
         ))}
 
         <g

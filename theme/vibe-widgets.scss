@@ -205,7 +205,7 @@ $code-block-font-size: $floor !default;
 // queries slide holds 27 in a 520px one.
 .reveal .sqlblock      { font-size: 26px; padding: 10px 14px; }
 .reveal .sqlblock code { font-size: 26px; padding: 0; }
-.reveal .qgrid .sqlblock      { font-size: 24px; padding: 9px 12px; }
+.reveal .qgrid .sqlblock      { font-size: 24px; padding: 7px 12px; }
 .reveal .qgrid .sqlblock code { font-size: 24px; padding: 0; }
 
 .sqlblock {
@@ -230,7 +230,7 @@ $code-block-font-size: $floor !default;
     color: #cfcabd;
     font-family: $font-family-monospace;
     font-weight: 500;
-    line-height: 1.4;
+    line-height: 1.32;
     white-space: pre;
   }
 
@@ -279,12 +279,61 @@ $code-block-font-size: $floor !default;
 $small-w: 352px; $small-h: 400px;   // the trio/scatter widgets
 $wide-w:  814px; $wide-h:  548px;   // the map + panel widgets
 
+// The "the interaction is the query" row: a wide window onto the live widget,
+// scaled up so the marks read, rather than a legible-but-tiny whole-widget
+// thumbnail. The frame crops what does not fit.
+.widget-wrap.crop-q {
+  width: 300px;
+  height: 200px;
+  flex: none;
+  iframe { width: 352px; height: 400px; transform: scale(0.85); transform-origin: top left; }
+}
+
 .widget-wrap.sm-35  { @include scaled($small-w, $small-h, 0.35); }
 .widget-wrap.sm-45  { @include scaled($small-w, $small-h, 0.45); }
 .widget-wrap.sm-90  { @include scaled($small-w, $small-h, 0.90); }
 .widget-wrap.sm-120 { @include scaled($small-w, $small-h, 1.20); }
 .widget-wrap.wd-46  { @include scaled($wide-w,  $wide-h,  0.46); }
 .widget-wrap.wd-92  { @include scaled($wide-w,  $wide-h,  0.92); }
+
+// ------------------------------------------- the three data patterns, as a --
+// chip row under the title, so the chart underneath keeps its full width
+.railrow {
+  display: flex;
+  gap: 0.7rem;
+  margin-bottom: 0.85rem;
+}
+.chip {
+  padding: 0.4rem 0.9rem;
+  background: $vw-bone-lift;
+  border: 2px solid $vw-ink;
+  border-left: 10px solid $vw-ink-faint;
+  box-shadow: 3px 3px 0 $vw-ink;
+  font-size: $floor;
+  font-weight: 700;
+  line-height: 1.2;
+  opacity: 0.34;
+  transition: opacity .2s ease, box-shadow .2s ease, transform .2s ease;
+}
+.chip.s-param  { border-left-color: $vw-blue; }
+.chip.s-struct { border-left-color: $vw-green; }
+.chip.s-aug    { border-left-color: $vw-accent-deep; }
+.chip.is-live {
+  opacity: 1;
+  box-shadow: 5px 5px 0 $vw-ink;
+  transform: translate(-1px, -1px);
+}
+.chip.s-param.is-live  { color: $vw-blue; }
+.chip.s-struct.is-live { color: $vw-green; }
+.chip.s-aug.is-live    { color: $vw-accent-deep; }
+
+// the chart, then its query beside it
+.cols.c-sql {
+  grid-template-columns: 755px minmax(0, 1fr);
+  align-items: start;
+  gap: 1.4rem;
+}
+.sqlpane .sqlblock { margin: 0; }
 
 // ---------------------------------------------------------- the loop rail --
 .loop-rail { display: flex; flex-direction: column; gap: 0.5rem; min-width: 0; }
@@ -765,7 +814,7 @@ $wide-w:  814px; $wide-h:  548px;   // the map + panel widgets
   grid-template-columns: minmax(0, 0.95fr) 520px minmax(0, 0.62fr);
   align-items: center;
   column-gap: 1.25rem;
-  row-gap: 0.5rem;
+  row-gap: 0.28rem;
 }
 .qgrid > p:first-child {          // the three column headings share one <p>
   display: contents;

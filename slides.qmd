@@ -127,7 +127,7 @@ format:
         font-size="24" font-weight="700" fill="#ffffff">Interactive</text>
   <text x="185" y="190" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
         font-size="24" font-weight="700" fill="#ffffff">Vis</text>
-  <text x="382" y="180" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
+  <text x="366" y="180" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
         font-size="24" font-weight="700" fill="#1a1a1a">Questions</text>
   <circle cx="215" cy="140" r="12" fill="#6b3fa0" stroke="#1a1a1a" stroke-width="3"/>
   <g>
@@ -277,7 +277,7 @@ format:
 :::
 :::
 
-::: {.zoo-link}
+::: {.zoo-link .fragment data-fragment-index="8"}
 The rest of the zoo: [vis-society.github.io/lectures/interaction-zoo](https://vis-society.github.io/lectures/interaction-zoo.html)
 :::
 
@@ -367,54 +367,72 @@ The rest of the zoo: [vis-society.github.io/lectures/interaction-zoo](https://vi
 ::: {.qgrid}
 [Question]{.qhead} [Query]{.qhead} [Answer]{.qhead}
 
-::: {.qrow .fragment data-fragment-index="1"}
+::: {.qrow}
+::: {.fragment data-fragment-index="1"}
 [“what donut shop is closest to me?”]{.qq}
+:::
 
 ```{=html}
-<pre class="sqlblock"><code><span class="kw">SELECT</span> <span class="sel">name</span>, <span class="tx">dist</span>(shop, me)
+<pre class="sqlblock fragment" data-fragment-index="2"><code><span class="kw">SELECT</span> <span class="sel">name</span>, <span class="sel">dist</span>(shop, me)
 <span class="kw">FROM</span> shops
-<span class="tx">ORDER BY</span> dist <span class="tx">LIMIT</span> 1</code></pre>
+<span class="tx">ORDER BY</span> <span class="sel">dist</span> <span class="tx">LIMIT</span> 1</code></pre>
 ```
 
+::: {.fragment data-fragment-index="3"}
 [Bagby Rings]{.qa} [0.35 mi]{.qau}
 :::
-
-::: {.qrow .fragment data-fragment-index="2"}
-[“what’s the shop on Westheimer and Dunlavy?”]{.qq}
-
-```{=html}
-<pre class="sqlblock"><code><span class="kw">SELECT</span> <span class="sel">name</span>
-<span class="kw">FROM</span> shops
-<span class="tx">WHERE</span> corner = :corner</code></pre>
-```
-
-[Westheimer Crullers]{.qa}
 :::
 
-::: {.qrow .fragment data-fragment-index="3"}
-[“what are the average weekend waits in the Heights?”]{.qq}
+::: {.qrow}
+::: {.fragment data-fragment-index="4"}
+[“what’s the shop on Westheimer and Dunlavy?”]{.qq}
+:::
 
 ```{=html}
-<pre class="sqlblock"><code><span class="kw">SELECT</span> <span class="tx">AVG</span>(<span class="sel">weekend_wait</span>)
+<pre class="sqlblock fragment" data-fragment-index="4"><code><span class="kw">SELECT</span> <span class="sel">name</span>
+<span class="kw">FROM</span> shops
+<span class="tx">WHERE</span> <span class="sel">address</span> =
+  'Westheimer &amp; Dunlavy'</code></pre>
+```
+
+::: {.fragment data-fragment-index="4"}
+[Westheimer Crullers]{.qa}
+:::
+:::
+
+::: {.qrow}
+::: {.fragment data-fragment-index="5"}
+[“what are the average weekend waits in the Heights?”]{.qq}
+:::
+
+```{=html}
+<pre class="sqlblock fragment" data-fragment-index="5"><code><span class="kw">SELECT</span> <span class="hl"><span class="tx">AVG</span></span>(<span class="sel">weekend_wait</span>)
 <span class="kw">FROM</span> shops
 <span class="tx">WHERE</span> neighborhood = :hood</code></pre>
 ```
 
+::: {.fragment data-fragment-index="5"}
 [28.3 min]{.qa}
 :::
+:::
 
-::: {.qrow .qrow-live .fragment data-fragment-index="4"}
+::: {.qrow .qrow-live}
+::: {.fragment data-fragment-index="6"}
 [?]{.qmark}
+:::
 
+::: {.fragment data-fragment-index="6"}
 [?]{.qmark}
+:::
 
-::: {.widget-wrap .sm-45}
+::: {.fragment data-fragment-index="6"}
+::: {.widget-wrap .crop-q}
 <iframe data-src="widgets/in_center.html"
         title="A selection: the question nobody typed"></iframe>
 :::
 :::
 :::
-
+:::
 
 ## Interactive visualizations are SQL queries {data-menu-title="1 · Single Selection"}
 
@@ -422,29 +440,36 @@ The rest of the zoo: [vis-society.github.io/lectures/interaction-zoo](https://vi
 <span class="dot s-data is-covered"></span><span class="dot s-visuals"></span><span class="dot s-inputs"></span><span class="lbl">DATA</span>
 :::
 
-::: {.cols .c-13}
-::: {.loop-rail}
-::: {.stage-row .s-param .is-live}
-::: {.bar}
+::: {.railrow}
+::: {.chip .s-param .is-live}
+Single Selection
 :::
-#### Single Selection
+
+::: {.chip .s-struct}
+Multi-Selection
 :::
+
+::: {.chip .s-aug}
+Selection as Key
+:::
+:::
+
+::: {.cols .c-sql}
+::: {.widget-wrap .wd-92}
+<iframe data-src="widgets/parameterize.html"
+        title="Single selection: move the center, set the radius"></iframe>
+:::
+
+::: {.sqlpane .fragment data-fragment-index="1"}
 
 ```{=html}
 <pre class="sqlblock"><code><span class="kw">SELECT</span> <span class="sel">*</span>
 <span class="kw">FROM</span> shops
 <span class="hl"><span class="tx">WHERE</span> <span class="tx">dist</span>(shop,me) &lt; r</span></code></pre>
 ```
-:::
 
-::: {}
-::: {.widget-wrap .wd-92}
-<iframe data-src="widgets/parameterize.html"
-        title="Single selection: move the center, set the radius"></iframe>
 :::
 :::
-:::
-
 
 ## Interactive visualizations are SQL queries {data-menu-title="2 · Multi-Selection"}
 
@@ -452,19 +477,27 @@ The rest of the zoo: [vis-society.github.io/lectures/interaction-zoo](https://vi
 <span class="dot s-data is-covered"></span><span class="dot s-visuals"></span><span class="dot s-inputs"></span><span class="lbl">DATA</span>
 :::
 
-::: {.cols .c-13}
-::: {.loop-rail}
-::: {.stage-row .s-param .is-dim}
-::: {.bar}
-:::
-#### Single Selection
+::: {.railrow}
+::: {.chip .s-param}
+Single Selection
 :::
 
-::: {.stage-row .s-struct .is-live}
-::: {.bar}
+::: {.chip .s-struct .is-live}
+Multi-Selection
 :::
-#### Multi-Selection
+
+::: {.chip .s-aug}
+Selection as Key
 :::
+:::
+
+::: {.cols .c-sql}
+::: {.widget-wrap .wd-92}
+<iframe data-src="widgets/structure.html"
+        title="Multi-selection: brush shops into two groups and compare them"></iframe>
+:::
+
+::: {.sqlpane .fragment data-fragment-index="1"}
 
 ```{=html}
 <pre class="sqlblock"><code><span class="kw">SELECT</span> <span class="sel">grp</span>, <span class="tx">AVG</span>(<span class="sel">wait</span>)
@@ -472,16 +505,9 @@ The rest of the zoo: [vis-society.github.io/lectures/interaction-zoo](https://vi
 <span class="tx">WHERE</span> grp <span class="tx">IS NOT NULL</span>
 <span class="hl"><span class="tx">GROUP BY</span> grp</span></code></pre>
 ```
-:::
 
-::: {}
-::: {.widget-wrap .wd-92}
-<iframe data-src="widgets/structure.html"
-        title="Multi-selection: brush shops into two groups and compare them"></iframe>
 :::
 :::
-:::
-
 
 ## Interactive visualizations are SQL queries {data-menu-title="3 · Selection as Key"}
 
@@ -489,25 +515,27 @@ The rest of the zoo: [vis-society.github.io/lectures/interaction-zoo](https://vi
 <span class="dot s-data is-covered"></span><span class="dot s-visuals"></span><span class="dot s-inputs"></span><span class="lbl">DATA</span>
 :::
 
-::: {.cols .c-13}
-::: {.loop-rail}
-::: {.stage-row .s-param .is-dim}
-::: {.bar}
-:::
-#### Single Selection
+::: {.railrow}
+::: {.chip .s-param}
+Single Selection
 :::
 
-::: {.stage-row .s-struct .is-dim}
-::: {.bar}
-:::
-#### Multi-Selection
+::: {.chip .s-struct}
+Multi-Selection
 :::
 
-::: {.stage-row .s-aug .is-live}
-::: {.bar}
+::: {.chip .s-aug .is-live}
+Selection as Key
 :::
-#### Selection as Key
 :::
+
+::: {.cols .c-sql}
+::: {.widget-wrap .wd-92}
+<iframe data-src="widgets/augment.html"
+        title="Selection as key: click a shop to join in its reviews"></iframe>
+:::
+
+::: {.sqlpane .fragment data-fragment-index="1"}
 
 ```{=html}
 <pre class="sqlblock"><code><span class="kw">SELECT</span> <span class="sel">s.name</span>, <span class="sel">r.text</span>
@@ -516,16 +544,9 @@ The rest of the zoo: [vis-society.github.io/lectures/interaction-zoo](https://vi
   <span class="tx">USING</span> (shop_id)</span>
 <span class="tx">WHERE</span> s.shop_id = :shop</code></pre>
 ```
-:::
 
-::: {}
-::: {.widget-wrap .wd-92}
-<iframe data-src="widgets/augment.html"
-        title="Selection as key: click a shop to join in its reviews"></iframe>
 :::
 :::
-:::
-
 
 ## Treat Interactions like Data Queries {data-menu-title="Principle · Data"}
 
