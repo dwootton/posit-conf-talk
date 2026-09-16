@@ -1,0 +1,81 @@
+shop_id,review_id,reviewer,stars,date,text
+H001,H001-1,James C.,5,2026-09-04,The tres leches glazed sold me. Genuinely great texture.
+H001,H001-2,Marcus B.,4,2026-02-14,"Still warm when I got there, worth the drive."
+H002,H002-1,Carmen B.,4,2026-02-08,"Glaze was perfect, not too sweet. Will be back."
+H002,H002-2,Nate B.,4,2026-04-02,"Still warm when I got there, worth the drive."
+H003,H003-1,Carmen E.,4,2026-09-04,Small shop but the quality is way above average.
+H003,H003-2,Alex G.,4,2026-06-04,"Best kolache-style sausage roll in this part of town, hands down."
+H003,H003-3,James G.,4,2026-08-22,"Glaze was perfect, not too sweet. Will be back."
+H004,H004-1,Jordan R.,5,2026-06-10,"Ordered a dozen for the office, gone in ten minutes."
+H004,H004-2,Lena C.,4,2026-05-17,"Best pumpkin spice cruller in this part of town, hands down."
+H004,H004-3,Jordan K.,5,2026-02-04,"Ordered a dozen for the office, gone in ten minutes."
+H005,H005-1,Devon S.,4,2026-07-02,"Ordered a dozen for the office, gone in ten minutes."
+H005,H005-2,Tyler L.,5,2026-06-20,"Glaze was perfect, not too sweet. Will be back."
+H005,H005-3,Priya C.,4,2026-05-16,Consistent every time I've gone. That counts for a lot.
+H006,H006-1,Sofia R.,4,2026-05-23,"Still warm when I got there, worth the drive."
+H006,H006-2,Maria R.,4,2026-06-06,"Ordered a dozen for the office, gone in ten minutes."
+H006,H006-3,James G.,4,2026-05-05,Consistent every time I've gone. That counts for a lot.
+H007,H007-1,Wei C.,4,2026-03-15,The maple bacon bar sold me. Genuinely great texture.
+H007,H007-2,Devon P.,4,2026-09-09,Small shop but the quality is way above average.
+H007,H007-3,Nate H.,5,2026-03-03,"Ordered a dozen for the office, gone in ten minutes."
+H008,H008-1,Maria S.,4,2026-03-09,"Friendly staff, fast line even on a Saturday."
+H008,H008-2,Carmen W.,4,2026-06-20,"Best cafe con leche cruller in this part of town, hands down."
+H009,H009-1,James R.,5,2026-09-13,"Best pecan praline in this part of town, hands down."
+H009,H009-2,Alex S.,5,2026-07-02,The pecan praline sold me. Genuinely great texture.
+H009,H009-3,Jordan F.,4,2026-02-11,"Friendly staff, fast line even on a Saturday."
+H010,H010-1,Devon W.,4,2026-02-12,"Still warm when I got there, worth the drive."
+H010,H010-2,Marcus N.,4,2026-03-21,"Glaze was perfect, not too sweet. Will be back."
+H010,H010-3,Aisha S.,4,2026-02-04,"Ordered a dozen for the office, gone in ten minutes."
+H011,H011-1,Wei S.,4,2026-05-03,Consistent every time I've gone. That counts for a lot.
+H011,H011-2,Omar S.,4,2026-03-17,"Ordered a dozen for the office, gone in ten minutes."
+H012,H012-1,Devon W.,4,2026-01-25,"Ordered a dozen for the office, gone in ten minutes."
+H012,H012-2,Omar T.,4,2026-06-06,"Glaze was perfect, not too sweet. Will be back."
+H013,H013-1,Lena G.,4,2026-04-27,"Ordered a dozen for the office, gone in ten minutes."
+H013,H013-2,Marcus T.,4,2026-08-12,"Friendly staff, fast line even on a Saturday."
+H014,H014-1,Omar S.,4,2026-05-07,"Still warm when I got there, worth the drive."
+H014,H014-2,Jordan M.,5,2026-06-03,"Ordered a dozen for the office, gone in ten minutes."
+H014,H014-3,Wei G.,4,2026-06-07,"Friendly staff, fast line even on a Saturday."
+H015,H015-1,Wei M.,5,2026-02-27,"Still warm when I got there, worth the drive."
+H015,H015-2,Marcus S.,5,2026-03-14,The strawberry sprinkle sold me. Genuinely great texture.
+H016,H016-1,Jordan N.,4,2026-02-24,The pumpkin spice cake sold me. Genuinely great texture.
+H016,H016-2,Maria E.,4,2026-08-26,"Best pumpkin spice cake in this part of town, hands down."
+H016,H016-3,Aisha E.,4,2026-09-18,Consistent every time I've gone. That counts for a lot.
+H017,H017-1,Devon P.,4,2026-04-27,"Glaze was perfect, not too sweet. Will be back."
+H017,H017-2,Omar G.,4,2026-05-17,"Still warm when I got there, worth the drive."
+H018,H018-1,Omar W.,5,2026-07-27,"Ordered a dozen for the office, gone in ten minutes."
+H018,H018-2,Jordan T.,4,2026-07-27,"Ordered a dozen for the office, gone in ten minutes."
+H019,H019-1,Maria R.,4,2026-03-20,"Best kolache-style sausage roll in this part of town, hands down."
+H019,H019-2,Grace E.,4,2026-08-20,"Best kolache-style sausage roll in this part of town, hands down."
+H019,H019-3,Tyler T.,4,2026-09-18,"Still warm when I got there, worth the drive."
+H020,H020-1,James H.,5,2026-04-09,"Glaze was perfect, not too sweet. Will be back."
+H020,H020-2,Jordan W.,4,2026-01-25,"Glaze was perfect, not too sweet. Will be back."
+H021,H021-1,Omar R.,4,2026-09-18,"Friendly staff, fast line even on a Saturday."
+H021,H021-2,Omar W.,5,2026-04-27,"Friendly staff, fast line even on a Saturday."
+H022,H022-1,Nate R.,4,2026-06-03,"Glaze was perfect, not too sweet. Will be back."
+H022,H022-2,Priya G.,4,2026-05-26,The apple fritter sold me. Genuinely great texture.
+H023,H023-1,Aisha E.,4,2026-05-05,"Best maple bacon bar in this part of town, hands down."
+H023,H023-2,Alex N.,4,2026-08-06,"Friendly staff, fast line even on a Saturday."
+H024,H024-1,Carmen T.,5,2026-07-11,"Best cafe con leche cruller in this part of town, hands down."
+H024,H024-2,Tyler C.,4,2026-06-01,"Ordered a dozen for the office, gone in ten minutes."
+H024,H024-3,Jordan A.,4,2026-07-11,Consistent every time I've gone. That counts for a lot.
+H025,H025-1,Alex H.,4,2026-02-03,"Glaze was perfect, not too sweet. Will be back."
+H025,H025-2,Grace J.,4,2026-03-27,"Still warm when I got there, worth the drive."
+H025,H025-3,Nate E.,4,2026-09-17,Small shop but the quality is way above average.
+H026,H026-1,Priya J.,4,2026-01-26,"Ordered a dozen for the office, gone in ten minutes."
+H026,H026-2,Priya J.,4,2026-01-21,The lemon poppyseed sold me. Genuinely great texture.
+H026,H026-3,Priya H.,4,2026-02-09,Small shop but the quality is way above average.
+H027,H027-1,Carmen J.,5,2026-03-02,"Ordered a dozen for the office, gone in ten minutes."
+H027,H027-2,Alex F.,5,2026-05-02,"Friendly staff, fast line even on a Saturday."
+H028,H028-1,Sofia T.,4,2026-04-10,Small shop but the quality is way above average.
+H028,H028-2,Omar M.,4,2026-01-09,"Best cinnamon twist in this part of town, hands down."
+H029,H029-1,Wei H.,4,2026-08-04,"Friendly staff, fast line even on a Saturday."
+H029,H029-2,Wei W.,5,2026-07-17,The chocolate long john sold me. Genuinely great texture.
+H030,H030-1,Tyler G.,4,2026-03-13,"Friendly staff, fast line even on a Saturday."
+H030,H030-2,Devon A.,5,2026-02-21,"Still warm when I got there, worth the drive."
+H031,H031-1,Grace B.,5,2026-02-22,The strawberry sprinkle sold me. Genuinely great texture.
+H031,H031-2,Lena K.,5,2026-01-15,Small shop but the quality is way above average.
+H031,H031-3,Jordan A.,4,2026-05-12,Small shop but the quality is way above average.
+H032,H032-1,Lena B.,4,2026-05-07,"Ordered a dozen for the office, gone in ten minutes."
+H032,H032-2,Tyler N.,4,2026-02-16,"Still warm when I got there, worth the drive."
+H033,H033-1,Lena T.,4,2026-01-03,"Friendly staff, fast line even on a Saturday."
+H033,H033-2,Devon N.,4,2026-01-13,"Glaze was perfect, not too sweet. Will be back."

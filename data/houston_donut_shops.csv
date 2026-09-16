@@ -1,0 +1,34 @@
+shop_id,name,neighborhood,latitude,longitude,rating,review_count,price_level,weekday_wait_min,weekend_wait_min,pumpkin_spice,open_late,signature_donut
+H001,Montrose Glaze Co,Montrose,29.743,-95.3905,4.7,420,2,18,27,False,False,tres leches glazed
+H002,Westheimer Crullers,Montrose,29.7428,-95.4012,4.4,1614,2,11,19,True,True,coconut cake
+H003,Taft Street Sinkers,Montrose,29.7508,-95.3948,4.2,1073,1,9,14,False,False,kolache-style sausage roll
+H004,Heights Hole Co,The Heights,29.7902,-95.398,4.8,988,2,24,38,True,False,pumpkin spice cruller
+H005,Yale Street Dough,The Heights,29.7995,-95.398,4.5,1388,2,16,26,False,False,blueberry cake
+H006,White Oak Fritters,The Heights,29.7828,-95.4055,4.3,569,1,13,21,False,True,apple fritter
+H007,Bayou Bear Claw,Downtown,29.7589,-95.3677,4.6,1501,3,21,31,False,False,maple bacon bar
+H008,Main Street Sinkers,Downtown,29.752,-95.366,4.1,1221,2,12,17,False,True,cafe con leche cruller
+H009,Buffalo Bayou Beignet,Downtown,29.762,-95.377,4.9,583,3,29,44,False,False,pecan praline
+H010,Midtown Powder,Midtown,29.7405,-95.376,4.5,1473,2,17,25,False,False,lemon poppyseed
+H011,Bagby Rings,Midtown,29.746,-95.379,4.0,352,1,8,13,False,False,honey glazed
+H012,Rice Village Raised,Rice Village,29.716,-95.416,4.6,633,2,20,30,False,False,cinnamon twist
+H013,Kirby Kruller,Upper Kirby,29.735,-95.418,4.4,1257,2,14,22,False,True,chocolate long john
+H014,EaDo Old Fashioned,EaDo,29.749,-95.348,4.7,1271,2,22,33,False,False,brown butter old-fashioned
+H015,Navigation Glaze,Second Ward,29.753,-95.33,4.8,772,1,26,39,False,False,strawberry sprinkle
+H016,Museum District Donuts,Museum District,29.725,-95.39,4.3,416,2,15,23,True,False,pumpkin spice cake
+H017,Hermann Park Fritters,Museum District,29.718,-95.389,4.1,1350,1,10,16,False,False,tres leches glazed
+H018,Third Ward Twist,Third Ward,29.728,-95.36,4.5,1794,1,19,28,True,False,coconut cake
+H019,Almeda Apple Fritter,Third Ward,29.7135,-95.366,4.2,1829,1,12,18,False,False,kolache-style sausage roll
+H020,Garden Oaks Glazery,Garden Oaks,29.818,-95.413,4.4,237,2,13,20,True,True,pumpkin spice cruller
+H021,Shepherd Sprinkle,Washington Ave,29.7715,-95.4105,4.6,434,2,23,34,True,False,blueberry cake
+H022,Washington Dough Club,Washington Ave,29.7688,-95.3985,4.3,1693,2,11,18,True,False,apple fritter
+H023,Spring Branch Sugar,Spring Branch,29.8,-95.49,4.0,871,1,7,11,False,True,maple bacon bar
+H024,Galleria Gold Ring,Galleria,29.74,-95.465,4.5,1690,3,25,36,False,False,cafe con leche cruller
+H025,Bellaire Buttermilk,Bellaire,29.705,-95.459,4.4,870,2,15,23,False,False,pecan praline
+H026,Meyerland Maple Bar,Meyerland,29.69,-95.46,4.2,984,1,10,15,False,False,lemon poppyseed
+H027,Gulfton Glazed,Gulfton,29.715,-95.49,4.7,653,1,18,27,False,False,honey glazed
+H028,Sharpstown Sinker Shop,Sharpstown,29.7,-95.52,4.1,884,1,6,10,False,False,cinnamon twist
+H029,Near Northside Nibble,Near Northside,29.792,-95.356,4.6,636,1,20,29,True,True,chocolate long john
+H030,Denver Harbor Dozen,Denver Harbor,29.775,-95.305,4.3,1167,1,9,14,False,False,brown butter old-fashioned
+H031,Sunnyside Sugar Ring,Sunnyside,29.665,-95.37,4.5,949,1,12,19,False,False,strawberry sprinkle
+H032,Alief Apple Ring,Alief,29.71,-95.575,4.2,594,1,8,12,True,False,pumpkin spice cake
+H033,Bayou City Original,Downtown,29.7565,-95.362,4.6,5600,2,29,44,False,True,honey glazed

@@ -1,0 +1,12 @@
+{
+  "bbox": {
+    "lon0": -95.615,
+    "lat0": 29.6,
+    "lon1": -95.255,
+    "lat1": 29.88
+  },
+  "width": 1049,
+  "height": 939,
+  "note": "corners: NW=[lon0,lat1], SE=[lon1,lat0]. Project those two points with the SAME projection used for data marks to place this image with an <image> element -- do not stretch or refit independently.",
+  "attribution": "\u00a9 OpenStreetMap contributors (baked into the image)"
+}

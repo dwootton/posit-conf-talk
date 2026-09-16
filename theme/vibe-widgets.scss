@@ -1,0 +1,614 @@
+/*-- scss:defaults --*/
+
+// ===========================================================================
+// vibe-widgets — a reveal.js theme built from the vibe-widget library's own
+// built-in "vibe-widgets" theme description and the tokens on vibewidget.dev.
+//   bone #F2F0E9 · ink #1A1A1A · accent #F97316 / #EA580C
+//   Space Grotesk (display) + JetBrains Mono (data)
+//   2px borders, hard offset shadows, zero blur
+// ===========================================================================
+
+@import "fonts";
+
+$vw-bone:        #f2f0e9 !default;
+$vw-bone-lift:   #fbfaf6 !default;
+$vw-ink:         #1a1a1a !default;
+$vw-ink-soft:    #475569 !default;
+$vw-ink-faint:   #94a3b8 !default;
+$vw-accent:      #f97316 !default;
+$vw-accent-deep: #ea580c !default;
+$vw-blue:        #3f8bdb !default;
+$vw-green:       #478d4b !default;
+$vw-night:       #080a0c !default;
+
+$font-family-sans-serif: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif !default;
+$font-family-monospace:  'JetBrains Mono', ui-monospace, SFMono-Regular, monospace !default;
+
+$body-bg:    $vw-bone !default;
+$body-color: $vw-ink !default;
+$link-color: $vw-accent-deep !default;
+$link-color-hover: $vw-accent !default;
+$selection-bg: $vw-accent !default;
+$selection-color: #fff !default;
+
+$presentation-font-size-root: 30px !default;
+$presentation-heading-font: $font-family-sans-serif !default;
+$presentation-heading-color: $vw-ink !default;
+$presentation-heading-font-weight: 700 !default;
+$presentation-h1-font-size: 2.05em !default;
+$presentation-h2-font-size: 1.42em !default;
+$presentation-h3-font-size: 1.08em !default;
+$presentation-line-height: 1.35 !default;
+
+$code-block-font-size: 0.52em !default;
+
+/*-- scss:rules --*/
+
+.reveal {
+  font-family: $font-family-sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.reveal .slides { text-align: left; }
+.reveal .slides section { height: 100%; }
+
+.reveal h1, .reveal h2, .reveal h3 {
+  letter-spacing: -0.028em;
+  text-transform: none;
+  margin-bottom: 0.35em;
+}
+
+.reveal h2 {
+  border-bottom: 3px solid $vw-ink;
+  padding-bottom: 0.18em;
+  margin-bottom: 0.5em;
+}
+.reveal .no-rule h2 { border-bottom: 0; padding-bottom: 0; }
+
+// ---------------------------------------------------------------- accents --
+.accent   { color: $vw-accent-deep; }
+.muted    { color: $vw-ink-soft; }
+.mono     { font-family: $font-family-monospace; }
+
+.eyebrow {
+  font-family: $font-family-monospace;
+  font-size: 0.42em;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: $vw-accent-deep;
+  display: block;
+  margin-bottom: 0.7em;
+}
+
+.rule-accent {
+  width: 88px; height: 6px;
+  background: $vw-accent;
+  border: 2px solid $vw-ink;
+  margin: 0 0 1rem;
+}
+
+// ------------------------------------------------------------------ title --
+.reveal .title-slide {
+  display: grid;
+  grid-template-columns: 1.05fr 0.62fr;
+  height: 100%;
+  align-items: stretch;
+  gap: 0;
+}
+.reveal .title-slide .title-copy {
+  align-self: center;
+  padding-right: 1.2rem;
+}
+// no photo column: one centered, left-aligned block instead of a cramped 63% strip
+.reveal .title-slide.title-slide--noart {
+  grid-template-columns: 1fr;
+  justify-items: start;
+}
+.reveal .title-slide.title-slide--noart .title-copy {
+  padding-right: 0;
+  max-width: 44em;
+}
+// raw <h1> is used inside slides so Quarto doesn't split them into new sections
+.reveal h1.big-title {
+  font-size: 3.05em;
+  line-height: 0.96;
+  letter-spacing: -0.032em;
+  margin: 0 0 0.7rem;
+}
+// the `##` that carries each slide's attributes is intentionally empty here
+.reveal .no-rule h2:empty { display: none; }
+.reveal .title-slide h1 { line-height: 1.0; margin: 0 0 0.4rem; }
+.reveal .title-slide .subtitle {
+  font-size: 0.92em;
+  color: $vw-ink-soft;
+  font-weight: 500;
+  margin: 0;
+}
+.reveal .title-slide .byline {
+  font-family: $font-family-monospace;
+  font-size: 0.55em;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: $vw-ink-soft;
+  margin-top: 1.6rem;
+  padding-top: 0.7rem;
+  border-top: 2px solid $vw-ink;
+}
+.reveal .title-slide .title-art {
+  border: 3px solid $vw-ink;
+  box-shadow: 8px 8px 0 $vw-ink;
+  overflow: hidden;
+  align-self: center;
+  height: 78%;
+}
+// Quarto wraps images in <p>; that wrapper has to carry the height too,
+// otherwise object-fit has nothing to fit against and the photo letterboxes.
+.reveal .title-slide .title-art p { margin: 0; height: 100%; line-height: 0; display: block; }
+.reveal .title-slide .title-art img {
+  width: 100%; height: 100%; object-fit: cover; display: block; margin: 0;
+}
+
+// ------------------------------------------------------------------ cards --
+.vwcard {
+  background: $vw-bone-lift;
+  border: 2px solid $vw-ink;
+  box-shadow: 4px 4px 0 $vw-ink;
+  padding: 0.7rem 0.9rem;
+}
+
+.reveal pre.sourceCode, .reveal div.sourceCode {
+  background: $vw-night;
+  border: 2px solid $vw-ink;
+  border-left: 6px solid $vw-accent;
+  box-shadow: 4px 4px 0 $vw-ink;
+  border-radius: 0;
+  margin: 0;
+}
+.reveal pre code {
+  background: transparent;
+  color: #e7e3da;
+  font-family: $font-family-monospace;
+  font-size: 0.94em;
+  line-height: 1.45;
+  padding: 0.6em 0.8em;
+  max-height: none;
+  white-space: pre-wrap;
+  word-break: normal;
+  overflow-wrap: anywhere;
+}
+// the rail's code blocks sit under a stage row and must never clip
+.loop-rail .code-copy-outer-scaffold { margin-top: 0.55rem; }
+.loop-rail div.sourceCode { max-width: 100%; overflow: hidden; margin-top: 0.55rem; }
+.loop-rail pre.sourceCode { overflow: hidden; }
+.loop-rail pre code,
+.loop-rail pre code span {
+  font-size: 0.8em;
+  white-space: pre-wrap !important;
+  overflow-wrap: break-word;
+}
+.reveal .code-copy-button { display: none; }
+.reveal code { font-family: $font-family-monospace; }
+.reveal :not(pre) > code {
+  background: rgba(249, 115, 22, 0.13);
+  color: $vw-accent-deep;
+  padding: 0.08em 0.3em;
+  border-radius: 2px;
+}
+
+// ------------------------------------------------------- embedded widgets --
+.widget-wrap {
+  border: 3px solid $vw-ink;
+  box-shadow: 6px 6px 0 $vw-ink;
+  background: $vw-bone;
+  overflow: hidden;
+  width: 100%;
+}
+.widget-wrap iframe {
+  display: block;
+  width: 100%;
+  border: 0;
+  margin: 0;
+  background: $vw-bone;
+}
+.widget-cap {
+  font-family: $font-family-monospace;
+  font-size: 0.34em;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: $vw-ink-soft;
+  margin-top: 0.45rem;
+}
+.widget-cap .live {
+  color: #fff;
+  background: $vw-accent;
+  border: 2px solid $vw-ink;
+  padding: 1px 6px;
+  margin-right: 8px;
+}
+
+// ---------------------------------------------------------- the loop rail --
+.loop-rail { display: flex; flex-direction: column; gap: 0.55rem; }
+
+// NOTE: Quarto flattens an empty `::: {}` wrapper, so .bar / h4 / p land as
+// siblings. The grid is written to place them itself rather than assume nesting.
+.stage-row {
+  display: grid;
+  grid-template-columns: 14px minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  column-gap: 0.6rem;
+  row-gap: 0.1rem;
+  align-items: start;
+  background: $vw-bone-lift;
+  border: 2px solid $vw-ink;
+  box-shadow: 3px 3px 0 $vw-ink;
+  padding: 0.48rem 0.65rem;
+  transition: box-shadow .2s ease, transform .2s ease;
+}
+.stage-row .bar {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  width: 100%;
+  height: 100%;
+  min-height: 34px;
+  background: $vw-ink-faint;
+}
+.stage-row h4 {
+  grid-column: 2; grid-row: 1;
+  font-size: 0.5em;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+.stage-row p {
+  grid-column: 2; grid-row: 2;
+  font-size: 0.355em;
+  line-height: 1.35;
+  color: $vw-ink-soft;
+  margin: 0;
+}
+.stage-row.s-param  .bar { background: $vw-blue; }
+.stage-row.s-param  h4  { color: $vw-blue; }
+.stage-row.s-struct .bar { background: $vw-green; }
+.stage-row.s-struct h4  { color: $vw-green; }
+.stage-row.s-aug    .bar { background: $vw-accent-deep; }
+.stage-row.s-aug    h4  { color: $vw-accent-deep; }
+
+.stage-row.is-dim { opacity: 0.32; box-shadow: 2px 2px 0 $vw-ink-faint; }
+.stage-row.is-live { box-shadow: 5px 5px 0 $vw-ink; transform: translate(-1px, -1px); }
+
+// ------------------------------------------------------------ two-col grid --
+.cols { display: grid; gap: 1.1rem; align-items: center; }
+.cols.c-32 { grid-template-columns: 1.5fr 1fr; }
+.cols.c-13 { grid-template-columns: minmax(0, 0.82fr) minmax(0, 2.35fr); align-items: start; }
+.cols.c-11 { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.cols > div { min-width: 0; }
+
+.shot {
+  border: 3px solid $vw-ink;
+  box-shadow: 6px 6px 0 $vw-ink;
+  overflow: hidden;
+  background: #fff;
+}
+.shot img { display: block; width: 100%; margin: 0; }
+
+// two stacked screenshots that must together stay inside the slide
+.stack-two {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: 0.7rem;
+  height: 100%;
+  max-height: 560px;
+  min-height: 0;
+}
+.stack-two .shot { min-height: 0; overflow: hidden; display: flex; }
+.stack-two .shot p { margin: 0; width: 100%; min-height: 0; }
+.stack-two .shot img { height: 100%; width: 100%; object-fit: cover; object-position: top; }
+
+// ------------------------------------------------------------------ lists --
+.reveal ul { list-style: none; margin-left: 0; padding-left: 0; }
+.reveal ul li {
+  position: relative;
+  padding-left: 1.15em;
+  margin-bottom: 0.42em;
+}
+.reveal ul li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0.52em;
+  width: 9px; height: 9px;
+  background: $vw-accent;
+  border: 2px solid $vw-ink;
+}
+
+// ------------------------------------------------------------- footer/nav --
+.reveal .slide-number {
+  font-family: $font-family-monospace;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  background: $vw-bone-lift;
+  color: $vw-ink;
+  border: 2px solid $vw-ink;
+  box-shadow: 2px 2px 0 $vw-ink;
+  padding: 2px 8px;
+  right: 16px; bottom: 14px;
+}
+.reveal .footer {
+  font-family: $font-family-monospace;
+  font-size: 0.52rem !important;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: $vw-ink-faint;
+}
+.reveal .progress { color: $vw-accent; height: 5px; background: rgba(26,26,26,.14); }
+.reveal .controls { color: $vw-ink; }
+
+// centered chapter cards
+.chapter {
+  display: flex; flex-direction: column;
+  justify-content: center; height: 100%;
+}
+
+// ------------------------------------------------ hypotheses & their views --
+// a dot inside the hypothesis space and a card on the side share one colour
+.vwcard.hyp {
+  --hyp: #{$vw-accent-deep};
+  border-left: 12px solid var(--hyp);
+  display: flex;
+  align-items: center;
+  gap: 0.55em;
+}
+.vwcard.hyp::before {
+  content: "";
+  flex: none;
+  width: 0.5em; height: 0.5em;
+  border-radius: 999px;
+  background: var(--hyp);
+  border: 2px solid $vw-ink;
+}
+.reveal .slides section .fragment.hyp-dot { transition: opacity .25s ease; }
+
+// three live widgets across one slide, one per hypothesis
+.trio {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.1rem;
+  align-items: start;
+}
+.trio .trio-item { min-width: 0; }
+.trio .widget-wrap { box-shadow: 5px 5px 0 $vw-ink; }
+.trio .vwcard.hyp { margin-top: 0.8rem; box-shadow: 3px 3px 0 $vw-ink; padding: 0.4rem 0.7rem; }
+
+// ---------------------------------------------------- data + vis, merging --
+// slide "Overlap": two circles start apart and slide together into one on
+// click. They're visible from the start (override the default fragment
+// fade) -- only their position animates.
+.reveal .fragment.merge-scene { opacity: 1; visibility: visible; }
+.merge-a, .merge-b {
+  transition: transform 900ms cubic-bezier(.22, .68, .16, 1);
+}
+.merge-a { transform: translateX(-160px); }
+.merge-b { transform: translateX(160px); }
+.merge-scene.visible .merge-a,
+.merge-scene.visible .merge-b { transform: translateX(0); }
+
+// --------------------------------------------------- mini stage indicator --
+// a tiny horizontal echo of slide 7's DATA + VISUALS + INTERACTION circles,
+// pinned top-right from the loop's chapter divider onward -- a "which of the
+// three ingredients is this part of the talk about" section marker, not a
+// query-parameterization/structuring/augmentation tracker.
+.mini-stages {
+  position: absolute;
+  top: 20px;
+  right: 26px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  z-index: 20;
+}
+.mini-stages .dot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  border: 2px solid $vw-ink;
+  background: $vw-ink-faint;
+  filter: grayscale(1);
+  opacity: 0.4;
+  transition: opacity .2s ease, filter .2s ease;
+  font-family: $font-family-monospace;
+  font-size: 8px;
+  font-weight: 700;
+  color: $vw-ink;
+}
+.mini-stages .dot.s-data { background: #e8a33d; }
+.mini-stages .dot.s-visuals { background: #c2410c; color: #fff; }
+.mini-stages .dot.s-interaction { background: #eab308; }
+.mini-stages .dot.is-covered {
+  filter: none;
+  opacity: 1;
+}
+
+// -------------------------------------------------------- ask / see loop --
+#loop-ask, #loop-see { transition: fill .25s ease; }
+#loop-ask.is-bold, #loop-see.is-bold { fill: $vw-accent-deep !important; }
+
+.qa-answer {
+  margin-top: 0.4rem;
+  padding-top: 0.4rem;
+  border-top: 1px dashed $vw-ink-faint;
+}
+.qa-answer.force-hide { display: none; }
+
+// ---------------------------------------- a widget, shown at half size ----
+.widget-wrap.widget-scale-half {
+  width: 176px;
+  height: 200px;
+  flex: none;
+}
+.widget-wrap.widget-scale-half iframe {
+  width: 352px;
+  height: 400px;
+  transform: scale(0.5);
+  transform-origin: top left;
+}
+
+// ------------------------------------------- the interaction-effect zoo ----
+// five kinds of visual response to one interaction, each its own fragment so
+// the icons arrive one at a time.
+.taxo {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.85rem;
+  align-items: stretch;
+  // pushes the row down into the middle of the slide body; a margin here
+  // collapses against the section, padding does not.
+  padding-top: 76px;
+}
+.taxo-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1rem;
+  padding: 2rem 0.9rem 2.2rem;
+  background: $vw-bone-lift;
+  border: 2px solid $vw-ink;
+  box-shadow: 4px 4px 0 $vw-ink;
+}
+.taxo-item .ico { width: 128px; height: 128px; flex: none; }
+.taxo-item .nm {
+  display: block;
+  font-family: $font-family-monospace;
+  font-size: 0.55em;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.taxo-item .gl {
+  display: block;
+  font-size: 0.45em;
+  line-height: 1.35;
+  color: $vw-ink-soft;
+}
+// the one category the talk actually opens up
+.taxo-item.is-focus {
+  background: #fff3e6;
+  border-color: $vw-accent-deep;
+  box-shadow: 4px 4px 0 $vw-accent-deep;
+}
+.taxo-item.is-focus .nm { color: $vw-accent-deep; }
+
+// fragments that rise as they appear, instead of only fading
+.reveal .slides section .fragment.rise {
+  transform: translateY(16px);
+  transition: opacity .3s ease, transform .3s cubic-bezier(.22,.68,.16,1);
+}
+.reveal .slides section .fragment.rise.visible { transform: translateY(0); }
+
+.footnote {
+  margin-top: 1.2rem;
+  font-size: 0.4em;
+  color: $vw-ink-soft;
+}
+.footnote a { color: $vw-accent-deep; }
+
+// ------------------------------------- labelled trios (not hypotheses) -----
+// same three-across shape as the hypothesis trio, but each cell is captioned
+// with what it demonstrates rather than which hypothesis it answers.
+.trio .tcap {
+  margin-top: 0.75rem;
+  padding: 0.45rem 0.7rem;
+  background: $vw-bone-lift;
+  border: 2px solid $vw-ink;
+  border-left: 12px solid var(--hyp, #{$vw-accent-deep});
+  box-shadow: 3px 3px 0 $vw-ink;
+}
+.trio .tcap .nm {
+  display: block;
+  font-family: $font-family-monospace;
+  font-size: 0.4em;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--hyp, #{$vw-accent-deep});
+}
+.trio .tcap .gl {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.4em;
+  font-weight: 700;
+  line-height: 1.3;
+}
+// a small ordinal badge for the reification ladder
+.trio .tcap .rung {
+  float: right;
+  font-family: $font-family-monospace;
+  font-size: 0.42em;
+  font-weight: 700;
+  color: $vw-ink-soft;
+}
+
+// ------------------------------------------------- closing recap labels ----
+.recap-note {
+  margin-top: 0.5rem;
+  text-align: center;
+  font-size: 0.42em;
+  color: $vw-ink-soft;
+}
+
+// ---------------------------------------------------------------- fixes ----
+// Pandoc wraps the three dots in a <p>, and `.dot` is a block-level flex
+// container, so they stacked vertically instead of sitting in a row.
+.mini-stages > p {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+}
+
+// Same story inside the zoo and trio cards: the name and its gloss come out of
+// pandoc as sibling spans in one <p>, so they need to be stacked explicitly.
+.taxo-item > p {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  margin: 0;
+}
+.trio .tcap > p { margin: 0; }
+
+
+// ------------------------------------------- the equation, term by term ----
+// Chapter dividers show the whole DATA + VISUALS + INTERACTION equation and
+// grayscale every term except the one that chapter is about. The result
+// circle is never dimmed -- it is the goal, not one of the three stages.
+.eq-term.is-dim { filter: grayscale(1); }
+
+
+// --------------------------------- the hypothesis space, per trio cell -----
+// Slide 16 pairs each visual response with the slide-2 hypothesis space,
+// shrunk: the same three dots every time, a different one reached. Scoped to
+// `.with-hyp` so slide 19's captions (which float an ordinal) are untouched.
+.trio .tcap.with-hyp {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+.trio .tcap.with-hyp > p {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+.hyp-mini {
+  flex: none;
+  width: 52px;
+  height: 52px;
+}
