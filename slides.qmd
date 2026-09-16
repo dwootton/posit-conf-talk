@@ -18,46 +18,13 @@ format:
     progress: true
     hash: true
     center: false
+    # Every widget stays resident: several are embedded on two slides, and with
+    # preload off reveal blanks any iframe[data-src] the moment you leave its
+    # slide -- losing pre-staged state and re-loading on stage mid-fragment.
+    preload-iframes: true
+    view-distance: 30
     title-slide-attributes:
       data-visibility: hidden
-    include-in-header:
-      text: |
-        <script>
-        /* Pause off-screen widget iframes so only the visible demo animates. */
-        window.addEventListener('load', () => {
-          if (!window.Reveal) return;
-          Reveal.on('slidechanged', ev => {
-            document.querySelectorAll('.widget-wrap iframe').forEach(f => {
-              const onSlide = ev.currentSlide.contains(f);
-              if (onSlide && !f.src && f.dataset.src) f.src = f.dataset.src;
-            });
-          });
-
-          /* Slide 10 (the loop): bold ASK while a question is current, bold
-             SEE while its answer is current, and keep only the current
-             question's answer visible -- earlier answers hide again. */
-          function syncLoopUI(slide) {
-            if (!slide) return;
-            const steps = [...slide.querySelectorAll('.fragment[data-role]')];
-            if (!steps.length) return;
-            const visible = steps.filter(el => el.classList.contains('visible'));
-            const current = visible.length
-              ? visible.reduce((a, b) => (+a.dataset.fragmentIndex > +b.dataset.fragmentIndex ? a : b))
-              : null;
-            const askEl = slide.querySelector('#loop-ask');
-            const seeEl = slide.querySelector('#loop-see');
-            if (askEl) askEl.classList.toggle('is-bold', !!current && current.dataset.role === 'ask');
-            if (seeEl) seeEl.classList.toggle('is-bold', !!current && current.dataset.role === 'see');
-            slide.querySelectorAll('.qa-answer').forEach(a => {
-              const isCurrent = !!current && a.dataset.q === current.dataset.q && a.classList.contains('visible');
-              a.classList.toggle('force-hide', !isCurrent);
-            });
-          }
-          Reveal.on('fragmentshown', ev => syncLoopUI(Reveal.getCurrentSlide()));
-          Reveal.on('fragmenthidden', ev => syncLoopUI(Reveal.getCurrentSlide()));
-          Reveal.on('slidechanged', ev => syncLoopUI(ev.currentSlide));
-        });
-        </script>
 ---
 
 ## {.no-rule data-menu-title="Title"}
@@ -73,14 +40,25 @@ format:
 :::
 
 
-## Where should I get donuts in Houston? {data-menu-title="The question"}
+## {.no-rule .wall-slide data-menu-title="Golden age"}
+
+{{< include _wall.qmd >}}
+
+::: {.wall-copy .fragment data-fragment-index="1"}
+<h1 class="big-title">We are entering the golden age of interactive graphics</h1>
+:::
+
+
+## What is an effective interactive visualization? {data-menu-title="The question"}
 
 ::: {.cols .c-11 style="align-items:center"}
 ::: {}
-<svg viewBox="0 0 420 380" style="width:100%;max-height:465px">
+[Where should I get donuts in Houston?]{.lead-q}
+
+<svg viewBox="0 0 420 380" style="width:100%;max-height:400px">
   <circle cx="200" cy="190" r="150" fill="#e8a33d" stroke="#1a1a1a" stroke-width="3"/>
-  <text x="200" y="197" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-        font-size="27" font-weight="700" fill="#1a1a1a">Hypotheses</text>
+  <text x="200" y="199" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
+        font-size="30" font-weight="700" fill="#1a1a1a">Questions</text>
   <g class="fragment hyp-dot" data-fragment-index="1">
     <circle cx="150" cy="104" r="14" fill="#0f766e" stroke="#1a1a1a" stroke-width="3"/>
   </g>
@@ -94,504 +72,172 @@ format:
 :::
 
 ::: {}
-::: {.vwcard .hyp .fragment data-fragment-index="1" style="--hyp:#0f766e;margin-bottom:0.7rem"}
-[What about wait times?]{style="font-weight:700;font-size:0.62em"}
+::: {.vwcard .hyp .fragment data-fragment-index="1" style="--hyp:#0f766e;margin-bottom:0.9rem"}
+[What about wait times?]{.qtext}
 :::
-::: {.vwcard .hyp .fragment data-fragment-index="2" style="--hyp:#6b3fa0;margin-bottom:0.7rem"}
-[Well, where is close?]{style="font-weight:700;font-size:0.62em"}
+::: {.vwcard .hyp .fragment data-fragment-index="2" style="--hyp:#6b3fa0;margin-bottom:0.9rem"}
+[Well, where is close?]{.qtext}
 :::
 ::: {.vwcard .hyp .fragment data-fragment-index="3" style="--hyp:#9f2d1f"}
-[…but do they have pumpkin spice?]{style="font-weight:700;font-size:0.62em"}
+[…but do they have pumpkin spice?]{.qtext}
 :::
 :::
 :::
 
 
-## Principles for Effective Interactive Visualizations {data-menu-title="Vis approaches"}
+## What is an effective interactive visualization? {data-menu-title="Interactive, not effective"}
 
 ::: {.cols .c-11 style="align-items:center"}
 ::: {}
-<svg viewBox="0 0 520 340" style="width:100%;max-height:455px">
-  <circle cx="330" cy="170" r="135" fill="#e8a33d" stroke="#1a1a1a" stroke-width="3"/>
-  <text x="330" y="178" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-        font-size="24" font-weight="700" fill="#1a1a1a">Hypotheses</text>
-  <circle cx="120" cy="170" r="78" fill="#ea580c" stroke="#1a1a1a" stroke-width="3"/>
-  <text x="120" y="165" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-        font-size="15" font-weight="700" fill="#ffffff">Interactive</text>
-  <text x="120" y="184" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-        font-size="15" font-weight="700" fill="#ffffff">Vis</text>
-  <circle cx="245" cy="140" r="12" fill="#6b3fa0" stroke="#1a1a1a" stroke-width="3"/>
+<svg viewBox="0 0 520 340" style="width:100%;max-height:440px">
+  <circle cx="348" cy="170" r="135" fill="#e8a33d" stroke="#1a1a1a" stroke-width="3"/>
+  <text x="348" y="180" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
+        font-size="26" font-weight="700" fill="#1a1a1a">Questions</text>
+  <circle cx="100" cy="170" r="90" fill="#ea580c" stroke="#1a1a1a" stroke-width="3"/>
+  <text x="100" y="163" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
+        font-size="24" font-weight="700" fill="#ffffff">Interactive</text>
+  <text x="100" y="192" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
+        font-size="24" font-weight="700" fill="#ffffff">Vis</text>
+  <circle cx="262" cy="140" r="12" fill="#6b3fa0" stroke="#1a1a1a" stroke-width="3"/>
   <g>
-    <line x1="245" y1="112" x2="245" y2="126" stroke="#6b3fa0" stroke-width="2"/>
-    <rect x="157" y="82" width="176" height="30" fill="#fbfaf6"
+    <line x1="262" y1="104" x2="262" y2="126" stroke="#6b3fa0" stroke-width="2"/>
+    <rect x="140" y="62" width="244" height="42" fill="#fbfaf6"
           stroke="#6b3fa0" stroke-width="2"/>
-    <text x="245" y="103" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-          font-size="15" font-weight="700" fill="#6b3fa0">Well, where is close?</text>
+    <text x="262" y="91" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
+          font-size="24" font-weight="700" fill="#6b3fa0">Well, where is close?</text>
   </g>
 </svg>
 :::
 
 ::: {.widget-wrap style="max-width:352px;margin:0 auto"}
-<iframe data-src="widgets/orthogonal.html" height="400" loading="lazy"
-        title="Interactive, but does not answer the question"></iframe>
+<iframe data-src="widgets/orthogonal.html" height="400"
+        title="Interactive, but answers none of the questions"></iframe>
 :::
 :::
 
 
-## Principles for Effective Interactive Visualizations {data-menu-title="Vis approaches, closer"}
+## What is an effective interactive visualization? {data-menu-title="Effective"}
 
 ::: {.cols .c-11 style="align-items:center"}
 ::: {}
-<svg viewBox="0 0 520 340" style="width:100%;max-height:455px">
+<svg viewBox="0 0 520 340" style="width:100%;max-height:440px">
   <circle cx="300" cy="170" r="135" fill="#e8a33d" stroke="#1a1a1a" stroke-width="3"/>
   <circle cx="185" cy="170" r="118" fill="#ea580c" fill-opacity="0.92" stroke="#1a1a1a" stroke-width="3"/>
-  <text x="185" y="164" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-        font-size="19" font-weight="700" fill="#ffffff">Interactive</text>
-  <text x="185" y="187" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-        font-size="19" font-weight="700" fill="#ffffff">Vis</text>
-  <text x="378" y="177" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-        font-size="19" font-weight="700" fill="#1a1a1a">Hypotheses</text>
+  <text x="185" y="161" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
+        font-size="24" font-weight="700" fill="#ffffff">Interactive</text>
+  <text x="185" y="190" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
+        font-size="24" font-weight="700" fill="#ffffff">Vis</text>
+  <text x="382" y="180" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
+        font-size="24" font-weight="700" fill="#1a1a1a">Questions</text>
   <circle cx="215" cy="140" r="12" fill="#6b3fa0" stroke="#1a1a1a" stroke-width="3"/>
   <g>
-    <line x1="215" y1="112" x2="215" y2="126" stroke="#6b3fa0" stroke-width="2"/>
-    <rect x="127" y="82" width="176" height="30" fill="#fbfaf6"
+    <line x1="215" y1="104" x2="215" y2="126" stroke="#6b3fa0" stroke-width="2"/>
+    <rect x="93" y="62" width="244" height="42" fill="#fbfaf6"
           stroke="#6b3fa0" stroke-width="2"/>
-    <text x="215" y="103" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-          font-size="15" font-weight="700" fill="#6b3fa0">Well, where is close?</text>
+    <text x="215" y="91" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
+          font-size="24" font-weight="700" fill="#6b3fa0">Well, where is close?</text>
   </g>
 </svg>
 :::
 
 ::: {.widget-wrap style="max-width:352px;margin:0 auto"}
-<iframe data-src="widgets/close.html" height="400" loading="lazy"
-        title="Where is close? -- answers one of the hypotheses"></iframe>
+<iframe data-src="widgets/close.html" height="400"
+        title="Where is close? -- answers one of the questions"></iframe>
 :::
 :::
 
 
-## Different interaction techniques support different classes of questions {data-menu-title="Interaction supports questions"}
+## What is an effective interactive visualization? {data-menu-title="Three questions, three views"}
 
 ::: {.trio}
 ::: {.trio-item .fragment style="--hyp:#0f766e" data-fragment-index="1"}
 ::: {.widget-wrap}
-<iframe data-src="widgets/wait.html" height="400" loading="lazy"
+<iframe data-src="widgets/wait.html" height="400"
         title="What about wait times?"></iframe>
 :::
 ::: {.vwcard .hyp}
-[What about wait times?]{style="font-weight:700;font-size:0.42em"}
+[What about wait times?]{.qtext}
 :::
 :::
 
 ::: {.trio-item .fragment style="--hyp:#6b3fa0" data-fragment-index="2"}
 ::: {.widget-wrap}
-<iframe data-src="widgets/close.html" height="400" loading="lazy"
+<iframe data-src="widgets/close.html" height="400"
         title="Where is close?"></iframe>
 :::
 ::: {.vwcard .hyp}
-[Well, where is close?]{style="font-weight:700;font-size:0.42em"}
+[Well, where is close?]{.qtext}
 :::
 :::
 
 ::: {.trio-item .fragment style="--hyp:#9f2d1f" data-fragment-index="3"}
 ::: {.widget-wrap}
-<iframe data-src="widgets/spice.html" height="400" loading="lazy"
+<iframe data-src="widgets/spice.html" height="400"
         title="Do they have pumpkin spice?"></iframe>
 :::
 ::: {.vwcard .hyp}
-[…but do they have pumpkin spice?]{style="font-weight:700;font-size:0.42em"}
+[…but do they have pumpkin spice?]{.qtext}
 :::
 :::
 :::
 
 
-## Principles for Effective Interactive Visualizations {data-menu-title="Overlap"}
+## What is an effective interactive visualization? {data-menu-title="Overlap"}
 
 ::: {.chapter style="align-items:center"}
 <svg viewBox="0 0 760 400" style="width:88%;max-height:470px;margin:0 auto">
   <g class="merge-scene fragment" data-fragment-index="1">
     <g class="merge-a">
       <circle cx="365" cy="230" r="140" fill="#e8a33d" stroke="#1a1a1a" stroke-width="3"/>
-      <text x="365" y="238" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-            font-size="24" font-weight="700" fill="#1a1a1a">HYPOTHESES</text>
+      <text x="365" y="240" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
+            font-size="26" font-weight="700" fill="#1a1a1a">QUESTIONS</text>
     </g>
     <g class="merge-b">
       <circle cx="393" cy="230" r="136" fill="#ea580c" stroke="#1a1a1a" stroke-width="3"/>
       <text x="395" y="219" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-            font-size="23" font-weight="700" fill="#ffffff">Interactive</text>
-      <text x="395" y="248" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-            font-size="23" font-weight="700" fill="#ffffff">Visualization</text>
+            font-size="24" font-weight="700" fill="#ffffff">Interactive</text>
+      <text x="395" y="250" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
+            font-size="24" font-weight="700" fill="#ffffff">Visualization</text>
     </g>
   </g>
   <g class="fragment" data-fragment-index="2">
     <text x="379" y="62" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-          font-size="46" font-style="italic" font-weight="700" fill="#1a1a1a">Effective</text>
+          font-size="48" font-style="italic" font-weight="700" fill="#1a1a1a">Effective</text>
   </g>
 </svg>
 :::
 
 
-## Interactive visualizations can have 3 parts to answering a question {data-menu-title="The equation"}
-
-::: {.chapter style="align-items:center"}
-<svg viewBox="0 0 1160 290" style="width:100%;max-height:455px">
-  <g class="fragment" data-fragment-index="1">
-    <circle cx="112" cy="145" r="95" fill="#e8a33d" stroke="#1a1a1a" stroke-width="3"/>
-    <text x="112" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-          font-size="25" font-weight="700" fill="#1a1a1a">DATA</text>
-  </g>
-  <g class="fragment" data-fragment-index="2">
-    <text x="245" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-          font-size="40" font-weight="700" fill="#1a1a1a">+</text>
-    <circle cx="385" cy="145" r="100" fill="#c2410c" stroke="#1a1a1a" stroke-width="3"/>
-    <text x="385" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-          font-size="25" font-weight="700" fill="#ffffff">VISUALS</text>
-  </g>
-  <g class="fragment" data-fragment-index="3">
-    <text x="523" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-          font-size="40" font-weight="700" fill="#1a1a1a">+</text>
-    <circle cx="672" cy="145" r="107" fill="#eab308" stroke="#1a1a1a" stroke-width="3"/>
-    <text x="672" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-          font-size="24" font-weight="700" fill="#1a1a1a">INTERACTION</text>
-  </g>
-  <g class="fragment" data-fragment-index="4">
-    <text x="818" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-          font-size="40" font-weight="700" fill="#1a1a1a">=</text>
-    <circle cx="985" cy="145" r="128" fill="#ea580c" stroke="#1a1a1a" stroke-width="3"/>
-    <text x="985" y="138" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-          font-size="24" font-weight="700" fill="#ffffff">Interactive</text>
-    <text x="985" y="168" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-          font-size="24" font-weight="700" fill="#ffffff">Visualization</text>
-  </g>
-</svg>
-:::
-
-
-## Chapter 1: Data Transformation {data-menu-title="Chapter 1"}
-
-::: {.mini-stages}
-<span class="dot s-data is-covered">D</span><span class="dot s-visuals">V</span><span class="dot s-interaction">I</span>
-:::
-
-::: {.chapter style="align-items:center"}
-<svg viewBox="0 0 1160 290" style="width:100%;max-height:430px">
-  <g class="eq-term">
-    <circle cx="112" cy="145" r="95" fill="#e8a33d" stroke="#1a1a1a" stroke-width="3"/>
-    <text x="112" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-          font-size="25" font-weight="700" fill="#1a1a1a">DATA</text>
-  </g>
-  <text x="245" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-        font-size="40" font-weight="700" fill="#1a1a1a">+</text>
-  <g class="eq-term is-dim">
-    <circle cx="385" cy="145" r="100" fill="#c2410c" stroke="#1a1a1a" stroke-width="3"/>
-    <text x="385" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-          font-size="25" font-weight="700" fill="#ffffff">VISUALS</text>
-  </g>
-  <text x="523" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-        font-size="40" font-weight="700" fill="#1a1a1a">+</text>
-  <g class="eq-term is-dim">
-    <circle cx="672" cy="145" r="107" fill="#eab308" stroke="#1a1a1a" stroke-width="3"/>
-    <text x="672" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-          font-size="24" font-weight="700" fill="#1a1a1a">INTERACTION</text>
-  </g>
-  <text x="818" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-        font-size="40" font-weight="700" fill="#1a1a1a">=</text>
-  <g class="eq-term">
-    <circle cx="985" cy="145" r="128" fill="#ea580c" stroke="#1a1a1a" stroke-width="3"/>
-    <text x="985" y="138" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-          font-size="24" font-weight="700" fill="#ffffff">Interactive</text>
-    <text x="985" y="168" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-          font-size="24" font-weight="700" fill="#ffffff">Visualization</text>
-  </g>
-</svg>
-:::
-
-
-## Human-Data Interaction Loop {data-menu-title="The loop"}
-
-::: {.mini-stages}
-<span class="dot s-data is-covered">D</span><span class="dot s-visuals">V</span><span class="dot s-interaction is-covered">I</span>
-:::
-
-::: {.cols .c-11 style="align-items:start"}
-::: {}
-<svg viewBox="0 0 380 250" style="width:94%;max-height:400px">
-  <rect x="40" y="52" width="290" height="150" fill="none" stroke="#1a1a1a" stroke-width="4"/>
-  <path d="M40 52 L58 86 L22 86 Z" fill="#1a1a1a"/>
-  <text id="loop-ask" x="185" y="34" text-anchor="middle" font-family="'JetBrains Mono',monospace"
-        font-size="14" font-weight="700" letter-spacing="2" fill="#475569">ASK</text>
-  <text id="loop-see" x="185" y="228" text-anchor="middle" font-family="'JetBrains Mono',monospace"
-        font-size="14" font-weight="700" letter-spacing="2" fill="#475569">SEE</text>
-  <text x="185" y="134" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-        font-size="20" font-weight="700" fill="#1a1a1a">interact</text>
-</svg>
-:::
-
-::: {}
-::: {.vwcard .fragment style="margin-bottom:0.6rem" data-fragment-index="1" data-role="ask" data-q="1"}
-[“what donut shop is closest to me?”]{style="font-weight:700;font-size:0.5em"}<br>
-[locations]{.mono style="color:#de7d02;font-size:0.4em;font-weight:700"}
-
-::: {.qa-answer .fragment data-fragment-index="2" data-role="see" data-q="1"}
-[→ Bagby Rings]{style="font-weight:700;font-size:0.48em"} [0.35 mi]{.mono style="color:#478d4b;font-size:0.38em;font-weight:700"}
-:::
-:::
-::: {.vwcard .fragment style="margin-bottom:0.6rem" data-fragment-index="3" data-role="ask" data-q="2"}
-[“what’s the donut shop on Westheimer and Dunlavy?”]{style="font-weight:700;font-size:0.5em"}<br>
-[names]{.mono style="color:#de7d02;font-size:0.4em;font-weight:700"}
-
-::: {.qa-answer .fragment data-fragment-index="4" data-role="see" data-q="2"}
-[→ Westheimer Crullers]{style="font-weight:700;font-size:0.48em"}
-:::
-:::
-::: {.vwcard .fragment data-fragment-index="5" data-role="ask" data-q="3"}
-[“what are the average weekend waits in the Heights?”]{style="font-weight:700;font-size:0.5em"}<br>
-[transforms and sale attributes]{.mono style="color:#de7d02;font-size:0.4em;font-weight:700"}
-
-::: {.qa-answer .fragment data-fragment-index="6" data-role="see" data-q="3"}
-[→ 28.3 min]{style="font-weight:700;font-size:0.48em"} [avg weekend wait]{.mono style="color:#478d4b;font-size:0.38em;font-weight:700"}
-:::
-:::
-:::
-:::
-
-
-## Human-Data Interaction Loop {data-menu-title="1 · Parameterization"}
-
-::: {.mini-stages}
-<span class="dot s-data is-covered">D</span><span class="dot s-visuals">V</span><span class="dot s-interaction is-covered">I</span>
-:::
-
-::: {.cols .c-13}
-::: {.loop-rail}
-::: {.stage-row .s-param .is-live}
-::: {.bar}
-:::
-::: {}
-#### Query Parameterization
-interactions parameterize query results
-:::
-:::
-
-```sql
-SELECT name, distance(shop, :center) AS dist
-FROM donut_shops
-WHERE dist <= :radius
-ORDER BY dist;
-```
-:::
-
-::: {}
-::: {.widget-wrap}
-<iframe data-src="widgets/parameterize.html" height="548" loading="lazy"
-        title="Query parameterization — move the question"></iframe>
-:::
-:::
-:::
-
-
-## Human-Data Interaction Loop {data-menu-title="2 · Structuring"}
-
-::: {.mini-stages}
-<span class="dot s-data is-covered">D</span><span class="dot s-visuals">V</span><span class="dot s-interaction is-covered">I</span>
-:::
-
-::: {.cols .c-13}
-::: {.loop-rail}
-::: {.stage-row .s-param .is-dim}
-::: {.bar}
-:::
-::: {}
-#### Query Parameterization
-interactions parameterize query results
-:::
-:::
-
-::: {.stage-row .s-struct .is-live}
-::: {.bar}
-:::
-::: {}
-#### Query Structuring
-manipulation of query structure by adding new clauses
-:::
-:::
-
-```sql
-SELECT grp, AVG(weekend_wait_min)
-FROM donut_shops
-WHERE grp IN ('A', 'B')
-GROUP BY grp
-HAVING COUNT(*) > 0;
-```
-:::
-
-::: {}
-::: {.widget-wrap}
-<iframe data-src="widgets/structure.html" height="548" loading="lazy"
-        title="Query structuring — construct the units"></iframe>
-:::
-:::
-:::
-
-
-## Human-Data Interaction Loop {data-menu-title="3 · Augmentation"}
-
-::: {.mini-stages}
-<span class="dot s-data is-covered">D</span><span class="dot s-visuals">V</span><span class="dot s-interaction is-covered">I</span>
-:::
-
-::: {.cols .c-13}
-::: {.loop-rail}
-::: {.stage-row .s-param .is-dim}
-::: {.bar}
-:::
-::: {}
-#### Query Parameterization
-interactions parameterize query results
-:::
-:::
-
-::: {.stage-row .s-struct .is-dim}
-::: {.bar}
-:::
-::: {}
-#### Query Structuring
-manipulation of query structure by adding new clauses
-:::
-:::
-
-::: {.stage-row .s-aug .is-live}
-::: {.bar}
-:::
-::: {}
-#### Query Augmentation
-computing results via external algorithm or service
-:::
-:::
-
-```sql
-SELECT d.name, w.dist, w.walk_min
-FROM donut_shops d
-JOIN walking_distances w
-  ON w.shop_id = d.shop_id
-WHERE w.origin = :me;
-```
-:::
-
-::: {}
-::: {.widget-wrap}
-<iframe data-src="widgets/augment.html" height="548" loading="lazy"
-        title="Query augmentation — click a shop to pull its reviews"></iframe>
-:::
-:::
-:::
-
-
-## Human-Data Interaction Loop {data-menu-title="Growing data"}
-
-::: {.mini-stages}
-<span class="dot s-data is-covered">D</span><span class="dot s-visuals">V</span><span class="dot s-interaction is-covered">I</span>
-:::
-
-::: {.cols .c-13}
-::: {.loop-rail}
-::: {.stage-row .s-param}
-::: {.bar}
-:::
-::: {}
-#### Query Parameterization
-interactions parameterize query results
-:::
-:::
-
-::: {.stage-row .s-struct}
-::: {.bar}
-:::
-::: {}
-#### Query Structuring
-manipulation of query structure by adding new clauses
-:::
-:::
-
-::: {.stage-row .s-aug}
-::: {.bar}
-:::
-::: {}
-#### Query Augmentation
-computing results via external algorithm or service
-:::
-:::
-:::
-
-::: {}
-<svg viewBox="0 0 520 400" style="width:100%;max-height:520px">
-  <circle cx="150" cy="66" r="52" fill="#e8a33d" stroke="#1a1a1a" stroke-width="3"/>
-  <text x="150" y="74" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-        font-size="17" font-weight="700" fill="#1a1a1a">DATA</text>
-  <circle cx="180" cy="185" r="80" fill="#e8a33d" stroke="#1a1a1a" stroke-width="3"/>
-  <text x="180" y="194" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-        font-size="23" font-weight="700" fill="#1a1a1a">DATA</text>
-  <circle cx="222" cy="330" r="120" fill="#e8a33d" stroke="#1a1a1a" stroke-width="3"/>
-  <text x="222" y="342" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-        font-size="32" font-weight="700" fill="#1a1a1a">DATA</text>
-  <text x="420" y="74" font-family="'JetBrains Mono',monospace" font-size="13"
-        font-weight="700" fill="#3f8bdb">rows</text>
-  <text x="420" y="194" font-family="'JetBrains Mono',monospace" font-size="13"
-        font-weight="700" fill="#478d4b">+ columns</text>
-  <text x="420" y="342" font-family="'JetBrains Mono',monospace" font-size="13"
-        font-weight="700" fill="#ea580c">+ computed</text>
-</svg>
-:::
-:::
-
-
-## Chapter 2: Visuals {data-menu-title="Chapter 2"}
-
-::: {.mini-stages}
-<span class="dot s-data is-covered">D</span><span class="dot s-visuals is-covered">V</span><span class="dot s-interaction">I</span>
-:::
-
-::: {.chapter style="align-items:center"}
-<svg viewBox="0 0 1160 290" style="width:100%;max-height:430px">
-  <g class="eq-term is-dim">
-    <circle cx="112" cy="145" r="95" fill="#e8a33d" stroke="#1a1a1a" stroke-width="3"/>
-    <text x="112" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-          font-size="25" font-weight="700" fill="#1a1a1a">DATA</text>
-  </g>
-  <text x="245" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-        font-size="40" font-weight="700" fill="#1a1a1a">+</text>
-  <g class="eq-term">
-    <circle cx="385" cy="145" r="100" fill="#c2410c" stroke="#1a1a1a" stroke-width="3"/>
-    <text x="385" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-          font-size="25" font-weight="700" fill="#ffffff">VISUALS</text>
-  </g>
-  <text x="523" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-        font-size="40" font-weight="700" fill="#1a1a1a">+</text>
-  <g class="eq-term is-dim">
-    <circle cx="672" cy="145" r="107" fill="#eab308" stroke="#1a1a1a" stroke-width="3"/>
-    <text x="672" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-          font-size="24" font-weight="700" fill="#1a1a1a">INTERACTION</text>
-  </g>
-  <text x="818" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-        font-size="40" font-weight="700" fill="#1a1a1a">=</text>
-  <g class="eq-term">
-    <circle cx="985" cy="145" r="128" fill="#ea580c" stroke="#1a1a1a" stroke-width="3"/>
-    <text x="985" y="138" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-          font-size="24" font-weight="700" fill="#ffffff">Interactive</text>
-    <text x="985" y="168" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-          font-size="24" font-weight="700" fill="#ffffff">Visualization</text>
-  </g>
-</svg>
-:::
-
-
-## Interaction customizes what the visuals say {data-menu-title="Zoo of visual responses"}
-
-::: {.mini-stages}
-<span class="dot s-data is-covered">D</span><span class="dot s-visuals is-covered">V</span><span class="dot s-interaction">I</span>
-:::
+## Interactions come in many flavors {data-menu-title="The interaction zoo"}
 
 ::: {.taxo}
-::: {.taxo-item .is-focus .fragment .rise data-fragment-index="1"}
+[]{.fragment .st .st-grow data-fragment-index="6"}
+[]{.fragment .st .st-lit data-fragment-index="7"}
+
+::: {.taxo-item .fragment .rise data-fragment-index="1"}
+<svg class="ico" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="9" y="33" width="9" height="18" fill="#f2f0e9" stroke="#1a1a1a" stroke-width="2.5"/>
+  <rect x="25" y="14" width="9" height="37" fill="#f2f0e9" stroke="#1a1a1a" stroke-width="2.5"/>
+  <rect x="41" y="25" width="9" height="26" fill="#f2f0e9" stroke="#1a1a1a" stroke-width="2.5"/>
+  <path d="M15 9 C22 2 40 2 46 9" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M46 9 L40 6 M46 9 L45 3" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round"/>
+</svg>
+[Arrangement]{.nm}
+[what order or layout do the marks take?]{.gl}
+:::
+
+::: {.taxo-item .fragment .rise data-fragment-index="2"}
+<svg class="ico" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="14" cy="44" r="5" fill="#ea580c" stroke="#1a1a1a" stroke-width="2.5"/>
+  <path d="M18 40 L27 27" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round"/>
+  <rect x="26" y="9" width="26" height="22" fill="#f2f0e9" stroke="#1a1a1a" stroke-width="2.5"/>
+  <path d="M31 16 H47 M31 21 H47 M31 26 H41" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"/>
+</svg>
+[Elaboration]{.nm}
+[how much detail is shown at once?]{.gl}
+:::
+
+::: {.taxo-item .sel .fragment .rise data-fragment-index="3"}
 <svg class="ico" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
   <circle cx="13" cy="14" r="4.5" fill="#f2f0e9" stroke="#1a1a1a" stroke-width="2.5"/>
   <circle cx="46" cy="16" r="4.5" fill="#f2f0e9" stroke="#1a1a1a" stroke-width="2.5"/>
@@ -602,30 +248,7 @@ computing results via external algorithm or service
   <circle cx="41" cy="40" r="4.5" fill="#ea580c" stroke="#1a1a1a" stroke-width="2.5"/>
 </svg>
 [Selection]{.nm}
-[which data points<br>am I asking about?]{.gl}
-:::
-
-::: {.taxo-item .fragment .rise data-fragment-index="2"}
-<svg class="ico" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect x="9" y="33" width="9" height="18" fill="#f2f0e9" stroke="#1a1a1a" stroke-width="2.5"/>
-  <rect x="25" y="14" width="9" height="37" fill="#f2f0e9" stroke="#1a1a1a" stroke-width="2.5"/>
-  <rect x="41" y="25" width="9" height="26" fill="#f2f0e9" stroke="#1a1a1a" stroke-width="2.5"/>
-  <path d="M15 9 C22 2 40 2 46 9" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round"/>
-  <path d="M46 9 L40 6 M46 9 L45 3" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round"/>
-</svg>
-[Arrangement]{.nm}
-[what order or layout<br>do the marks take?]{.gl}
-:::
-
-::: {.taxo-item .fragment .rise data-fragment-index="3"}
-<svg class="ico" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="14" cy="44" r="5" fill="#ea580c" stroke="#1a1a1a" stroke-width="2.5"/>
-  <path d="M18 40 L27 27" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round"/>
-  <rect x="26" y="9" width="26" height="22" fill="#f2f0e9" stroke="#1a1a1a" stroke-width="2.5"/>
-  <path d="M31 16 H47 M31 21 H47 M31 26 H41" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"/>
-</svg>
-[Elaboration]{.nm}
-[how much detail<br>is shown at once?]{.gl}
+[which data points am I asking about?]{.gl}
 :::
 
 ::: {.taxo-item .fragment .rise data-fragment-index="4"}
@@ -639,7 +262,7 @@ computing results via external algorithm or service
   <path d="M32 26 V36 M27 31 H37" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round"/>
 </svg>
 [Explore]{.nm}
-[which part of the<br>space am I in?]{.gl}
+[which part of the space am I in?]{.gl}
 :::
 
 ::: {.taxo-item .fragment .rise data-fragment-index="5"}
@@ -650,83 +273,474 @@ computing results via external algorithm or service
   <rect x="42" y="14" width="10" height="32" fill="#ea580c" stroke="#1a1a1a" stroke-width="2.5"/>
 </svg>
 [Encode]{.nm}
-[which visual channel<br>carries the value?]{.gl}
+[which visual channel carries the value?]{.gl}
 :::
 :::
 
-::: {.footnote .fragment data-fragment-index="6"}
-Today: **selection** only. The rest of the zoo —
-[vis-society.github.io/lectures/interaction-zoo](https://vis-society.github.io/lectures/interaction-zoo.html)
+::: {.zoo-link}
+The rest of the zoo: [vis-society.github.io/lectures/interaction-zoo](https://vis-society.github.io/lectures/interaction-zoo.html)
 :::
 
 
-## One selection, three things the visuals can do with it {data-menu-title="Selection"}
+## Interactive visualizations have 3 parts {data-menu-title="The three parts"}
+
+::: {.chapter style="align-items:center"}
+<svg viewBox="0 0 1160 290" style="width:100%;max-height:455px">
+  <g class="fragment" data-fragment-index="1">
+    <circle cx="112" cy="145" r="95" fill="#e8a33d" stroke="#1a1a1a" stroke-width="3"/>
+    <text x="112" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
+          font-size="26" font-weight="700" fill="#1a1a1a">DATA</text>
+  </g>
+  <g class="fragment" data-fragment-index="2">
+    <text x="245" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
+          font-size="40" font-weight="700" fill="#1a1a1a">+</text>
+    <circle cx="385" cy="145" r="100" fill="#c2410c" stroke="#1a1a1a" stroke-width="3"/>
+    <text x="385" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
+          font-size="26" font-weight="700" fill="#ffffff">VISUALS</text>
+  </g>
+  <g class="fragment" data-fragment-index="3">
+    <text x="523" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
+          font-size="40" font-weight="700" fill="#1a1a1a">+</text>
+    <circle cx="672" cy="145" r="107" fill="#eab308" stroke="#1a1a1a" stroke-width="3"/>
+    <text x="672" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
+          font-size="26" font-weight="700" fill="#1a1a1a">INPUTS</text>
+  </g>
+  <g class="fragment" data-fragment-index="4">
+    <text x="818" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
+          font-size="40" font-weight="700" fill="#1a1a1a">=</text>
+    <circle cx="985" cy="145" r="128" fill="#ea580c" stroke="#1a1a1a" stroke-width="3"/>
+    <text x="985" y="138" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
+          font-size="25" font-weight="700" fill="#ffffff">Interactive</text>
+    <text x="985" y="170" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
+          font-size="25" font-weight="700" fill="#ffffff">Visualization</text>
+  </g>
+</svg>
+:::
+
+
+## Chapter 1: Data {data-menu-title="Chapter 1 · Data"}
 
 ::: {.mini-stages}
-<span class="dot s-data is-covered">D</span><span class="dot s-visuals is-covered">V</span><span class="dot s-interaction">I</span>
+<span class="dot s-data is-covered"></span><span class="dot s-visuals"></span><span class="dot s-inputs"></span><span class="lbl">DATA</span>
+:::
+
+::: {.chapter style="align-items:center"}
+<svg viewBox="0 0 1160 290" style="width:100%;max-height:430px">
+  <g class="eq-term">
+    <circle cx="112" cy="145" r="95" fill="#e8a33d" stroke="#1a1a1a" stroke-width="3"/>
+    <text x="112" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
+          font-size="26" font-weight="700" fill="#1a1a1a">DATA</text>
+  </g>
+  <text x="245" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
+        font-size="40" font-weight="700" fill="#1a1a1a">+</text>
+  <g class="eq-term fragment custom go-dim" data-fragment-index="1">
+    <circle cx="385" cy="145" r="100" fill="#c2410c" stroke="#1a1a1a" stroke-width="3"/>
+    <text x="385" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
+          font-size="26" font-weight="700" fill="#ffffff">VISUALS</text>
+  </g>
+  <text x="523" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
+        font-size="40" font-weight="700" fill="#1a1a1a">+</text>
+  <g class="eq-term fragment custom go-dim" data-fragment-index="1">
+    <circle cx="672" cy="145" r="107" fill="#eab308" stroke="#1a1a1a" stroke-width="3"/>
+    <text x="672" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
+          font-size="26" font-weight="700" fill="#1a1a1a">INPUTS</text>
+  </g>
+  <text x="818" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
+        font-size="40" font-weight="700" fill="#1a1a1a">=</text>
+  <g class="eq-term">
+    <circle cx="985" cy="145" r="128" fill="#ea580c" stroke="#1a1a1a" stroke-width="3"/>
+    <text x="985" y="138" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
+          font-size="25" font-weight="700" fill="#ffffff">Interactive</text>
+    <text x="985" y="170" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
+          font-size="25" font-weight="700" fill="#ffffff">Visualization</text>
+  </g>
+</svg>
+:::
+
+
+## Questions as Data Queries {data-menu-title="Questions as queries"}
+
+::: {.mini-stages}
+<span class="dot s-data is-covered"></span><span class="dot s-visuals"></span><span class="dot s-inputs"></span><span class="lbl">DATA</span>
+:::
+
+::: {.qgrid}
+[Question]{.qhead} [Query]{.qhead} [Answer]{.qhead}
+
+::: {.qrow .fragment data-fragment-index="1"}
+[“what donut shop is closest to me?”]{.qq}
+
+```{=html}
+<pre class="sqlblock"><code><span class="kw">SELECT</span> <span class="sel">name</span>, <span class="tx">dist</span>(shop, me)
+<span class="kw">FROM</span> shops
+<span class="tx">ORDER BY</span> dist <span class="tx">LIMIT</span> 1</code></pre>
+```
+
+[Bagby Rings]{.qa} [0.35 mi]{.qau}
+:::
+
+::: {.qrow .fragment data-fragment-index="2"}
+[“what’s the shop on Westheimer and Dunlavy?”]{.qq}
+
+```{=html}
+<pre class="sqlblock"><code><span class="kw">SELECT</span> <span class="sel">name</span>
+<span class="kw">FROM</span> shops
+<span class="tx">WHERE</span> corner = :corner</code></pre>
+```
+
+[Westheimer Crullers]{.qa}
+:::
+
+::: {.qrow .fragment data-fragment-index="3"}
+[“what are the average weekend waits in the Heights?”]{.qq}
+
+```{=html}
+<pre class="sqlblock"><code><span class="kw">SELECT</span> <span class="tx">AVG</span>(<span class="sel">weekend_wait</span>)
+<span class="kw">FROM</span> shops
+<span class="tx">WHERE</span> neighborhood = :hood</code></pre>
+```
+
+[28.3 min]{.qa}
+:::
+
+::: {.qrow .qrow-live .fragment data-fragment-index="4"}
+[?]{.qmark}
+
+[?]{.qmark}
+
+::: {.widget-wrap .sm-45}
+<iframe data-src="widgets/in_center.html"
+        title="A selection: the question nobody typed"></iframe>
+:::
+:::
+:::
+
+
+## Interactive visualizations are SQL queries {data-menu-title="1 · Single Selection"}
+
+::: {.mini-stages}
+<span class="dot s-data is-covered"></span><span class="dot s-visuals"></span><span class="dot s-inputs"></span><span class="lbl">DATA</span>
+:::
+
+::: {.cols .c-13}
+::: {.loop-rail}
+::: {.stage-row .s-param .is-live}
+::: {.bar}
+:::
+#### Single Selection
+:::
+
+```{=html}
+<pre class="sqlblock"><code><span class="kw">SELECT</span> <span class="sel">*</span>
+<span class="kw">FROM</span> shops
+<span class="hl"><span class="tx">WHERE</span> <span class="tx">dist</span>(shop,me) &lt; r</span></code></pre>
+```
+:::
+
+::: {}
+::: {.widget-wrap .wd-92}
+<iframe data-src="widgets/parameterize.html"
+        title="Single selection: move the center, set the radius"></iframe>
+:::
+:::
+:::
+
+
+## Interactive visualizations are SQL queries {data-menu-title="2 · Multi-Selection"}
+
+::: {.mini-stages}
+<span class="dot s-data is-covered"></span><span class="dot s-visuals"></span><span class="dot s-inputs"></span><span class="lbl">DATA</span>
+:::
+
+::: {.cols .c-13}
+::: {.loop-rail}
+::: {.stage-row .s-param .is-dim}
+::: {.bar}
+:::
+#### Single Selection
+:::
+
+::: {.stage-row .s-struct .is-live}
+::: {.bar}
+:::
+#### Multi-Selection
+:::
+
+```{=html}
+<pre class="sqlblock"><code><span class="kw">SELECT</span> <span class="sel">grp</span>, <span class="tx">AVG</span>(<span class="sel">wait</span>)
+<span class="kw">FROM</span> shops
+<span class="tx">WHERE</span> grp <span class="tx">IS NOT NULL</span>
+<span class="hl"><span class="tx">GROUP BY</span> grp</span></code></pre>
+```
+:::
+
+::: {}
+::: {.widget-wrap .wd-92}
+<iframe data-src="widgets/structure.html"
+        title="Multi-selection: brush shops into two groups and compare them"></iframe>
+:::
+:::
+:::
+
+
+## Interactive visualizations are SQL queries {data-menu-title="3 · Selection as Key"}
+
+::: {.mini-stages}
+<span class="dot s-data is-covered"></span><span class="dot s-visuals"></span><span class="dot s-inputs"></span><span class="lbl">DATA</span>
+:::
+
+::: {.cols .c-13}
+::: {.loop-rail}
+::: {.stage-row .s-param .is-dim}
+::: {.bar}
+:::
+#### Single Selection
+:::
+
+::: {.stage-row .s-struct .is-dim}
+::: {.bar}
+:::
+#### Multi-Selection
+:::
+
+::: {.stage-row .s-aug .is-live}
+::: {.bar}
+:::
+#### Selection as Key
+:::
+
+```{=html}
+<pre class="sqlblock"><code><span class="kw">SELECT</span> <span class="sel">s.name</span>, <span class="sel">r.text</span>
+<span class="kw">FROM</span> shops s
+<span class="hl"><span class="tx">JOIN</span> reviews r
+  <span class="tx">USING</span> (shop_id)</span>
+<span class="tx">WHERE</span> s.shop_id = :shop</code></pre>
+```
+:::
+
+::: {}
+::: {.widget-wrap .wd-92}
+<iframe data-src="widgets/augment.html"
+        title="Selection as key: click a shop to join in its reviews"></iframe>
+:::
+:::
+:::
+
+
+## Treat Interactions like Data Queries {data-menu-title="Principle · Data"}
+
+::: {.mini-stages}
+<span class="dot s-data is-covered"></span><span class="dot s-visuals"></span><span class="dot s-inputs"></span><span class="lbl">DATA</span>
+:::
+
+::: {.principle-sub}
+Do they enable access to, and transformation of, the underlying data?
+:::
+
+::: {.trio .trio-wide}
+::: {.trio-item}
+[Single Selection]{.colhd}
+
+::: {.widget-wrap .wd-46}
+<iframe data-src="widgets/parameterize.html" title="Single selection"></iframe>
+:::
+::: {.qcap}
+<svg class="hyp-mini" viewBox="0 0 64 64" aria-hidden="true">
+  <circle cx="32" cy="32" r="29" fill="#e8a33d" stroke="#1a1a1a" stroke-width="2.5"/>
+  <circle cx="22" cy="23" r="7" fill="#3f8bdb" stroke="#1a1a1a" stroke-width="2.5"/>
+  <circle cx="44" cy="30" r="5" fill="#fbfaf6" stroke="#1a1a1a" stroke-width="2" opacity="0.4"/>
+  <circle cx="29" cy="46" r="5" fill="#fbfaf6" stroke="#1a1a1a" stroke-width="2" opacity="0.4"/>
+</svg>
+
+[Which shops are within a mile of me?]{.gl}
+:::
+:::
+
+::: {.trio-item}
+[Multi-Selection]{.colhd}
+
+::: {.widget-wrap .wd-46}
+<iframe data-src="widgets/structure.html" title="Multi-selection"></iframe>
+:::
+::: {.qcap}
+<svg class="hyp-mini" viewBox="0 0 64 64" aria-hidden="true">
+  <circle cx="32" cy="32" r="29" fill="#e8a33d" stroke="#1a1a1a" stroke-width="2.5"/>
+  <circle cx="22" cy="23" r="5" fill="#fbfaf6" stroke="#1a1a1a" stroke-width="2" opacity="0.4"/>
+  <circle cx="44" cy="30" r="7" fill="#478d4b" stroke="#1a1a1a" stroke-width="2.5"/>
+  <circle cx="29" cy="46" r="5" fill="#fbfaf6" stroke="#1a1a1a" stroke-width="2" opacity="0.4"/>
+</svg>
+
+[Does the Heights wait longer than Montrose?]{.gl}
+:::
+:::
+
+::: {.trio-item}
+[Selection as Key]{.colhd}
+
+::: {.widget-wrap .wd-46}
+<iframe data-src="widgets/augment.html" title="Selection as key"></iframe>
+:::
+::: {.qcap}
+<svg class="hyp-mini" viewBox="0 0 64 64" aria-hidden="true">
+  <circle cx="32" cy="32" r="29" fill="#e8a33d" stroke="#1a1a1a" stroke-width="2.5"/>
+  <circle cx="22" cy="23" r="5" fill="#fbfaf6" stroke="#1a1a1a" stroke-width="2" opacity="0.4"/>
+  <circle cx="44" cy="30" r="5" fill="#fbfaf6" stroke="#1a1a1a" stroke-width="2" opacity="0.4"/>
+  <circle cx="29" cy="46" r="7" fill="#e65100" stroke="#1a1a1a" stroke-width="2.5"/>
+</svg>
+
+[What do people say about this shop?]{.gl}
+:::
+:::
+:::
+
+
+## Chapter 2: Visuals {data-menu-title="Chapter 2 · Visuals"}
+
+::: {.mini-stages}
+<span class="dot s-data"></span><span class="dot s-visuals is-covered"></span><span class="dot s-inputs"></span><span class="lbl">VISUALS</span>
+:::
+
+::: {.chapter style="align-items:center"}
+<svg viewBox="0 0 1160 290" style="width:100%;max-height:430px">
+  <g class="eq-term fragment custom go-dim" data-fragment-index="1">
+    <circle cx="112" cy="145" r="95" fill="#e8a33d" stroke="#1a1a1a" stroke-width="3"/>
+    <text x="112" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
+          font-size="26" font-weight="700" fill="#1a1a1a">DATA</text>
+  </g>
+  <text x="245" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
+        font-size="40" font-weight="700" fill="#1a1a1a">+</text>
+  <g class="eq-term fragment custom go-lit" data-fragment-index="1">
+    <circle cx="385" cy="145" r="100" fill="#c2410c" stroke="#1a1a1a" stroke-width="3"/>
+    <text x="385" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
+          font-size="26" font-weight="700" fill="#ffffff">VISUALS</text>
+  </g>
+  <text x="523" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
+        font-size="40" font-weight="700" fill="#1a1a1a">+</text>
+  <g class="eq-term is-dim">
+    <circle cx="672" cy="145" r="107" fill="#eab308" stroke="#1a1a1a" stroke-width="3"/>
+    <text x="672" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
+          font-size="26" font-weight="700" fill="#1a1a1a">INPUTS</text>
+  </g>
+  <text x="818" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
+        font-size="40" font-weight="700" fill="#1a1a1a">=</text>
+  <g class="eq-term">
+    <circle cx="985" cy="145" r="128" fill="#ea580c" stroke="#1a1a1a" stroke-width="3"/>
+    <text x="985" y="138" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
+          font-size="25" font-weight="700" fill="#ffffff">Interactive</text>
+    <text x="985" y="170" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
+          font-size="25" font-weight="700" fill="#ffffff">Visualization</text>
+  </g>
+</svg>
+:::
+
+
+## Selections can remove elements {data-menu-title="Remove elements"}
+
+::: {.mini-stages}
+<span class="dot s-data"></span><span class="dot s-visuals is-covered"></span><span class="dot s-inputs"></span><span class="lbl">VISUALS</span>
+:::
+
+::: {.solo}
+::: {.widget-wrap .sm-120}
+<iframe data-src="widgets/sel_filter.html"
+        title="Selection removes: the brushed shops go and the axes re-fit"></iframe>
+:::
+
+::: {.solo-copy}
+::: {.vwcard .hyp style="--hyp:#9f2d1f"}
+[What is the relationship of this data with outliers removed?]{.qtext}
+:::
+[brush → gone → the axes re-fit]{.mech}
+:::
+:::
+
+
+## Selections can edit elements {data-menu-title="Edit elements"}
+
+::: {.mini-stages}
+<span class="dot s-data"></span><span class="dot s-visuals is-covered"></span><span class="dot s-inputs"></span><span class="lbl">VISUALS</span>
+:::
+
+::: {.solo}
+::: {.widget-wrap .sm-120}
+<iframe data-src="widgets/sel_highlight.html"
+        title="Selection recolours: nothing else on the chart moves"></iframe>
+:::
+
+::: {.solo-copy}
+::: {.vwcard .hyp style="--hyp:#0f766e"}
+[How do the selected items compare against my baseline?]{.qtext}
+:::
+[pick a group → only colour changes]{.mech}
+:::
+:::
+
+
+## Selections can add elements {data-menu-title="Add elements"}
+
+::: {.mini-stages}
+<span class="dot s-data"></span><span class="dot s-visuals is-covered"></span><span class="dot s-inputs"></span><span class="lbl">VISUALS</span>
+:::
+
+::: {.solo}
+::: {.widget-wrap .sm-120}
+<iframe data-src="widgets/sel_count.html"
+        title="Selection constructs: the region becomes a mark carrying the comparison"></iframe>
+:::
+
+::: {.solo-copy}
+::: {.vwcard .hyp style="--hyp:#ea580c"}
+[What simpler calculations help to show these comparisons?]{.qtext}
+:::
+[region → a new mark with the numbers]{.mech}
+:::
+:::
+
+
+## Strategically Remove, Edit, and Add Elements {data-menu-title="Principle · Visuals"}
+
+::: {.mini-stages}
+<span class="dot s-data"></span><span class="dot s-visuals is-covered"></span><span class="dot s-inputs"></span><span class="lbl">VISUALS</span>
+:::
+
+::: {.principle-sub}
+…to make comparisons easy to see.
 :::
 
 ::: {.trio}
-::: {.trio-item .fragment .rise style="--hyp:#9f2d1f" data-fragment-index="1"}
-::: {.widget-wrap}
-<iframe data-src="widgets/sel_filter.html" height="400" loading="lazy"
-        title="Selection filters: unselected shops are removed"></iframe>
-:::
-::: {.tcap .with-hyp}
-<svg class="hyp-mini" viewBox="0 0 64 64" aria-hidden="true">
-  <circle cx="32" cy="32" r="29" fill="#e8a33d" stroke="#1a1a1a" stroke-width="2.5"/>
-  <circle cx="22" cy="23" r="6.5" fill="var(--hyp)" stroke="#1a1a1a" stroke-width="2.5"/>
-  <circle cx="44" cy="30" r="5" fill="#fbfaf6" stroke="#1a1a1a" stroke-width="2" opacity="0.4"/>
-  <circle cx="29" cy="46" r="5" fill="#fbfaf6" stroke="#1a1a1a" stroke-width="2" opacity="0.4"/>
-</svg>
+::: {.trio-item}
+[Remove]{.colhd}
 
-[Remove Elements]{.nm}
-[“what does the rest look like without it?”]{.gl}
+::: {.widget-wrap .sm-90}
+<iframe data-src="widgets/sel_filter.html" title="Remove elements"></iframe>
 :::
+[What is the relationship with outliers removed?]{.gl}
 :::
 
-::: {.trio-item .fragment .rise style="--hyp:#0f766e" data-fragment-index="2"}
-::: {.widget-wrap}
-<iframe data-src="widgets/sel_highlight.html" height="400" loading="lazy"
-        title="Selection highlights: unselected shops stay as context"></iframe>
-:::
-::: {.tcap .with-hyp}
-<svg class="hyp-mini" viewBox="0 0 64 64" aria-hidden="true">
-  <circle cx="32" cy="32" r="29" fill="#e8a33d" stroke="#1a1a1a" stroke-width="2.5"/>
-  <circle cx="22" cy="23" r="5" fill="#fbfaf6" stroke="#1a1a1a" stroke-width="2" opacity="0.4"/>
-  <circle cx="44" cy="30" r="6.5" fill="var(--hyp)" stroke="#1a1a1a" stroke-width="2.5"/>
-  <circle cx="29" cy="46" r="5" fill="#fbfaf6" stroke="#1a1a1a" stroke-width="2" opacity="0.4"/>
-</svg>
+::: {.trio-item}
+[Edit]{.colhd}
 
-[Change Elements]{.nm}
-[“how does this neighborhood compare to the rest?”]{.gl}
+::: {.widget-wrap .sm-90}
+<iframe data-src="widgets/sel_highlight.html" title="Edit elements"></iframe>
 :::
+[How do the selected items compare against my baseline?]{.gl}
 :::
 
-::: {.trio-item .fragment .rise style="--hyp:#ea580c" data-fragment-index="3"}
-::: {.widget-wrap}
-<iframe data-src="widgets/sel_count.html" height="400" loading="lazy"
-        title="Selection constructs: the region becomes a mark with a count"></iframe>
-:::
-::: {.tcap .with-hyp}
-<svg class="hyp-mini" viewBox="0 0 64 64" aria-hidden="true">
-  <circle cx="32" cy="32" r="29" fill="#e8a33d" stroke="#1a1a1a" stroke-width="2.5"/>
-  <circle cx="22" cy="23" r="5" fill="#fbfaf6" stroke="#1a1a1a" stroke-width="2" opacity="0.4"/>
-  <circle cx="44" cy="30" r="5" fill="#fbfaf6" stroke="#1a1a1a" stroke-width="2" opacity="0.4"/>
-  <circle cx="29" cy="46" r="6.5" fill="var(--hyp)" stroke="#1a1a1a" stroke-width="2.5"/>
-</svg>
+::: {.trio-item}
+[Add]{.colhd}
 
-[Add Elements]{.nm}
-[“what is true of this group as a whole?”]{.gl}
+::: {.widget-wrap .sm-90}
+<iframe data-src="widgets/sel_count.html" title="Add elements"></iframe>
 :::
+[What simpler calculations show these comparisons?]{.gl}
 :::
 :::
 
 
-## Chapter 3: Interaction {data-menu-title="Chapter 3"}
+## Chapter 3: Inputs {data-menu-title="Chapter 3 · Inputs"}
 
 ::: {.mini-stages}
-<span class="dot s-data is-covered">D</span><span class="dot s-visuals is-covered">V</span><span class="dot s-interaction is-covered">I</span>
+<span class="dot s-data"></span><span class="dot s-visuals"></span><span class="dot s-inputs is-covered"></span><span class="lbl">INPUTS</span>
 :::
 
 ::: {.chapter style="align-items:center"}
@@ -734,174 +748,233 @@ Today: **selection** only. The rest of the zoo —
   <g class="eq-term is-dim">
     <circle cx="112" cy="145" r="95" fill="#e8a33d" stroke="#1a1a1a" stroke-width="3"/>
     <text x="112" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-          font-size="25" font-weight="700" fill="#1a1a1a">DATA</text>
+          font-size="26" font-weight="700" fill="#1a1a1a">DATA</text>
   </g>
   <text x="245" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
         font-size="40" font-weight="700" fill="#1a1a1a">+</text>
-  <g class="eq-term is-dim">
+  <g class="eq-term fragment custom go-dim" data-fragment-index="1">
     <circle cx="385" cy="145" r="100" fill="#c2410c" stroke="#1a1a1a" stroke-width="3"/>
     <text x="385" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-          font-size="25" font-weight="700" fill="#ffffff">VISUALS</text>
+          font-size="26" font-weight="700" fill="#ffffff">VISUALS</text>
   </g>
   <text x="523" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
         font-size="40" font-weight="700" fill="#1a1a1a">+</text>
-  <g class="eq-term">
+  <g class="eq-term fragment custom go-lit" data-fragment-index="1">
     <circle cx="672" cy="145" r="107" fill="#eab308" stroke="#1a1a1a" stroke-width="3"/>
     <text x="672" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-          font-size="24" font-weight="700" fill="#1a1a1a">INTERACTION</text>
+          font-size="26" font-weight="700" fill="#1a1a1a">INPUTS</text>
   </g>
   <text x="818" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
         font-size="40" font-weight="700" fill="#1a1a1a">=</text>
   <g class="eq-term">
     <circle cx="985" cy="145" r="128" fill="#ea580c" stroke="#1a1a1a" stroke-width="3"/>
     <text x="985" y="138" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-          font-size="24" font-weight="700" fill="#ffffff">Interactive</text>
-    <text x="985" y="168" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-          font-size="24" font-weight="700" fill="#ffffff">Visualization</text>
+          font-size="25" font-weight="700" fill="#ffffff">Interactive</text>
+    <text x="985" y="170" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
+          font-size="25" font-weight="700" fill="#ffffff">Visualization</text>
   </g>
 </svg>
 :::
 
 
-## The same selection, three ways to say it {data-menu-title="Instrumental input"}
+## Inputs express a question, then adjust it {data-menu-title="Express, then adjust"}
 
 ::: {.mini-stages}
-<span class="dot s-data is-covered">D</span><span class="dot s-visuals is-covered">V</span><span class="dot s-interaction is-covered">I</span>
+<span class="dot s-data"></span><span class="dot s-visuals"></span><span class="dot s-inputs is-covered"></span><span class="lbl">INPUTS</span>
+:::
+
+::: {.duo}
+::: {.duo-card .fragment .rise data-fragment-index="1"}
+<svg class="ico" viewBox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="10" y="12" width="44" height="34" fill="#ea580c" fill-opacity="0.14"
+        stroke="#ea580c" stroke-width="3" stroke-dasharray="6 4"/>
+  <path d="M50 42 L62 54" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round"/>
+  <path d="M62 54 L56 53 M62 54 L61 48" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round"/>
+</svg>
+
+[1 · Express]{.nm}
+[the first gesture states the question]{.gl}
+:::
+
+::: {.duo-card .fragment .rise data-fragment-index="2"}
+<svg class="ico" viewBox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="18" y="14" width="44" height="32" fill="#ea580c" fill-opacity="0.14"
+        stroke="#ea580c" stroke-width="3"/>
+  <rect x="13" y="9" width="10" height="10" fill="#f2f0e9" stroke="#1a1a1a" stroke-width="2.5"/>
+  <rect x="57" y="9" width="10" height="10" fill="#f2f0e9" stroke="#1a1a1a" stroke-width="2.5"/>
+  <rect x="13" y="41" width="10" height="10" fill="#f2f0e9" stroke="#1a1a1a" stroke-width="2.5"/>
+  <rect x="57" y="41" width="10" height="10" fill="#f2f0e9" stroke="#1a1a1a" stroke-width="2.5"/>
+  <path d="M70 30 H78 M78 30 L74 27 M78 30 L74 33" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M10 30 H2 M2 30 L6 27 M2 30 L6 33" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round"/>
+</svg>
+
+[2 · Adjust]{.nm}
+[every gesture after it refines the question]{.gl}
+:::
+:::
+
+
+## Expressing the selection: three inputs, one answer {data-menu-title="Expressing"}
+
+::: {.mini-stages}
+<span class="dot s-data"></span><span class="dot s-visuals"></span><span class="dot s-inputs is-covered"></span><span class="lbl">INPUTS</span>
 :::
 
 ::: {.trio}
 ::: {.trio-item .fragment .rise data-fragment-index="1"}
 ::: {.widget-wrap}
-<iframe data-src="widgets/in_drag.html" height="400" loading="lazy"
+<iframe data-src="widgets/in_drag.html" height="400"
         title="Input: drag out the region"></iframe>
 :::
 ::: {.tcap}
 [Drag]{.nm}
-[press, sweep, release — one continuous gesture]{.gl}
+[press, sweep, release]{.gl}
 :::
 :::
 
 ::: {.trio-item .fragment .rise data-fragment-index="2"}
 ::: {.widget-wrap}
-<iframe data-src="widgets/in_corner.html" height="400" loading="lazy"
+<iframe data-src="widgets/in_corner.html" height="400"
         title="Input: click two opposite corners"></iframe>
 :::
 ::: {.tcap}
 [Two corners]{.nm}
-[click one corner, then the opposite one]{.gl}
+[click, then click opposite]{.gl}
 :::
 :::
 
 ::: {.trio-item .fragment .rise data-fragment-index="3"}
 ::: {.widget-wrap}
-<iframe data-src="widgets/in_center.html" height="400" loading="lazy"
+<iframe data-src="widgets/in_center.html" height="400"
         title="Input: click to place a fixed-size region"></iframe>
 :::
 ::: {.tcap}
 [Center]{.nm}
-[one click places a fixed-size region]{.gl}
+[one click, fixed size]{.gl}
 :::
 :::
 :::
 
 
-## What matters most is reification {data-menu-title="Reification"}
+## Reification enables adjustment over time {data-menu-title="Reification"}
 
 ::: {.mini-stages}
-<span class="dot s-data is-covered">D</span><span class="dot s-visuals is-covered">V</span><span class="dot s-interaction is-covered">I</span>
+<span class="dot s-data"></span><span class="dot s-visuals"></span><span class="dot s-inputs is-covered"></span><span class="lbl">INPUTS</span>
 :::
 
 ::: {.trio}
 ::: {.trio-item .fragment .rise data-fragment-index="1"}
 ::: {.widget-wrap}
-<iframe data-src="widgets/re_none.html" height="400" loading="lazy"
+<iframe data-src="widgets/re_none.html" height="400"
         title="Reification: nothing remains after the gesture"></iframe>
 :::
 ::: {.tcap}
-[1]{.rung}[Nothing remains]{.nm}
-[the selection exists only while you hold the mouse down]{.gl}
+[Nothing remains]{.nm}
+[right for scanning, wrong for revising]{.gl}
 :::
 :::
 
 ::: {.trio-item .fragment .rise data-fragment-index="2"}
 ::: {.widget-wrap}
-<iframe data-src="widgets/re_move.html" height="400" loading="lazy"
+<iframe data-src="widgets/re_move.html" height="400"
         title="Reification: the region persists and can be moved"></iframe>
 :::
 ::: {.tcap}
-[2]{.rung}[An object you can move]{.nm}
-[the region stays on screen and can be dragged]{.gl}
+[Move it]{.nm}
+[drag it, or nudge with the arrow keys]{.gl}
 :::
 :::
 
 ::: {.trio-item .fragment .rise data-fragment-index="3"}
 ::: {.widget-wrap}
-<iframe data-src="widgets/re_handles.html" height="400" loading="lazy"
-        title="Reification: the region persists with adjustable handles"></iframe>
+<iframe data-src="widgets/re_handles.html" height="400"
+        title="Reification: the region persists with adjustable sides and corners"></iframe>
 :::
 ::: {.tcap}
-[3]{.rung}[An object you can adjust]{.nm}
-[handles make every part of the query editable]{.gl}
+[Adjust it]{.nm}
+[every side and corner is editable]{.gl}
 :::
 :::
 :::
 
 
-## Three parts, three decisions {data-menu-title="Recap"}
+## Inputs should be as easy to adjust as they are to express {data-menu-title="Principle · Inputs"}
 
 ::: {.mini-stages}
-<span class="dot s-data is-covered">D</span><span class="dot s-visuals is-covered">V</span><span class="dot s-interaction is-covered">I</span>
+<span class="dot s-data"></span><span class="dot s-visuals"></span><span class="dot s-inputs is-covered"></span><span class="lbl">INPUTS</span>
 :::
 
-::: {.chapter style="align-items:center"}
-<svg viewBox="-46 0 1212 360" style="width:100%;max-height:480px">
-  <g>
-    <circle cx="112" cy="145" r="95" fill="#e8a33d" stroke="#1a1a1a" stroke-width="3"/>
-    <text x="112" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-          font-size="25" font-weight="700" fill="#1a1a1a">DATA</text>
-  </g>
-  <g class="fragment rise" data-fragment-index="1">
-    <text x="112" y="285" text-anchor="middle" font-family="'JetBrains Mono',monospace"
-          font-size="19" font-weight="700" fill="#de7d02">Specify the query</text>
-    <text x="112" y="312" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-          font-size="16" fill="#475569">parameterize · structure · augment</text>
-  </g>
-  <text x="245" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-        font-size="40" font-weight="700" fill="#1a1a1a">+</text>
-  <g>
-    <circle cx="385" cy="145" r="100" fill="#c2410c" stroke="#1a1a1a" stroke-width="3"/>
-    <text x="385" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-          font-size="25" font-weight="700" fill="#ffffff">VISUALS</text>
-  </g>
-  <g class="fragment rise" data-fragment-index="2">
-    <text x="385" y="285" text-anchor="middle" font-family="'JetBrains Mono',monospace"
-          font-size="19" font-weight="700" fill="#c2410c">Customize the message</text>
-    <text x="385" y="312" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-          font-size="16" fill="#475569">filter · highlight · construct</text>
-  </g>
-  <text x="523" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-        font-size="40" font-weight="700" fill="#1a1a1a">+</text>
-  <g>
-    <circle cx="672" cy="145" r="107" fill="#eab308" stroke="#1a1a1a" stroke-width="3"/>
-    <text x="672" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-          font-size="24" font-weight="700" fill="#1a1a1a">INTERACTION</text>
-  </g>
-  <g class="fragment rise" data-fragment-index="3">
-    <text x="672" y="285" text-anchor="middle" font-family="'JetBrains Mono',monospace"
-          font-size="19" font-weight="700" fill="#a16207">Reify the control</text>
-    <text x="672" y="312" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-          font-size="16" fill="#475569">make the query a thing you can grab</text>
-  </g>
-  <text x="818" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-        font-size="40" font-weight="700" fill="#1a1a1a">=</text>
-  <g class="fragment rise" data-fragment-index="4">
-    <circle cx="985" cy="145" r="128" fill="#ea580c" stroke="#1a1a1a" stroke-width="3"/>
-    <text x="985" y="138" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-          font-size="24" font-weight="700" fill="#ffffff">Interactive</text>
-    <text x="985" y="168" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
-          font-size="24" font-weight="700" fill="#ffffff">Visualization</text>
-    <text x="985" y="285" text-anchor="middle" font-family="'JetBrains Mono',monospace"
-          font-size="19" font-weight="700" fill="#ea580c">Answer the hypothesis</text>
-  </g>
-</svg>
+::: {.principle-solo}
+::: {.principle-pair}
+::: {.pp-item}
+[Express]{.pp-word}
+[match the gesture to the question]{.pp-gl}
+:::
+
+[then]{.pp-join}
+
+::: {.pp-item}
+[Adjust]{.pp-word}
+[reify it so the next question is cheap]{.pp-gl}
+:::
+:::
+:::
+
+
+## Three parts, three principles {data-menu-title="Recap"}
+
+::: {.mini-stages}
+<span class="dot s-data is-covered"></span><span class="dot s-visuals is-covered"></span><span class="dot s-inputs is-covered"></span><span class="lbl">RECAP</span>
+:::
+
+::: {.bands}
+::: {.band .fragment .rise data-fragment-index="1"}
+::: {.band-dot .b-data}
+DATA
+:::
+::: {.band-copy}
+[Treat interactions like data queries.]{.band-say}
+[Single Selection · Multi-Selection · Selection as Key]{.band-tag}
+:::
+:::
+
+::: {.band .fragment .rise data-fragment-index="2"}
+::: {.band-dot .b-visuals}
+VISUALS
+:::
+::: {.band-copy}
+[Strategically remove, edit and add elements.]{.band-say}
+[make the comparison easy to see]{.band-tag}
+:::
+:::
+
+::: {.band .fragment .rise data-fragment-index="3"}
+::: {.band-dot .b-inputs}
+INPUTS
+:::
+::: {.band-copy}
+[Make inputs as easy to adjust as they are to express.]{.band-say}
+[express, then adjust]{.band-tag}
+:::
+:::
+
+::: {.band .band-result .fragment .rise data-fragment-index="4"}
+::: {.band-dot .b-result}
+= IV
+:::
+::: {.band-copy}
+[An interactive visualization that answers the question.]{.band-say}
+:::
+:::
+:::
+
+
+## {.no-rule .wall-slide .is-focused data-menu-title="Over to Ryan"}
+
+{{< include _wall.qmd >}}
+
+::: {.wall-copy}
+<h1 class="big-title">Now follow Ryan into the interaction zoo</h1>
+<p class="subtitle">with vibe widget — the tool that made every visualization in this talk</p>
+<p class="byline">Dylan Wootton, Ryan Yen &nbsp;·&nbsp; MIT Visualization Group</p>
 :::

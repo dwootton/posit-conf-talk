@@ -33,74 +33,8 @@
       vertical-align: middle;
     }
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
-    /* CSS for syntax highlighting */
-    html { -webkit-text-size-adjust: 100%; }
-    pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-    pre > code.sourceCode > span:empty { height: 1.2em; }
-    .sourceCode { overflow: visible; }
-    code.sourceCode > span { color: inherit; text-decoration: inherit; }
-    div.sourceCode { margin: 1em 0; }
-    pre.sourceCode { margin: 0; }
-    @media screen {
-    div.sourceCode { overflow: auto; }
-    }
-    @media print {
-    pre > code.sourceCode { white-space: pre-wrap; }
-    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-    }
-    pre.numberSource code
-      { counter-reset: source-line 0; }
-    pre.numberSource code > span
-      { position: relative; left: -4em; counter-increment: source-line; }
-    pre.numberSource code > span > a:first-child::before
-      { content: counter(source-line);
-        position: relative; left: -1em; text-align: right; vertical-align: baseline;
-        border: none; display: inline-block;
-        -webkit-touch-callout: none; -webkit-user-select: none;
-        -khtml-user-select: none; -moz-user-select: none;
-        -ms-user-select: none; user-select: none;
-        padding: 0 4px; width: 4em;
-        color: #97947a;
-      }
-    pre.numberSource { margin-left: 3em; border-left: 1px solid #97947a;  padding-left: 4px; }
-    div.sourceCode
-      { color: #f8f8f2; background-color: #2b2b2b; }
-    @media screen {
-    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-    }
-    code span { color: #f8f8f2; } /* Normal */
-    code span.al { color: #dcc6e0; } /* Alert */
-    code span.an { color: #d4d0ab; } /* Annotation */
-    code span.at { color: #ffd700; } /* Attribute */
-    code span.bn { color: #dcc6e0; } /* BaseN */
-    code span.bu { color: #f5ab35; } /* BuiltIn */
-    code span.cf { color: #ffa07a; } /* ControlFlow */
-    code span.ch { color: #abe338; } /* Char */
-    code span.cn { color: #ffa07a; } /* Constant */
-    code span.co { color: #d4d0ab; } /* Comment */
-    code span.cv { color: #d4d0ab; font-style: italic; } /* CommentVar */
-    code span.do { color: #d4d0ab; font-style: italic; } /* Documentation */
-    code span.dt { color: #dcc6e0; } /* DataType */
-    code span.dv { color: #dcc6e0; } /* DecVal */
-    code span.er { color: #dcc6e0; } /* Error */
-    code span.ex { color: #ffd700; } /* Extension */
-    code span.fl { color: #f5ab35; } /* Float */
-    code span.fu { color: #ffd700; } /* Function */
-    code span.im { } /* Import */
-    code span.in { color: #d4d0ab; } /* Information */
-    code span.kw { color: #ffa07a; } /* Keyword */
-    code span.op { color: #00e0e0; } /* Operator */
-    code span.ot { color: #ffa07a; } /* Other */
-    code span.pp { color: #dcc6e0; } /* Preprocessor */
-    code span.sc { color: #00e0e0; } /* SpecialChar */
-    code span.ss { color: #abe338; } /* SpecialString */
-    code span.st { color: #abe338; } /* String */
-    code span.va { color: #f5ab35; } /* Variable */
-    code span.vs { color: #abe338; } /* VerbatimString */
-    code span.wa { color: #d4d0ab; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="slides_files/libs/revealjs/dist/theme/quarto-04be0c4494093b52856b2d2f8383bf44.css">
+  <link rel="stylesheet" href="slides_files/libs/revealjs/dist/theme/quarto-860f12bb9be24d748baaa5e288dca153.css">
   <link href="slides_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="slides_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="slides_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -192,42 +126,6 @@
       margin-right: 0; 
     }
   </style>
-  <script>
-  /* Pause off-screen widget iframes so only the visible demo animates. */
-  window.addEventListener('load', () => {
-    if (!window.Reveal) return;
-    Reveal.on('slidechanged', ev => {
-      document.querySelectorAll('.widget-wrap iframe').forEach(f => {
-        const onSlide = ev.currentSlide.contains(f);
-        if (onSlide && !f.src && f.dataset.src) f.src = f.dataset.src;
-      });
-    });
-
-    /* Slide 10 (the loop): bold ASK while a question is current, bold
-       SEE while its answer is current, and keep only the current
-       question's answer visible -- earlier answers hide again. */
-    function syncLoopUI(slide) {
-      if (!slide) return;
-      const steps = [...slide.querySelectorAll('.fragment[data-role]')];
-      if (!steps.length) return;
-      const visible = steps.filter(el => el.classList.contains('visible'));
-      const current = visible.length
-        ? visible.reduce((a, b) => (+a.dataset.fragmentIndex > +b.dataset.fragmentIndex ? a : b))
-        : null;
-      const askEl = slide.querySelector('#loop-ask');
-      const seeEl = slide.querySelector('#loop-see');
-      if (askEl) askEl.classList.toggle('is-bold', !!current && current.dataset.role === 'ask');
-      if (seeEl) seeEl.classList.toggle('is-bold', !!current && current.dataset.role === 'see');
-      slide.querySelectorAll('.qa-answer').forEach(a => {
-        const isCurrent = !!current && a.dataset.q === current.dataset.q && a.classList.contains('visible');
-        a.classList.toggle('force-hide', !isCurrent);
-      });
-    }
-    Reveal.on('fragmentshown', ev => syncLoopUI(Reveal.getCurrentSlide()));
-    Reveal.on('fragmenthidden', ev => syncLoopUI(Reveal.getCurrentSlide()));
-    Reveal.on('slidechanged', ev => syncLoopUI(ev.currentSlide));
-  });
-  </script>
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -260,151 +158,267 @@ Dylan Wootton, Ryan Yen &nbsp;·&nbsp; MIT Visualization Group
 </div>
 </div>
 </section>
-<section id="where-should-i-get-donuts-in-houston" class="slide level2" data-menu-title="The question">
-<h2>Where should I get donuts in Houston?</h2>
+<section id="section-1" class="slide level2 no-rule wall-slide" data-menu-title="Golden age">
+<h2></h2>
+<div class="exwall" aria-hidden="true">
+<figure class="excard" style="--i:0;left:-54px;top:-19px;width:248px;--rot:2.21deg" data-label="Pin and compare">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/pin-and-compare.jpg" width="1186" height="988"><source src="media/pin-and-compare.mp4" type="video/mp4"></video>
+  </figure>
+  <figure class="excard" style="--i:1;left:-54px;top:208px;width:248px;--rot:0.45deg" data-label="Multiple rectangular brushes">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/multi-rect-brush.jpg" width="1130" height="734"><source src="media/multi-rect-brush.mp4" type="video/mp4"></video>
+  </figure>
+  <figure class="excard" style="--i:2;left:-54px;top:386px;width:248px;--rot:0.68deg" data-label="Hover a bar → sparkline popup">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/bar-hover-sparkline.jpg" width="1106" height="714"><source src="media/bar-hover-sparkline.mp4" type="video/mp4"></video>
+  </figure>
+  <figure class="excard" style="--i:3;left:-61px;top:569px;width:248px;--rot:-1.02deg" data-label="Snapped pointer drives a reference line">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/snapped-pointer.jpg" width="1130" height="756"><source src="media/snapped-pointer.mp4" type="video/mp4"></video>
+  </figure>
+  <figure class="excard" style="--i:4;left:217px;top:-6px;width:275px;--rot:-2.38deg" data-label="Re-binning a linked histogram">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/histogram-binning.jpg" width="1230" height="516"><source src="media/histogram-binning.mp4" type="video/mp4"></video>
+  </figure>
+  <figure class="excard" style="--i:5;left:221px;top:133px;width:275px;--rot:0.8deg" data-label="SPLOM cohort brushing">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/splom-cohort-brush.jpg" width="1190" height="1080"><source src="media/splom-cohort-brush.mp4" type="video/mp4"></video>
+  </figure>
+  <figure class="excard" style="--i:6;left:208px;top:403px;width:275px;--rot:-2.52deg" data-label="Wind grid probe → nearest history">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/wind-grid-probe.jpg" width="1440" height="794"><source src="media/wind-grid-probe.mp4" type="video/mp4"></video>
+  </figure>
+  <figure class="excard" style="--i:7;left:206px;top:575px;width:275px;--rot:-1.61deg" data-label="Horizontal band brush">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/horizontal-band.jpg" width="1130" height="730"><source src="media/horizontal-band.mp4" type="video/mp4"></video>
+  </figure>
+  <figure class="excard" style="--i:8;left:508px;top:-31px;width:261px;--rot:-0.31deg" data-label="Brush to zoom">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/brush-to-zoom.jpg" width="1130" height="724"><source src="media/brush-to-zoom.mp4" type="video/mp4"></video>
+  </figure>
+  <figure class="excard" style="--i:9;left:509px;top:159px;width:261px;--rot:0.73deg" data-label="Multi-lasso heatmap → per-lasso histograms">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/multi-lasso-heatmap.jpg" width="1314" height="662"><source src="media/multi-lasso-heatmap.mp4" type="video/mp4"></video>
+  </figure>
+  <figure class="excard" style="--i:10;left:511px;top:310px;width:261px;--rot:-0.22deg" data-label="Circle brush">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/circle-brush.jpg" width="1124" height="722"><source src="media/circle-brush.mp4" type="video/mp4"></video>
+  </figure>
+  <figure class="excard" style="--i:11;left:516px;top:496px;width:261px;--rot:2.58deg" data-label="Multi-pin compare with mean">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/multi-pin-compare.jpg" width="1188" height="1016"><source src="media/multi-pin-compare.mp4" type="video/mp4"></video>
+  </figure>
+  <figure class="excard" style="--i:12;left:787px;top:-16px;width:280px;--rot:-1.41deg" data-label="Crosshair grid partition → region counts">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/grid-partition.jpg" width="1440" height="588"><source src="media/grid-partition.mp4" type="video/mp4"></video>
+  </figure>
+  <figure class="excard" style="--i:13;left:783px;top:117px;width:280px;--rot:1.38deg" data-label="Crosshair">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/crosshair.jpg" width="1130" height="722"><source src="media/crosshair.mp4" type="video/mp4"></video>
+  </figure>
+  <figure class="excard" style="--i:14;left:795px;top:315px;width:280px;--rot:-0.59deg" data-label="Draggable thresholds on grouped bars">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/grouped-bar-thresholds.jpg" width="834" height="578"><source src="media/grouped-bar-thresholds.mp4" type="video/mp4"></video>
+  </figure>
+  <figure class="excard" style="--i:15;left:795px;top:533px;width:280px;--rot:-2.6deg" data-label="Threshold slider on a histogram">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/threshold-histogram.jpg" width="808" height="632"><source src="media/threshold-histogram.mp4" type="video/mp4"></video>
+  </figure>
+  <figure class="excard" style="--i:16;left:1089px;top:-5px;width:245px;--rot:2.5deg" data-label="Drag to reorder bars">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/drag-reorder-bars.jpg" width="1200" height="776"><source src="media/drag-reorder-bars.mp4" type="video/mp4"></video>
+  </figure>
+  <figure class="excard" style="--i:17;left:1083px;top:172px;width:245px;--rot:0.67deg" data-label="Draggable histogram bin edges">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/draggable-bin-edges.jpg" width="860" height="730"><source src="media/draggable-bin-edges.mp4" type="video/mp4"></video>
+  </figure>
+  <figure class="excard" style="--i:18;left:1086px;top:402px;width:245px;--rot:-2.15deg" data-label="Hover reveals a country trajectory">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/trajectory-hover.jpg" width="1130" height="806"><source src="media/trajectory-hover.mp4" type="video/mp4"></video>
+  </figure>
+  <figure class="excard" style="--i:19;left:1097px;top:596px;width:245px;--rot:1.34deg" data-label="Brush over bars">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/brush-bars.jpg" width="1130" height="730"><source src="media/brush-bars.mp4" type="video/mp4"></video>
+  </figure>
+</div>
+<div class="exveil"></div>
+<div class="wall-copy fragment" data-fragment-index="1">
+<h1 class="big-title">
+We are entering the golden age of interactive graphics
+</h1>
+</div>
+</section>
+<section id="what-is-an-effective-interactive-visualization" class="slide level2" data-menu-title="The question">
+<h2>What is an effective interactive visualization?</h2>
 <div class="cols c-11" style="align-items:center">
 <div>
-<svg viewbox="0 0 420 380" style="width:100%;max-height:465px">
-<circle cx="200" cy="190" r="150" fill="#e8a33d" stroke="#1a1a1a" stroke-width="3"></circle> <text x="200" y="197" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="27" font-weight="700" fill="#1a1a1a">Hypotheses</text> <g class="fragment hyp-dot" data-fragment-index="1"> <circle cx="150" cy="104" r="14" fill="#0f766e" stroke="#1a1a1a" stroke-width="3"></circle> </g> <g class="fragment hyp-dot" data-fragment-index="2"> <circle cx="282" cy="158" r="14" fill="#6b3fa0" stroke="#1a1a1a" stroke-width="3"></circle> </g> <g class="fragment hyp-dot" data-fragment-index="3"> <circle cx="212" cy="292" r="14" fill="#9f2d1f" stroke="#1a1a1a" stroke-width="3"></circle> </g>
+<p><span class="lead-q">Where should I get donuts in Houston?</span></p>
+<svg viewbox="0 0 420 380" style="width:100%;max-height:400px">
+<circle cx="200" cy="190" r="150" fill="#e8a33d" stroke="#1a1a1a" stroke-width="3"></circle> <text x="200" y="199" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="30" font-weight="700" fill="#1a1a1a">Questions</text> <g class="fragment hyp-dot" data-fragment-index="1"> <circle cx="150" cy="104" r="14" fill="#0f766e" stroke="#1a1a1a" stroke-width="3"></circle> </g> <g class="fragment hyp-dot" data-fragment-index="2"> <circle cx="282" cy="158" r="14" fill="#6b3fa0" stroke="#1a1a1a" stroke-width="3"></circle> </g> <g class="fragment hyp-dot" data-fragment-index="3"> <circle cx="212" cy="292" r="14" fill="#9f2d1f" stroke="#1a1a1a" stroke-width="3"></circle> </g>
 </svg>
 </div>
 <div>
-<div class="vwcard hyp fragment" data-fragment-index="1" style="--hyp:#0f766e;margin-bottom:0.7rem">
-<p><span style="font-weight:700;font-size:0.62em">What about wait times?</span></p>
+<div class="vwcard hyp fragment" data-fragment-index="1" style="--hyp:#0f766e;margin-bottom:0.9rem">
+<p><span class="qtext">What about wait times?</span></p>
 </div>
-<div class="vwcard hyp fragment" data-fragment-index="2" style="--hyp:#6b3fa0;margin-bottom:0.7rem">
-<p><span style="font-weight:700;font-size:0.62em">Well, where is close?</span></p>
+<div class="vwcard hyp fragment" data-fragment-index="2" style="--hyp:#6b3fa0;margin-bottom:0.9rem">
+<p><span class="qtext">Well, where is close?</span></p>
 </div>
 <div class="vwcard hyp fragment" data-fragment-index="3" style="--hyp:#9f2d1f">
-<p><span style="font-weight:700;font-size:0.62em">…but do they have pumpkin spice?</span></p>
+<p><span class="qtext">…but do they have pumpkin spice?</span></p>
 </div>
 </div>
 </div>
 </section>
-<section id="principles-for-effective-interactive-visualizations" class="slide level2" data-menu-title="Vis approaches">
-<h2>Principles for Effective Interactive Visualizations</h2>
+<section id="what-is-an-effective-interactive-visualization-1" class="slide level2" data-menu-title="Interactive, not effective">
+<h2>What is an effective interactive visualization?</h2>
 <div class="cols c-11" style="align-items:center">
 <div>
-<svg viewbox="0 0 520 340" style="width:100%;max-height:455px">
-<circle cx="330" cy="170" r="135" fill="#e8a33d" stroke="#1a1a1a" stroke-width="3"></circle> <text x="330" y="178" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="24" font-weight="700" fill="#1a1a1a">Hypotheses</text> <circle cx="120" cy="170" r="78" fill="#ea580c" stroke="#1a1a1a" stroke-width="3"></circle> <text x="120" y="165" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="15" font-weight="700" fill="#ffffff">Interactive</text> <text x="120" y="184" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="15" font-weight="700" fill="#ffffff">Vis</text> <circle cx="245" cy="140" r="12" fill="#6b3fa0" stroke="#1a1a1a" stroke-width="3"></circle> <g> <line x1="245" y1="112" x2="245" y2="126" stroke="#6b3fa0" stroke-width="2"></line> <rect x="157" y="82" width="176" height="30" fill="#fbfaf6" stroke="#6b3fa0" stroke-width="2"></rect> <text x="245" y="103" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="15" font-weight="700" fill="#6b3fa0">Well, where is close?</text> </g>
+<svg viewbox="0 0 520 340" style="width:100%;max-height:440px">
+<circle cx="348" cy="170" r="135" fill="#e8a33d" stroke="#1a1a1a" stroke-width="3"></circle> <text x="348" y="180" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="26" font-weight="700" fill="#1a1a1a">Questions</text> <circle cx="100" cy="170" r="90" fill="#ea580c" stroke="#1a1a1a" stroke-width="3"></circle> <text x="100" y="163" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="24" font-weight="700" fill="#ffffff">Interactive</text> <text x="100" y="192" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="24" font-weight="700" fill="#ffffff">Vis</text> <circle cx="262" cy="140" r="12" fill="#6b3fa0" stroke="#1a1a1a" stroke-width="3"></circle> <g> <line x1="262" y1="104" x2="262" y2="126" stroke="#6b3fa0" stroke-width="2"></line> <rect x="140" y="62" width="244" height="42" fill="#fbfaf6" stroke="#6b3fa0" stroke-width="2"></rect> <text x="262" y="91" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="24" font-weight="700" fill="#6b3fa0">Well, where is close?</text> </g>
 </svg>
 </div>
 <div class="widget-wrap" style="max-width:352px;margin:0 auto">
-<iframe data-src="widgets/orthogonal.html" height="400" loading="lazy" title="Interactive, but does not answer the question">
+<iframe data-src="widgets/orthogonal.html" height="400" title="Interactive, but answers none of the questions">
 </iframe>
 </div>
 </div>
 </section>
-<section id="principles-for-effective-interactive-visualizations-1" class="slide level2" data-menu-title="Vis approaches, closer">
-<h2>Principles for Effective Interactive Visualizations</h2>
+<section id="what-is-an-effective-interactive-visualization-2" class="slide level2" data-menu-title="Effective">
+<h2>What is an effective interactive visualization?</h2>
 <div class="cols c-11" style="align-items:center">
 <div>
-<svg viewbox="0 0 520 340" style="width:100%;max-height:455px">
-<circle cx="300" cy="170" r="135" fill="#e8a33d" stroke="#1a1a1a" stroke-width="3"></circle> <circle cx="185" cy="170" r="118" fill="#ea580c" fill-opacity="0.92" stroke="#1a1a1a" stroke-width="3"></circle> <text x="185" y="164" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="19" font-weight="700" fill="#ffffff">Interactive</text> <text x="185" y="187" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="19" font-weight="700" fill="#ffffff">Vis</text> <text x="378" y="177" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="19" font-weight="700" fill="#1a1a1a">Hypotheses</text> <circle cx="215" cy="140" r="12" fill="#6b3fa0" stroke="#1a1a1a" stroke-width="3"></circle> <g> <line x1="215" y1="112" x2="215" y2="126" stroke="#6b3fa0" stroke-width="2"></line> <rect x="127" y="82" width="176" height="30" fill="#fbfaf6" stroke="#6b3fa0" stroke-width="2"></rect> <text x="215" y="103" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="15" font-weight="700" fill="#6b3fa0">Well, where is close?</text> </g>
+<svg viewbox="0 0 520 340" style="width:100%;max-height:440px">
+<circle cx="300" cy="170" r="135" fill="#e8a33d" stroke="#1a1a1a" stroke-width="3"></circle> <circle cx="185" cy="170" r="118" fill="#ea580c" fill-opacity="0.92" stroke="#1a1a1a" stroke-width="3"></circle> <text x="185" y="161" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="24" font-weight="700" fill="#ffffff">Interactive</text> <text x="185" y="190" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="24" font-weight="700" fill="#ffffff">Vis</text> <text x="382" y="180" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="24" font-weight="700" fill="#1a1a1a">Questions</text> <circle cx="215" cy="140" r="12" fill="#6b3fa0" stroke="#1a1a1a" stroke-width="3"></circle> <g> <line x1="215" y1="104" x2="215" y2="126" stroke="#6b3fa0" stroke-width="2"></line> <rect x="93" y="62" width="244" height="42" fill="#fbfaf6" stroke="#6b3fa0" stroke-width="2"></rect> <text x="215" y="91" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="24" font-weight="700" fill="#6b3fa0">Well, where is close?</text> </g>
 </svg>
 </div>
 <div class="widget-wrap" style="max-width:352px;margin:0 auto">
-<iframe data-src="widgets/close.html" height="400" loading="lazy" title="Where is close? -- answers one of the hypotheses">
+<iframe data-src="widgets/close.html" height="400" title="Where is close? -- answers one of the questions">
 </iframe>
 </div>
 </div>
 </section>
-<section id="different-interaction-techniques-support-different-classes-of-questions" class="slide level2" data-menu-title="Interaction supports questions">
-<h2>Different interaction techniques support different classes of questions</h2>
+<section id="what-is-an-effective-interactive-visualization-3" class="slide level2" data-menu-title="Three questions, three views">
+<h2>What is an effective interactive visualization?</h2>
 <div class="trio">
 <div class="trio-item fragment" style="--hyp:#0f766e" data-fragment-index="1">
 <div class="widget-wrap">
-<iframe data-src="widgets/wait.html" height="400" loading="lazy" title="What about wait times?">
+<iframe data-src="widgets/wait.html" height="400" title="What about wait times?">
 </iframe>
 </div>
 <div class="vwcard hyp">
-<p><span style="font-weight:700;font-size:0.42em">What about wait times?</span></p>
+<p><span class="qtext">What about wait times?</span></p>
 </div>
 </div>
 <div class="trio-item fragment" style="--hyp:#6b3fa0" data-fragment-index="2">
 <div class="widget-wrap">
-<iframe data-src="widgets/close.html" height="400" loading="lazy" title="Where is close?">
+<iframe data-src="widgets/close.html" height="400" title="Where is close?">
 </iframe>
 </div>
 <div class="vwcard hyp">
-<p><span style="font-weight:700;font-size:0.42em">Well, where is close?</span></p>
+<p><span class="qtext">Well, where is close?</span></p>
 </div>
 </div>
 <div class="trio-item fragment" style="--hyp:#9f2d1f" data-fragment-index="3">
 <div class="widget-wrap">
-<iframe data-src="widgets/spice.html" height="400" loading="lazy" title="Do they have pumpkin spice?">
+<iframe data-src="widgets/spice.html" height="400" title="Do they have pumpkin spice?">
 </iframe>
 </div>
 <div class="vwcard hyp">
-<p><span style="font-weight:700;font-size:0.42em">…but do they have pumpkin spice?</span></p>
+<p><span class="qtext">…but do they have pumpkin spice?</span></p>
 </div>
 </div>
 </div>
 </section>
-<section id="principles-for-effective-interactive-visualizations-2" class="slide level2" data-menu-title="Overlap">
-<h2>Principles for Effective Interactive Visualizations</h2>
+<section id="what-is-an-effective-interactive-visualization-4" class="slide level2" data-menu-title="Overlap">
+<h2>What is an effective interactive visualization?</h2>
 <div class="chapter" style="align-items:center">
 <svg viewbox="0 0 760 400" style="width:88%;max-height:470px;margin:0 auto">
-<g class="merge-scene fragment" data-fragment-index="1"> <g class="merge-a"> <circle cx="365" cy="230" r="140" fill="#e8a33d" stroke="#1a1a1a" stroke-width="3"></circle> <text x="365" y="238" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="24" font-weight="700" fill="#1a1a1a">HYPOTHESES</text> </g> <g class="merge-b"> <circle cx="393" cy="230" r="136" fill="#ea580c" stroke="#1a1a1a" stroke-width="3"></circle> <text x="395" y="219" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="23" font-weight="700" fill="#ffffff">Interactive</text> <text x="395" y="248" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="23" font-weight="700" fill="#ffffff">Visualization</text> </g> </g> <g class="fragment" data-fragment-index="2"> <text x="379" y="62" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="46" font-style="italic" font-weight="700" fill="#1a1a1a">Effective</text> </g>
+<g class="merge-scene fragment" data-fragment-index="1"> <g class="merge-a"> <circle cx="365" cy="230" r="140" fill="#e8a33d" stroke="#1a1a1a" stroke-width="3"></circle> <text x="365" y="240" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="26" font-weight="700" fill="#1a1a1a">QUESTIONS</text> </g> <g class="merge-b"> <circle cx="393" cy="230" r="136" fill="#ea580c" stroke="#1a1a1a" stroke-width="3"></circle> <text x="395" y="219" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="24" font-weight="700" fill="#ffffff">Interactive</text> <text x="395" y="250" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="24" font-weight="700" fill="#ffffff">Visualization</text> </g> </g> <g class="fragment" data-fragment-index="2"> <text x="379" y="62" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="48" font-style="italic" font-weight="700" fill="#1a1a1a">Effective</text> </g>
 </svg>
 </div>
 </section>
-<section id="interactive-visualizations-can-have-3-parts-to-answering-a-question" class="slide level2" data-menu-title="The equation">
-<h2>Interactive visualizations can have 3 parts to answering a question</h2>
+<section id="interactions-come-in-many-flavors" class="slide level2" data-menu-title="The interaction zoo">
+<h2>Interactions come in many flavors</h2>
+<div class="taxo">
+<p><span class="fragment st st-grow" data-fragment-index="6"></span> <span class="fragment st st-lit" data-fragment-index="7"></span></p>
+<div class="taxo-item fragment rise" data-fragment-index="1">
+<svg class="ico" viewbox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="9" y="33" width="9" height="18" fill="#f2f0e9" stroke="#1a1a1a" stroke-width="2.5"></rect> <rect x="25" y="14" width="9" height="37" fill="#f2f0e9" stroke="#1a1a1a" stroke-width="2.5"></rect> <rect x="41" y="25" width="9" height="26" fill="#f2f0e9" stroke="#1a1a1a" stroke-width="2.5"></rect> <path d="M15 9 C22 2 40 2 46 9" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round"></path> <path d="M46 9 L40 6 M46 9 L45 3" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round"></path>
+</svg>
+<p><span class="nm">Arrangement</span> <span class="gl">what order or layout do the marks take?</span></p>
+</div>
+<div class="taxo-item fragment rise" data-fragment-index="2">
+<svg class="ico" viewbox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="14" cy="44" r="5" fill="#ea580c" stroke="#1a1a1a" stroke-width="2.5"></circle> <path d="M18 40 L27 27" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round"></path> <rect x="26" y="9" width="26" height="22" fill="#f2f0e9" stroke="#1a1a1a" stroke-width="2.5"></rect> <path d="M31 16 H47 M31 21 H47 M31 26 H41" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"></path>
+</svg>
+<p><span class="nm">Elaboration</span> <span class="gl">how much detail is shown at once?</span></p>
+</div>
+<div class="taxo-item sel fragment rise" data-fragment-index="3">
+<svg class="ico" viewbox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="13" cy="14" r="4.5" fill="#f2f0e9" stroke="#1a1a1a" stroke-width="2.5"></circle> <circle cx="46" cy="16" r="4.5" fill="#f2f0e9" stroke="#1a1a1a" stroke-width="2.5"></circle> <circle cx="12" cy="46" r="4.5" fill="#f2f0e9" stroke="#1a1a1a" stroke-width="2.5"></circle> <rect x="22" y="22" width="26" height="26" fill="#ea580c" fill-opacity="0.14" stroke="#ea580c" stroke-width="2.5" stroke-dasharray="5 4"></rect> <circle cx="30" cy="31" r="4.5" fill="#ea580c" stroke="#1a1a1a" stroke-width="2.5"></circle> <circle cx="41" cy="40" r="4.5" fill="#ea580c" stroke="#1a1a1a" stroke-width="2.5"></circle>
+</svg>
+<p><span class="nm">Selection</span> <span class="gl">which data points am I asking about?</span></p>
+</div>
+<div class="taxo-item fragment rise" data-fragment-index="4">
+<svg class="ico" viewbox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="11" cy="12" r="3" fill="#94a3b8"></circle><circle cx="26" cy="9" r="3" fill="#94a3b8"></circle> <circle cx="45" cy="14" r="3" fill="#94a3b8"></circle><circle cx="14" cy="30" r="3" fill="#94a3b8"></circle> <circle cx="49" cy="33" r="3" fill="#94a3b8"></circle><circle cx="12" cy="48" r="3" fill="#94a3b8"></circle> <circle cx="31" cy="50" r="3" fill="#94a3b8"></circle><circle cx="48" cy="49" r="3" fill="#94a3b8"></circle> <rect x="21" y="20" width="22" height="22" fill="#ea580c" fill-opacity="0.14" stroke="#ea580c" stroke-width="2.5"></rect> <path d="M32 26 V36 M27 31 H37" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round"></path>
+</svg>
+<p><span class="nm">Explore</span> <span class="gl">which part of the space am I in?</span></p>
+</div>
+<div class="taxo-item fragment rise" data-fragment-index="5">
+<svg class="ico" viewbox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="14" cy="30" r="10" fill="#f2f0e9" stroke="#1a1a1a" stroke-width="2.5"></circle> <path d="M28 30 H38" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round"></path> <path d="M38 30 L33 26 M38 30 L33 34" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round"></path> <rect x="42" y="14" width="10" height="32" fill="#ea580c" stroke="#1a1a1a" stroke-width="2.5"></rect>
+</svg>
+<p><span class="nm">Encode</span> <span class="gl">which visual channel carries the value?</span></p>
+</div>
+</div>
+<div class="zoo-link">
+<p>The rest of the zoo: <a href="https://vis-society.github.io/lectures/interaction-zoo.html">vis-society.github.io/lectures/interaction-zoo</a></p>
+</div>
+</section>
+<section id="interactive-visualizations-have-3-parts" class="slide level2" data-menu-title="The three parts">
+<h2>Interactive visualizations have 3 parts</h2>
 <div class="chapter" style="align-items:center">
 <svg viewbox="0 0 1160 290" style="width:100%;max-height:455px">
-<g class="fragment" data-fragment-index="1"> <circle cx="112" cy="145" r="95" fill="#e8a33d" stroke="#1a1a1a" stroke-width="3"></circle> <text x="112" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="25" font-weight="700" fill="#1a1a1a">DATA</text> </g> <g class="fragment" data-fragment-index="2"> <text x="245" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="40" font-weight="700" fill="#1a1a1a">+</text> <circle cx="385" cy="145" r="100" fill="#c2410c" stroke="#1a1a1a" stroke-width="3"></circle> <text x="385" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="25" font-weight="700" fill="#ffffff">VISUALS</text> </g> <g class="fragment" data-fragment-index="3"> <text x="523" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="40" font-weight="700" fill="#1a1a1a">+</text> <circle cx="672" cy="145" r="107" fill="#eab308" stroke="#1a1a1a" stroke-width="3"></circle> <text x="672" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="24" font-weight="700" fill="#1a1a1a">INTERACTION</text> </g> <g class="fragment" data-fragment-index="4"> <text x="818" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="40" font-weight="700" fill="#1a1a1a">=</text> <circle cx="985" cy="145" r="128" fill="#ea580c" stroke="#1a1a1a" stroke-width="3"></circle> <text x="985" y="138" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="24" font-weight="700" fill="#ffffff">Interactive</text> <text x="985" y="168" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="24" font-weight="700" fill="#ffffff">Visualization</text> </g>
+<g class="fragment" data-fragment-index="1"> <circle cx="112" cy="145" r="95" fill="#e8a33d" stroke="#1a1a1a" stroke-width="3"></circle> <text x="112" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="26" font-weight="700" fill="#1a1a1a">DATA</text> </g> <g class="fragment" data-fragment-index="2"> <text x="245" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="40" font-weight="700" fill="#1a1a1a">+</text> <circle cx="385" cy="145" r="100" fill="#c2410c" stroke="#1a1a1a" stroke-width="3"></circle> <text x="385" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="26" font-weight="700" fill="#ffffff">VISUALS</text> </g> <g class="fragment" data-fragment-index="3"> <text x="523" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="40" font-weight="700" fill="#1a1a1a">+</text> <circle cx="672" cy="145" r="107" fill="#eab308" stroke="#1a1a1a" stroke-width="3"></circle> <text x="672" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="26" font-weight="700" fill="#1a1a1a">INPUTS</text> </g> <g class="fragment" data-fragment-index="4"> <text x="818" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="40" font-weight="700" fill="#1a1a1a">=</text> <circle cx="985" cy="145" r="128" fill="#ea580c" stroke="#1a1a1a" stroke-width="3"></circle> <text x="985" y="138" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="25" font-weight="700" fill="#ffffff">Interactive</text> <text x="985" y="170" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="25" font-weight="700" fill="#ffffff">Visualization</text> </g>
 </svg>
 </div>
 </section>
-<section id="chapter-1-data-transformation" class="slide level2" data-menu-title="Chapter 1">
-<h2>Chapter 1: Data Transformation</h2>
+<section id="chapter-1-data" class="slide level2" data-menu-title="Chapter 1 · Data">
+<h2>Chapter 1: Data</h2>
 <div class="mini-stages">
-<p><span class="dot s-data is-covered">D</span><span class="dot s-visuals">V</span><span class="dot s-interaction">I</span></p>
+<p><span class="dot s-data is-covered"></span><span class="dot s-visuals"></span><span class="dot s-inputs"></span><span class="lbl">DATA</span></p>
 </div>
 <div class="chapter" style="align-items:center">
 <svg viewbox="0 0 1160 290" style="width:100%;max-height:430px">
-<g class="eq-term"> <circle cx="112" cy="145" r="95" fill="#e8a33d" stroke="#1a1a1a" stroke-width="3"></circle> <text x="112" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="25" font-weight="700" fill="#1a1a1a">DATA</text> </g> <text x="245" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="40" font-weight="700" fill="#1a1a1a">+</text> <g class="eq-term is-dim"> <circle cx="385" cy="145" r="100" fill="#c2410c" stroke="#1a1a1a" stroke-width="3"></circle> <text x="385" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="25" font-weight="700" fill="#ffffff">VISUALS</text> </g> <text x="523" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="40" font-weight="700" fill="#1a1a1a">+</text> <g class="eq-term is-dim"> <circle cx="672" cy="145" r="107" fill="#eab308" stroke="#1a1a1a" stroke-width="3"></circle> <text x="672" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="24" font-weight="700" fill="#1a1a1a">INTERACTION</text> </g> <text x="818" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="40" font-weight="700" fill="#1a1a1a">=</text> <g class="eq-term"> <circle cx="985" cy="145" r="128" fill="#ea580c" stroke="#1a1a1a" stroke-width="3"></circle> <text x="985" y="138" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="24" font-weight="700" fill="#ffffff">Interactive</text> <text x="985" y="168" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="24" font-weight="700" fill="#ffffff">Visualization</text> </g>
+<g class="eq-term"> <circle cx="112" cy="145" r="95" fill="#e8a33d" stroke="#1a1a1a" stroke-width="3"></circle> <text x="112" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="26" font-weight="700" fill="#1a1a1a">DATA</text> </g> <text x="245" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="40" font-weight="700" fill="#1a1a1a">+</text> <g class="eq-term fragment custom go-dim" data-fragment-index="1"> <circle cx="385" cy="145" r="100" fill="#c2410c" stroke="#1a1a1a" stroke-width="3"></circle> <text x="385" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="26" font-weight="700" fill="#ffffff">VISUALS</text> </g> <text x="523" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="40" font-weight="700" fill="#1a1a1a">+</text> <g class="eq-term fragment custom go-dim" data-fragment-index="1"> <circle cx="672" cy="145" r="107" fill="#eab308" stroke="#1a1a1a" stroke-width="3"></circle> <text x="672" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="26" font-weight="700" fill="#1a1a1a">INPUTS</text> </g> <text x="818" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="40" font-weight="700" fill="#1a1a1a">=</text> <g class="eq-term"> <circle cx="985" cy="145" r="128" fill="#ea580c" stroke="#1a1a1a" stroke-width="3"></circle> <text x="985" y="138" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="25" font-weight="700" fill="#ffffff">Interactive</text> <text x="985" y="170" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="25" font-weight="700" fill="#ffffff">Visualization</text> </g>
 </svg>
 </div>
 </section>
-<section id="human-data-interaction-loop" class="slide level2" data-menu-title="The loop">
-<h2>Human-Data Interaction Loop</h2>
+<section id="questions-as-data-queries" class="slide level2" data-menu-title="Questions as queries">
+<h2>Questions as Data Queries</h2>
 <div class="mini-stages">
-<p><span class="dot s-data is-covered">D</span><span class="dot s-visuals">V</span><span class="dot s-interaction is-covered">I</span></p>
+<p><span class="dot s-data is-covered"></span><span class="dot s-visuals"></span><span class="dot s-inputs"></span><span class="lbl">DATA</span></p>
 </div>
-<div class="cols c-11" style="align-items:start">
-<div>
-<svg viewbox="0 0 380 250" style="width:94%;max-height:400px">
-<rect x="40" y="52" width="290" height="150" fill="none" stroke="#1a1a1a" stroke-width="4"></rect> <path d="M40 52 L58 86 L22 86 Z" fill="#1a1a1a"></path> <text id="loop-ask" x="185" y="34" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="14" font-weight="700" letter-spacing="2" fill="#475569">ASK</text> <text id="loop-see" x="185" y="228" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="14" font-weight="700" letter-spacing="2" fill="#475569">SEE</text> <text x="185" y="134" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="20" font-weight="700" fill="#1a1a1a">interact</text>
-</svg>
+<div class="qgrid">
+<p><span class="qhead">Question</span> <span class="qhead">Query</span> <span class="qhead">Answer</span></p>
+<div class="qrow fragment" data-fragment-index="1">
+<p><span class="qq">“what donut shop is closest to me?”</span></p>
+<pre class="sqlblock"><code><span class="kw">SELECT</span> <span class="sel">name</span>, <span class="tx">dist</span>(shop, me)
+<span class="kw">FROM</span> shops
+<span class="tx">ORDER BY</span> dist <span class="tx">LIMIT</span> 1</code></pre>
+<p><span class="qa">Bagby Rings</span> <span class="qau">0.35 mi</span></p>
 </div>
-<div>
-<div class="vwcard fragment" style="margin-bottom:0.6rem" data-fragment-index="1" data-role="ask" data-q="1">
-<p><span style="font-weight:700;font-size:0.5em">“what donut shop is closest to me?”</span><br> <span class="mono" style="color:#de7d02;font-size:0.4em;font-weight:700">locations</span></p>
-<div class="qa-answer fragment" data-fragment-index="2" data-role="see" data-q="1">
-<p><span style="font-weight:700;font-size:0.48em">→ Bagby Rings</span> <span class="mono" style="color:#478d4b;font-size:0.38em;font-weight:700">0.35 mi</span></p>
+<div class="qrow fragment" data-fragment-index="2">
+<p><span class="qq">“what’s the shop on Westheimer and Dunlavy?”</span></p>
+<pre class="sqlblock"><code><span class="kw">SELECT</span> <span class="sel">name</span>
+<span class="kw">FROM</span> shops
+<span class="tx">WHERE</span> corner = :corner</code></pre>
+<p><span class="qa">Westheimer Crullers</span></p>
 </div>
+<div class="qrow fragment" data-fragment-index="3">
+<p><span class="qq">“what are the average weekend waits in the Heights?”</span></p>
+<pre class="sqlblock"><code><span class="kw">SELECT</span> <span class="tx">AVG</span>(<span class="sel">weekend_wait</span>)
+<span class="kw">FROM</span> shops
+<span class="tx">WHERE</span> neighborhood = :hood</code></pre>
+<p><span class="qa">28.3 min</span></p>
 </div>
-<div class="vwcard fragment" style="margin-bottom:0.6rem" data-fragment-index="3" data-role="ask" data-q="2">
-<p><span style="font-weight:700;font-size:0.5em">“what’s the donut shop on Westheimer and Dunlavy?”</span><br> <span class="mono" style="color:#de7d02;font-size:0.4em;font-weight:700">names</span></p>
-<div class="qa-answer fragment" data-fragment-index="4" data-role="see" data-q="2">
-<p><span style="font-weight:700;font-size:0.48em">→ Westheimer Crullers</span></p>
-</div>
-</div>
-<div class="vwcard fragment" data-fragment-index="5" data-role="ask" data-q="3">
-<p><span style="font-weight:700;font-size:0.5em">“what are the average weekend waits in the Heights?”</span><br> <span class="mono" style="color:#de7d02;font-size:0.4em;font-weight:700">transforms and sale attributes</span></p>
-<div class="qa-answer fragment" data-fragment-index="6" data-role="see" data-q="3">
-<p><span style="font-weight:700;font-size:0.48em">→ 28.3 min</span> <span class="mono" style="color:#478d4b;font-size:0.38em;font-weight:700">avg weekend wait</span></p>
-</div>
+<div class="qrow qrow-live fragment" data-fragment-index="4">
+<p><span class="qmark">?</span></p>
+<p><span class="qmark">?</span></p>
+<div class="widget-wrap sm-45">
+<iframe data-src="widgets/in_center.html" title="A selection: the question nobody typed">
+</iframe>
 </div>
 </div>
 </div>
 </section>
-<section id="human-data-interaction-loop-1" class="slide level2" data-menu-title="1 · Parameterization">
-<h2>Human-Data Interaction Loop</h2>
+<section id="interactive-visualizations-are-sql-queries" class="slide level2" data-menu-title="1 · Single Selection">
+<h2>Interactive visualizations are SQL queries</h2>
 <div class="mini-stages">
-<p><span class="dot s-data is-covered">D</span><span class="dot s-visuals">V</span><span class="dot s-interaction is-covered">I</span></p>
+<p><span class="dot s-data is-covered"></span><span class="dot s-visuals"></span><span class="dot s-inputs"></span><span class="lbl">DATA</span></p>
 </div>
 <div class="cols c-13">
 <div class="loop-rail">
@@ -412,26 +426,24 @@ Dylan Wootton, Ryan Yen &nbsp;·&nbsp; MIT Visualization Group
 <div class="bar">
 
 </div>
-<h4 id="query-parameterization">Query Parameterization</h4>
-<p>interactions parameterize query results</p>
+<h4 id="single-selection">Single Selection</h4>
 </div>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> name, distance(shop, <span class="ch">:center</span>) <span class="kw">AS</span> dist</span>
-<span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> donut_shops</span>
-<span id="cb1-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> dist <span class="op">&lt;=</span> <span class="ch">:radius</span></span>
-<span id="cb1-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> dist;</span></code></pre></div>
+<pre class="sqlblock"><code><span class="kw">SELECT</span> <span class="sel">*</span>
+<span class="kw">FROM</span> shops
+<span class="hl"><span class="tx">WHERE</span> <span class="tx">dist</span>(shop,me) &lt; r</span></code></pre>
 </div>
 <div>
-<div class="widget-wrap">
-<iframe data-src="widgets/parameterize.html" height="548" loading="lazy" title="Query parameterization — move the question">
+<div class="widget-wrap wd-92">
+<iframe data-src="widgets/parameterize.html" title="Single selection: move the center, set the radius">
 </iframe>
 </div>
 </div>
 </div>
 </section>
-<section id="human-data-interaction-loop-2" class="slide level2" data-menu-title="2 · Structuring">
-<h2>Human-Data Interaction Loop</h2>
+<section id="interactive-visualizations-are-sql-queries-1" class="slide level2" data-menu-title="2 · Multi-Selection">
+<h2>Interactive visualizations are SQL queries</h2>
 <div class="mini-stages">
-<p><span class="dot s-data is-covered">D</span><span class="dot s-visuals">V</span><span class="dot s-interaction is-covered">I</span></p>
+<p><span class="dot s-data is-covered"></span><span class="dot s-visuals"></span><span class="dot s-inputs"></span><span class="lbl">DATA</span></p>
 </div>
 <div class="cols c-13">
 <div class="loop-rail">
@@ -439,34 +451,31 @@ Dylan Wootton, Ryan Yen &nbsp;·&nbsp; MIT Visualization Group
 <div class="bar">
 
 </div>
-<h4 id="query-parameterization-1">Query Parameterization</h4>
-<p>interactions parameterize query results</p>
+<h4 id="single-selection-1">Single Selection</h4>
 </div>
 <div class="stage-row s-struct is-live">
 <div class="bar">
 
 </div>
-<h4 id="query-structuring">Query Structuring</h4>
-<p>manipulation of query structure by adding new clauses</p>
+<h4 id="multi-selection">Multi-Selection</h4>
 </div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb2-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> grp, <span class="fu">AVG</span>(weekend_wait_min)</span>
-<span id="cb2-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> donut_shops</span>
-<span id="cb2-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> grp <span class="kw">IN</span> (<span class="st">'A'</span>, <span class="st">'B'</span>)</span>
-<span id="cb2-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> grp</span>
-<span id="cb2-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">HAVING</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="op">&gt;</span> <span class="dv">0</span>;</span></code></pre></div>
+<pre class="sqlblock"><code><span class="kw">SELECT</span> <span class="sel">grp</span>, <span class="tx">AVG</span>(<span class="sel">wait</span>)
+<span class="kw">FROM</span> shops
+<span class="tx">WHERE</span> grp <span class="tx">IS NOT NULL</span>
+<span class="hl"><span class="tx">GROUP BY</span> grp</span></code></pre>
 </div>
 <div>
-<div class="widget-wrap">
-<iframe data-src="widgets/structure.html" height="548" loading="lazy" title="Query structuring — construct the units">
+<div class="widget-wrap wd-92">
+<iframe data-src="widgets/structure.html" title="Multi-selection: brush shops into two groups and compare them">
 </iframe>
 </div>
 </div>
 </div>
 </section>
-<section id="human-data-interaction-loop-3" class="slide level2" data-menu-title="3 · Augmentation">
-<h2>Human-Data Interaction Loop</h2>
+<section id="interactive-visualizations-are-sql-queries-2" class="slide level2" data-menu-title="3 · Selection as Key">
+<h2>Interactive visualizations are SQL queries</h2>
 <div class="mini-stages">
-<p><span class="dot s-data is-covered">D</span><span class="dot s-visuals">V</span><span class="dot s-interaction is-covered">I</span></p>
+<p><span class="dot s-data is-covered"></span><span class="dot s-visuals"></span><span class="dot s-inputs"></span><span class="lbl">DATA</span></p>
 </div>
 <div class="cols c-13">
 <div class="loop-rail">
@@ -474,259 +483,417 @@ Dylan Wootton, Ryan Yen &nbsp;·&nbsp; MIT Visualization Group
 <div class="bar">
 
 </div>
-<h4 id="query-parameterization-2">Query Parameterization</h4>
-<p>interactions parameterize query results</p>
+<h4 id="single-selection-2">Single Selection</h4>
 </div>
 <div class="stage-row s-struct is-dim">
 <div class="bar">
 
 </div>
-<h4 id="query-structuring-1">Query Structuring</h4>
-<p>manipulation of query structure by adding new clauses</p>
+<h4 id="multi-selection-1">Multi-Selection</h4>
 </div>
 <div class="stage-row s-aug is-live">
 <div class="bar">
 
 </div>
-<h4 id="query-augmentation">Query Augmentation</h4>
-<p>computing results via external algorithm or service</p>
+<h4 id="selection-as-key">Selection as Key</h4>
 </div>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> d.name, w.dist, w.walk_min</span>
-<span id="cb3-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> donut_shops d</span>
-<span id="cb3-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">JOIN</span> walking_distances w</span>
-<span id="cb3-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="kw">ON</span> w.shop_id <span class="op">=</span> d.shop_id</span>
-<span id="cb3-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> w.origin <span class="op">=</span> <span class="ch">:me</span>;</span></code></pre></div>
+<pre class="sqlblock"><code><span class="kw">SELECT</span> <span class="sel">s.name</span>, <span class="sel">r.text</span>
+<span class="kw">FROM</span> shops s
+<span class="hl"><span class="tx">JOIN</span> reviews r
+  <span class="tx">USING</span> (shop_id)</span>
+<span class="tx">WHERE</span> s.shop_id = :shop</code></pre>
 </div>
 <div>
-<div class="widget-wrap">
-<iframe data-src="widgets/augment.html" height="548" loading="lazy" title="Query augmentation — click a shop to pull its reviews">
+<div class="widget-wrap wd-92">
+<iframe data-src="widgets/augment.html" title="Selection as key: click a shop to join in its reviews">
 </iframe>
 </div>
 </div>
 </div>
 </section>
-<section id="human-data-interaction-loop-4" class="slide level2" data-menu-title="Growing data">
-<h2>Human-Data Interaction Loop</h2>
+<section id="treat-interactions-like-data-queries" class="slide level2" data-menu-title="Principle · Data">
+<h2>Treat Interactions like Data Queries</h2>
 <div class="mini-stages">
-<p><span class="dot s-data is-covered">D</span><span class="dot s-visuals">V</span><span class="dot s-interaction is-covered">I</span></p>
+<p><span class="dot s-data is-covered"></span><span class="dot s-visuals"></span><span class="dot s-inputs"></span><span class="lbl">DATA</span></p>
 </div>
-<div class="cols c-13">
-<div class="loop-rail">
-<div class="stage-row s-param">
-<div class="bar">
-
+<div class="principle-sub">
+<p>Do they enable access to, and transformation of, the underlying data?</p>
 </div>
-<h4 id="query-parameterization-3">Query Parameterization</h4>
-<p>interactions parameterize query results</p>
+<div class="trio trio-wide">
+<div class="trio-item">
+<p><span class="colhd">Single Selection</span></p>
+<div class="widget-wrap wd-46">
+<iframe data-src="widgets/parameterize.html" title="Single selection">
+</iframe>
 </div>
-<div class="stage-row s-struct">
-<div class="bar">
-
-</div>
-<h4 id="query-structuring-2">Query Structuring</h4>
-<p>manipulation of query structure by adding new clauses</p>
-</div>
-<div class="stage-row s-aug">
-<div class="bar">
-
-</div>
-<h4 id="query-augmentation-1">Query Augmentation</h4>
-<p>computing results via external algorithm or service</p>
-</div>
-</div>
-<div>
-<svg viewbox="0 0 520 400" style="width:100%;max-height:520px">
-<circle cx="150" cy="66" r="52" fill="#e8a33d" stroke="#1a1a1a" stroke-width="3"></circle> <text x="150" y="74" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="17" font-weight="700" fill="#1a1a1a">DATA</text> <circle cx="180" cy="185" r="80" fill="#e8a33d" stroke="#1a1a1a" stroke-width="3"></circle> <text x="180" y="194" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="23" font-weight="700" fill="#1a1a1a">DATA</text> <circle cx="222" cy="330" r="120" fill="#e8a33d" stroke="#1a1a1a" stroke-width="3"></circle> <text x="222" y="342" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="32" font-weight="700" fill="#1a1a1a">DATA</text> <text x="420" y="74" font-family="'JetBrains Mono',monospace" font-size="13" font-weight="700" fill="#3f8bdb">rows</text> <text x="420" y="194" font-family="'JetBrains Mono',monospace" font-size="13" font-weight="700" fill="#478d4b">+ columns</text> <text x="420" y="342" font-family="'JetBrains Mono',monospace" font-size="13" font-weight="700" fill="#ea580c">+ computed</text>
+<div class="qcap">
+<svg class="hyp-mini" viewbox="0 0 64 64" aria-hidden="true">
+<circle cx="32" cy="32" r="29" fill="#e8a33d" stroke="#1a1a1a" stroke-width="2.5"></circle> <circle cx="22" cy="23" r="7" fill="#3f8bdb" stroke="#1a1a1a" stroke-width="2.5"></circle> <circle cx="44" cy="30" r="5" fill="#fbfaf6" stroke="#1a1a1a" stroke-width="2" opacity="0.4"></circle> <circle cx="29" cy="46" r="5" fill="#fbfaf6" stroke="#1a1a1a" stroke-width="2" opacity="0.4"></circle>
 </svg>
+<p><span class="gl">Which shops are within a mile of me?</span></p>
+</div>
+</div>
+<div class="trio-item">
+<p><span class="colhd">Multi-Selection</span></p>
+<div class="widget-wrap wd-46">
+<iframe data-src="widgets/structure.html" title="Multi-selection">
+</iframe>
+</div>
+<div class="qcap">
+<svg class="hyp-mini" viewbox="0 0 64 64" aria-hidden="true">
+<circle cx="32" cy="32" r="29" fill="#e8a33d" stroke="#1a1a1a" stroke-width="2.5"></circle> <circle cx="22" cy="23" r="5" fill="#fbfaf6" stroke="#1a1a1a" stroke-width="2" opacity="0.4"></circle> <circle cx="44" cy="30" r="7" fill="#478d4b" stroke="#1a1a1a" stroke-width="2.5"></circle> <circle cx="29" cy="46" r="5" fill="#fbfaf6" stroke="#1a1a1a" stroke-width="2" opacity="0.4"></circle>
+</svg>
+<p><span class="gl">Does the Heights wait longer than Montrose?</span></p>
+</div>
+</div>
+<div class="trio-item">
+<p><span class="colhd">Selection as Key</span></p>
+<div class="widget-wrap wd-46">
+<iframe data-src="widgets/augment.html" title="Selection as key">
+</iframe>
+</div>
+<div class="qcap">
+<svg class="hyp-mini" viewbox="0 0 64 64" aria-hidden="true">
+<circle cx="32" cy="32" r="29" fill="#e8a33d" stroke="#1a1a1a" stroke-width="2.5"></circle> <circle cx="22" cy="23" r="5" fill="#fbfaf6" stroke="#1a1a1a" stroke-width="2" opacity="0.4"></circle> <circle cx="44" cy="30" r="5" fill="#fbfaf6" stroke="#1a1a1a" stroke-width="2" opacity="0.4"></circle> <circle cx="29" cy="46" r="7" fill="#e65100" stroke="#1a1a1a" stroke-width="2.5"></circle>
+</svg>
+<p><span class="gl">What do people say about this shop?</span></p>
+</div>
 </div>
 </div>
 </section>
-<section id="chapter-2-visuals" class="slide level2" data-menu-title="Chapter 2">
+<section id="chapter-2-visuals" class="slide level2" data-menu-title="Chapter 2 · Visuals">
 <h2>Chapter 2: Visuals</h2>
 <div class="mini-stages">
-<p><span class="dot s-data is-covered">D</span><span class="dot s-visuals is-covered">V</span><span class="dot s-interaction">I</span></p>
+<p><span class="dot s-data"></span><span class="dot s-visuals is-covered"></span><span class="dot s-inputs"></span><span class="lbl">VISUALS</span></p>
 </div>
 <div class="chapter" style="align-items:center">
 <svg viewbox="0 0 1160 290" style="width:100%;max-height:430px">
-<g class="eq-term is-dim"> <circle cx="112" cy="145" r="95" fill="#e8a33d" stroke="#1a1a1a" stroke-width="3"></circle> <text x="112" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="25" font-weight="700" fill="#1a1a1a">DATA</text> </g> <text x="245" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="40" font-weight="700" fill="#1a1a1a">+</text> <g class="eq-term"> <circle cx="385" cy="145" r="100" fill="#c2410c" stroke="#1a1a1a" stroke-width="3"></circle> <text x="385" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="25" font-weight="700" fill="#ffffff">VISUALS</text> </g> <text x="523" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="40" font-weight="700" fill="#1a1a1a">+</text> <g class="eq-term is-dim"> <circle cx="672" cy="145" r="107" fill="#eab308" stroke="#1a1a1a" stroke-width="3"></circle> <text x="672" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="24" font-weight="700" fill="#1a1a1a">INTERACTION</text> </g> <text x="818" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="40" font-weight="700" fill="#1a1a1a">=</text> <g class="eq-term"> <circle cx="985" cy="145" r="128" fill="#ea580c" stroke="#1a1a1a" stroke-width="3"></circle> <text x="985" y="138" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="24" font-weight="700" fill="#ffffff">Interactive</text> <text x="985" y="168" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="24" font-weight="700" fill="#ffffff">Visualization</text> </g>
+<g class="eq-term fragment custom go-dim" data-fragment-index="1"> <circle cx="112" cy="145" r="95" fill="#e8a33d" stroke="#1a1a1a" stroke-width="3"></circle> <text x="112" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="26" font-weight="700" fill="#1a1a1a">DATA</text> </g> <text x="245" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="40" font-weight="700" fill="#1a1a1a">+</text> <g class="eq-term fragment custom go-lit" data-fragment-index="1"> <circle cx="385" cy="145" r="100" fill="#c2410c" stroke="#1a1a1a" stroke-width="3"></circle> <text x="385" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="26" font-weight="700" fill="#ffffff">VISUALS</text> </g> <text x="523" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="40" font-weight="700" fill="#1a1a1a">+</text> <g class="eq-term is-dim"> <circle cx="672" cy="145" r="107" fill="#eab308" stroke="#1a1a1a" stroke-width="3"></circle> <text x="672" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="26" font-weight="700" fill="#1a1a1a">INPUTS</text> </g> <text x="818" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="40" font-weight="700" fill="#1a1a1a">=</text> <g class="eq-term"> <circle cx="985" cy="145" r="128" fill="#ea580c" stroke="#1a1a1a" stroke-width="3"></circle> <text x="985" y="138" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="25" font-weight="700" fill="#ffffff">Interactive</text> <text x="985" y="170" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="25" font-weight="700" fill="#ffffff">Visualization</text> </g>
 </svg>
 </div>
 </section>
-<section id="interaction-customizes-what-the-visuals-say" class="slide level2" data-menu-title="Zoo of visual responses">
-<h2>Interaction customizes what the visuals say</h2>
+<section id="selections-can-remove-elements" class="slide level2" data-menu-title="Remove elements">
+<h2>Selections can remove elements</h2>
 <div class="mini-stages">
-<p><span class="dot s-data is-covered">D</span><span class="dot s-visuals is-covered">V</span><span class="dot s-interaction">I</span></p>
+<p><span class="dot s-data"></span><span class="dot s-visuals is-covered"></span><span class="dot s-inputs"></span><span class="lbl">VISUALS</span></p>
 </div>
-<div class="taxo">
-<div class="taxo-item is-focus fragment rise" data-fragment-index="1">
-<svg class="ico" viewbox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-<circle cx="13" cy="14" r="4.5" fill="#f2f0e9" stroke="#1a1a1a" stroke-width="2.5"></circle> <circle cx="46" cy="16" r="4.5" fill="#f2f0e9" stroke="#1a1a1a" stroke-width="2.5"></circle> <circle cx="12" cy="46" r="4.5" fill="#f2f0e9" stroke="#1a1a1a" stroke-width="2.5"></circle> <rect x="22" y="22" width="26" height="26" fill="#ea580c" fill-opacity="0.14" stroke="#ea580c" stroke-width="2.5" stroke-dasharray="5 4"></rect> <circle cx="30" cy="31" r="4.5" fill="#ea580c" stroke="#1a1a1a" stroke-width="2.5"></circle> <circle cx="41" cy="40" r="4.5" fill="#ea580c" stroke="#1a1a1a" stroke-width="2.5"></circle>
-</svg>
-<p><span class="nm">Selection</span> <span class="gl">which data points<br>am I asking about?</span></p>
+<div class="solo">
+<div class="widget-wrap sm-120">
+<iframe data-src="widgets/sel_filter.html" title="Selection removes: the brushed shops go and the axes re-fit">
+</iframe>
 </div>
-<div class="taxo-item fragment rise" data-fragment-index="2">
-<svg class="ico" viewbox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect x="9" y="33" width="9" height="18" fill="#f2f0e9" stroke="#1a1a1a" stroke-width="2.5"></rect> <rect x="25" y="14" width="9" height="37" fill="#f2f0e9" stroke="#1a1a1a" stroke-width="2.5"></rect> <rect x="41" y="25" width="9" height="26" fill="#f2f0e9" stroke="#1a1a1a" stroke-width="2.5"></rect> <path d="M15 9 C22 2 40 2 46 9" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round"></path> <path d="M46 9 L40 6 M46 9 L45 3" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round"></path>
-</svg>
-<p><span class="nm">Arrangement</span> <span class="gl">what order or layout<br>do the marks take?</span></p>
+<div class="solo-copy">
+<div class="vwcard hyp" style="--hyp:#9f2d1f">
+<p><span class="qtext">What is the relationship of this data with outliers removed?</span></p>
 </div>
-<div class="taxo-item fragment rise" data-fragment-index="3">
-<svg class="ico" viewbox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-<circle cx="14" cy="44" r="5" fill="#ea580c" stroke="#1a1a1a" stroke-width="2.5"></circle> <path d="M18 40 L27 27" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round"></path> <rect x="26" y="9" width="26" height="22" fill="#f2f0e9" stroke="#1a1a1a" stroke-width="2.5"></rect> <path d="M31 16 H47 M31 21 H47 M31 26 H41" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"></path>
-</svg>
-<p><span class="nm">Elaboration</span> <span class="gl">how much detail<br>is shown at once?</span></p>
+<p><span class="mech">brush → gone → the axes re-fit</span></p>
 </div>
-<div class="taxo-item fragment rise" data-fragment-index="4">
-<svg class="ico" viewbox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-<circle cx="11" cy="12" r="3" fill="#94a3b8"></circle><circle cx="26" cy="9" r="3" fill="#94a3b8"></circle> <circle cx="45" cy="14" r="3" fill="#94a3b8"></circle><circle cx="14" cy="30" r="3" fill="#94a3b8"></circle> <circle cx="49" cy="33" r="3" fill="#94a3b8"></circle><circle cx="12" cy="48" r="3" fill="#94a3b8"></circle> <circle cx="31" cy="50" r="3" fill="#94a3b8"></circle><circle cx="48" cy="49" r="3" fill="#94a3b8"></circle> <rect x="21" y="20" width="22" height="22" fill="#ea580c" fill-opacity="0.14" stroke="#ea580c" stroke-width="2.5"></rect> <path d="M32 26 V36 M27 31 H37" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round"></path>
-</svg>
-<p><span class="nm">Explore</span> <span class="gl">which part of the<br>space am I in?</span></p>
-</div>
-<div class="taxo-item fragment rise" data-fragment-index="5">
-<svg class="ico" viewbox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-<circle cx="14" cy="30" r="10" fill="#f2f0e9" stroke="#1a1a1a" stroke-width="2.5"></circle> <path d="M28 30 H38" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round"></path> <path d="M38 30 L33 26 M38 30 L33 34" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round"></path> <rect x="42" y="14" width="10" height="32" fill="#ea580c" stroke="#1a1a1a" stroke-width="2.5"></rect>
-</svg>
-<p><span class="nm">Encode</span> <span class="gl">which visual channel<br>carries the value?</span></p>
-</div>
-</div>
-<div class="footnote fragment" data-fragment-index="6">
-<p>Today: <strong>selection</strong> only. The rest of the zoo — <a href="https://vis-society.github.io/lectures/interaction-zoo.html">vis-society.github.io/lectures/interaction-zoo</a></p>
 </div>
 </section>
-<section id="one-selection-three-things-the-visuals-can-do-with-it" class="slide level2" data-menu-title="Selection">
-<h2>One selection, three things the visuals can do with it</h2>
+<section id="selections-can-edit-elements" class="slide level2" data-menu-title="Edit elements">
+<h2>Selections can edit elements</h2>
 <div class="mini-stages">
-<p><span class="dot s-data is-covered">D</span><span class="dot s-visuals is-covered">V</span><span class="dot s-interaction">I</span></p>
+<p><span class="dot s-data"></span><span class="dot s-visuals is-covered"></span><span class="dot s-inputs"></span><span class="lbl">VISUALS</span></p>
+</div>
+<div class="solo">
+<div class="widget-wrap sm-120">
+<iframe data-src="widgets/sel_highlight.html" title="Selection recolours: nothing else on the chart moves">
+</iframe>
+</div>
+<div class="solo-copy">
+<div class="vwcard hyp" style="--hyp:#0f766e">
+<p><span class="qtext">How do the selected items compare against my baseline?</span></p>
+</div>
+<p><span class="mech">pick a group → only colour changes</span></p>
+</div>
+</div>
+</section>
+<section id="selections-can-add-elements" class="slide level2" data-menu-title="Add elements">
+<h2>Selections can add elements</h2>
+<div class="mini-stages">
+<p><span class="dot s-data"></span><span class="dot s-visuals is-covered"></span><span class="dot s-inputs"></span><span class="lbl">VISUALS</span></p>
+</div>
+<div class="solo">
+<div class="widget-wrap sm-120">
+<iframe data-src="widgets/sel_count.html" title="Selection constructs: the region becomes a mark carrying the comparison">
+</iframe>
+</div>
+<div class="solo-copy">
+<div class="vwcard hyp" style="--hyp:#ea580c">
+<p><span class="qtext">What simpler calculations help to show these comparisons?</span></p>
+</div>
+<p><span class="mech">region → a new mark with the numbers</span></p>
+</div>
+</div>
+</section>
+<section id="strategically-remove-edit-and-add-elements" class="slide level2" data-menu-title="Principle · Visuals">
+<h2>Strategically Remove, Edit, and Add Elements</h2>
+<div class="mini-stages">
+<p><span class="dot s-data"></span><span class="dot s-visuals is-covered"></span><span class="dot s-inputs"></span><span class="lbl">VISUALS</span></p>
+</div>
+<div class="principle-sub">
+<p>…to make comparisons easy to see.</p>
 </div>
 <div class="trio">
-<div class="trio-item fragment rise" style="--hyp:#9f2d1f" data-fragment-index="1">
-<div class="widget-wrap">
-<iframe data-src="widgets/sel_filter.html" height="400" loading="lazy" title="Selection filters: unselected shops are removed">
+<div class="trio-item">
+<p><span class="colhd">Remove</span></p>
+<div class="widget-wrap sm-90">
+<iframe data-src="widgets/sel_filter.html" title="Remove elements">
 </iframe>
 </div>
-<div class="tcap with-hyp">
-<svg class="hyp-mini" viewbox="0 0 64 64" aria-hidden="true">
-<circle cx="32" cy="32" r="29" fill="#e8a33d" stroke="#1a1a1a" stroke-width="2.5"></circle> <circle cx="22" cy="23" r="6.5" fill="var(--hyp)" stroke="#1a1a1a" stroke-width="2.5"></circle> <circle cx="44" cy="30" r="5" fill="#fbfaf6" stroke="#1a1a1a" stroke-width="2" opacity="0.4"></circle> <circle cx="29" cy="46" r="5" fill="#fbfaf6" stroke="#1a1a1a" stroke-width="2" opacity="0.4"></circle>
-</svg>
-<p><span class="nm">Remove Elements</span> <span class="gl">“what does the rest look like without it?”</span></p>
+<p><span class="gl">What is the relationship with outliers removed?</span></p>
 </div>
-</div>
-<div class="trio-item fragment rise" style="--hyp:#0f766e" data-fragment-index="2">
-<div class="widget-wrap">
-<iframe data-src="widgets/sel_highlight.html" height="400" loading="lazy" title="Selection highlights: unselected shops stay as context">
+<div class="trio-item">
+<p><span class="colhd">Edit</span></p>
+<div class="widget-wrap sm-90">
+<iframe data-src="widgets/sel_highlight.html" title="Edit elements">
 </iframe>
 </div>
-<div class="tcap with-hyp">
-<svg class="hyp-mini" viewbox="0 0 64 64" aria-hidden="true">
-<circle cx="32" cy="32" r="29" fill="#e8a33d" stroke="#1a1a1a" stroke-width="2.5"></circle> <circle cx="22" cy="23" r="5" fill="#fbfaf6" stroke="#1a1a1a" stroke-width="2" opacity="0.4"></circle> <circle cx="44" cy="30" r="6.5" fill="var(--hyp)" stroke="#1a1a1a" stroke-width="2.5"></circle> <circle cx="29" cy="46" r="5" fill="#fbfaf6" stroke="#1a1a1a" stroke-width="2" opacity="0.4"></circle>
-</svg>
-<p><span class="nm">Change Elements</span> <span class="gl">“how does this neighborhood compare to the rest?”</span></p>
+<p><span class="gl">How do the selected items compare against my baseline?</span></p>
 </div>
-</div>
-<div class="trio-item fragment rise" style="--hyp:#ea580c" data-fragment-index="3">
-<div class="widget-wrap">
-<iframe data-src="widgets/sel_count.html" height="400" loading="lazy" title="Selection constructs: the region becomes a mark with a count">
+<div class="trio-item">
+<p><span class="colhd">Add</span></p>
+<div class="widget-wrap sm-90">
+<iframe data-src="widgets/sel_count.html" title="Add elements">
 </iframe>
 </div>
-<div class="tcap with-hyp">
-<svg class="hyp-mini" viewbox="0 0 64 64" aria-hidden="true">
-<circle cx="32" cy="32" r="29" fill="#e8a33d" stroke="#1a1a1a" stroke-width="2.5"></circle> <circle cx="22" cy="23" r="5" fill="#fbfaf6" stroke="#1a1a1a" stroke-width="2" opacity="0.4"></circle> <circle cx="44" cy="30" r="5" fill="#fbfaf6" stroke="#1a1a1a" stroke-width="2" opacity="0.4"></circle> <circle cx="29" cy="46" r="6.5" fill="var(--hyp)" stroke="#1a1a1a" stroke-width="2.5"></circle>
-</svg>
-<p><span class="nm">Add Elements</span> <span class="gl">“what is true of this group as a whole?”</span></p>
-</div>
+<p><span class="gl">What simpler calculations show these comparisons?</span></p>
 </div>
 </div>
 </section>
-<section id="chapter-3-interaction" class="slide level2" data-menu-title="Chapter 3">
-<h2>Chapter 3: Interaction</h2>
+<section id="chapter-3-inputs" class="slide level2" data-menu-title="Chapter 3 · Inputs">
+<h2>Chapter 3: Inputs</h2>
 <div class="mini-stages">
-<p><span class="dot s-data is-covered">D</span><span class="dot s-visuals is-covered">V</span><span class="dot s-interaction is-covered">I</span></p>
+<p><span class="dot s-data"></span><span class="dot s-visuals"></span><span class="dot s-inputs is-covered"></span><span class="lbl">INPUTS</span></p>
 </div>
 <div class="chapter" style="align-items:center">
 <svg viewbox="0 0 1160 290" style="width:100%;max-height:430px">
-<g class="eq-term is-dim"> <circle cx="112" cy="145" r="95" fill="#e8a33d" stroke="#1a1a1a" stroke-width="3"></circle> <text x="112" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="25" font-weight="700" fill="#1a1a1a">DATA</text> </g> <text x="245" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="40" font-weight="700" fill="#1a1a1a">+</text> <g class="eq-term is-dim"> <circle cx="385" cy="145" r="100" fill="#c2410c" stroke="#1a1a1a" stroke-width="3"></circle> <text x="385" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="25" font-weight="700" fill="#ffffff">VISUALS</text> </g> <text x="523" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="40" font-weight="700" fill="#1a1a1a">+</text> <g class="eq-term"> <circle cx="672" cy="145" r="107" fill="#eab308" stroke="#1a1a1a" stroke-width="3"></circle> <text x="672" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="24" font-weight="700" fill="#1a1a1a">INTERACTION</text> </g> <text x="818" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="40" font-weight="700" fill="#1a1a1a">=</text> <g class="eq-term"> <circle cx="985" cy="145" r="128" fill="#ea580c" stroke="#1a1a1a" stroke-width="3"></circle> <text x="985" y="138" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="24" font-weight="700" fill="#ffffff">Interactive</text> <text x="985" y="168" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="24" font-weight="700" fill="#ffffff">Visualization</text> </g>
+<g class="eq-term is-dim"> <circle cx="112" cy="145" r="95" fill="#e8a33d" stroke="#1a1a1a" stroke-width="3"></circle> <text x="112" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="26" font-weight="700" fill="#1a1a1a">DATA</text> </g> <text x="245" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="40" font-weight="700" fill="#1a1a1a">+</text> <g class="eq-term fragment custom go-dim" data-fragment-index="1"> <circle cx="385" cy="145" r="100" fill="#c2410c" stroke="#1a1a1a" stroke-width="3"></circle> <text x="385" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="26" font-weight="700" fill="#ffffff">VISUALS</text> </g> <text x="523" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="40" font-weight="700" fill="#1a1a1a">+</text> <g class="eq-term fragment custom go-lit" data-fragment-index="1"> <circle cx="672" cy="145" r="107" fill="#eab308" stroke="#1a1a1a" stroke-width="3"></circle> <text x="672" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="26" font-weight="700" fill="#1a1a1a">INPUTS</text> </g> <text x="818" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="40" font-weight="700" fill="#1a1a1a">=</text> <g class="eq-term"> <circle cx="985" cy="145" r="128" fill="#ea580c" stroke="#1a1a1a" stroke-width="3"></circle> <text x="985" y="138" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="25" font-weight="700" fill="#ffffff">Interactive</text> <text x="985" y="170" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="25" font-weight="700" fill="#ffffff">Visualization</text> </g>
 </svg>
 </div>
 </section>
-<section id="the-same-selection-three-ways-to-say-it" class="slide level2" data-menu-title="Instrumental input">
-<h2>The same selection, three ways to say it</h2>
+<section id="inputs-express-a-question-then-adjust-it" class="slide level2" data-menu-title="Express, then adjust">
+<h2>Inputs express a question, then adjust it</h2>
 <div class="mini-stages">
-<p><span class="dot s-data is-covered">D</span><span class="dot s-visuals is-covered">V</span><span class="dot s-interaction is-covered">I</span></p>
+<p><span class="dot s-data"></span><span class="dot s-visuals"></span><span class="dot s-inputs is-covered"></span><span class="lbl">INPUTS</span></p>
+</div>
+<div class="duo">
+<div class="duo-card fragment rise" data-fragment-index="1">
+<svg class="ico" viewbox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="10" y="12" width="44" height="34" fill="#ea580c" fill-opacity="0.14" stroke="#ea580c" stroke-width="3" stroke-dasharray="6 4"></rect> <path d="M50 42 L62 54" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round"></path> <path d="M62 54 L56 53 M62 54 L61 48" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round"></path>
+</svg>
+<p><span class="nm">1 · Express</span> <span class="gl">the first gesture states the question</span></p>
+</div>
+<div class="duo-card fragment rise" data-fragment-index="2">
+<svg class="ico" viewbox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="18" y="14" width="44" height="32" fill="#ea580c" fill-opacity="0.14" stroke="#ea580c" stroke-width="3"></rect> <rect x="13" y="9" width="10" height="10" fill="#f2f0e9" stroke="#1a1a1a" stroke-width="2.5"></rect> <rect x="57" y="9" width="10" height="10" fill="#f2f0e9" stroke="#1a1a1a" stroke-width="2.5"></rect> <rect x="13" y="41" width="10" height="10" fill="#f2f0e9" stroke="#1a1a1a" stroke-width="2.5"></rect> <rect x="57" y="41" width="10" height="10" fill="#f2f0e9" stroke="#1a1a1a" stroke-width="2.5"></rect> <path d="M70 30 H78 M78 30 L74 27 M78 30 L74 33" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round"></path> <path d="M10 30 H2 M2 30 L6 27 M2 30 L6 33" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round"></path>
+</svg>
+<p><span class="nm">2 · Adjust</span> <span class="gl">every gesture after it refines the question</span></p>
+</div>
+</div>
+</section>
+<section id="expressing-the-selection-three-inputs-one-answer" class="slide level2" data-menu-title="Expressing">
+<h2>Expressing the selection: three inputs, one answer</h2>
+<div class="mini-stages">
+<p><span class="dot s-data"></span><span class="dot s-visuals"></span><span class="dot s-inputs is-covered"></span><span class="lbl">INPUTS</span></p>
 </div>
 <div class="trio">
 <div class="trio-item fragment rise" data-fragment-index="1">
 <div class="widget-wrap">
-<iframe data-src="widgets/in_drag.html" height="400" loading="lazy" title="Input: drag out the region">
+<iframe data-src="widgets/in_drag.html" height="400" title="Input: drag out the region">
 </iframe>
 </div>
 <div class="tcap">
-<p><span class="nm">Drag</span> <span class="gl">press, sweep, release — one continuous gesture</span></p>
+<p><span class="nm">Drag</span> <span class="gl">press, sweep, release</span></p>
 </div>
 </div>
 <div class="trio-item fragment rise" data-fragment-index="2">
 <div class="widget-wrap">
-<iframe data-src="widgets/in_corner.html" height="400" loading="lazy" title="Input: click two opposite corners">
+<iframe data-src="widgets/in_corner.html" height="400" title="Input: click two opposite corners">
 </iframe>
 </div>
 <div class="tcap">
-<p><span class="nm">Two corners</span> <span class="gl">click one corner, then the opposite one</span></p>
+<p><span class="nm">Two corners</span> <span class="gl">click, then click opposite</span></p>
 </div>
 </div>
 <div class="trio-item fragment rise" data-fragment-index="3">
 <div class="widget-wrap">
-<iframe data-src="widgets/in_center.html" height="400" loading="lazy" title="Input: click to place a fixed-size region">
+<iframe data-src="widgets/in_center.html" height="400" title="Input: click to place a fixed-size region">
 </iframe>
 </div>
 <div class="tcap">
-<p><span class="nm">Center</span> <span class="gl">one click places a fixed-size region</span></p>
+<p><span class="nm">Center</span> <span class="gl">one click, fixed size</span></p>
 </div>
 </div>
 </div>
 </section>
-<section id="what-matters-most-is-reification" class="slide level2" data-menu-title="Reification">
-<h2>What matters most is reification</h2>
+<section id="reification-enables-adjustment-over-time" class="slide level2" data-menu-title="Reification">
+<h2>Reification enables adjustment over time</h2>
 <div class="mini-stages">
-<p><span class="dot s-data is-covered">D</span><span class="dot s-visuals is-covered">V</span><span class="dot s-interaction is-covered">I</span></p>
+<p><span class="dot s-data"></span><span class="dot s-visuals"></span><span class="dot s-inputs is-covered"></span><span class="lbl">INPUTS</span></p>
 </div>
 <div class="trio">
 <div class="trio-item fragment rise" data-fragment-index="1">
 <div class="widget-wrap">
-<iframe data-src="widgets/re_none.html" height="400" loading="lazy" title="Reification: nothing remains after the gesture">
+<iframe data-src="widgets/re_none.html" height="400" title="Reification: nothing remains after the gesture">
 </iframe>
 </div>
 <div class="tcap">
-<p><span class="rung">1</span><span class="nm">Nothing remains</span> <span class="gl">the selection exists only while you hold the mouse down</span></p>
+<p><span class="nm">Nothing remains</span> <span class="gl">right for scanning, wrong for revising</span></p>
 </div>
 </div>
 <div class="trio-item fragment rise" data-fragment-index="2">
 <div class="widget-wrap">
-<iframe data-src="widgets/re_move.html" height="400" loading="lazy" title="Reification: the region persists and can be moved">
+<iframe data-src="widgets/re_move.html" height="400" title="Reification: the region persists and can be moved">
 </iframe>
 </div>
 <div class="tcap">
-<p><span class="rung">2</span><span class="nm">An object you can move</span> <span class="gl">the region stays on screen and can be dragged</span></p>
+<p><span class="nm">Move it</span> <span class="gl">drag it, or nudge with the arrow keys</span></p>
 </div>
 </div>
 <div class="trio-item fragment rise" data-fragment-index="3">
 <div class="widget-wrap">
-<iframe data-src="widgets/re_handles.html" height="400" loading="lazy" title="Reification: the region persists with adjustable handles">
+<iframe data-src="widgets/re_handles.html" height="400" title="Reification: the region persists with adjustable sides and corners">
 </iframe>
 </div>
 <div class="tcap">
-<p><span class="rung">3</span><span class="nm">An object you can adjust</span> <span class="gl">handles make every part of the query editable</span></p>
+<p><span class="nm">Adjust it</span> <span class="gl">every side and corner is editable</span></p>
 </div>
 </div>
 </div>
 </section>
-<section id="three-parts-three-decisions" class="slide level2" data-menu-title="Recap">
-<h2>Three parts, three decisions</h2>
+<section id="inputs-should-be-as-easy-to-adjust-as-they-are-to-express" class="slide level2" data-menu-title="Principle · Inputs">
+<h2>Inputs should be as easy to adjust as they are to express</h2>
 <div class="mini-stages">
-<p><span class="dot s-data is-covered">D</span><span class="dot s-visuals is-covered">V</span><span class="dot s-interaction is-covered">I</span></p>
+<p><span class="dot s-data"></span><span class="dot s-visuals"></span><span class="dot s-inputs is-covered"></span><span class="lbl">INPUTS</span></p>
 </div>
-<div class="chapter" style="align-items:center">
-<svg viewbox="-46 0 1212 360" style="width:100%;max-height:480px">
-<g> <circle cx="112" cy="145" r="95" fill="#e8a33d" stroke="#1a1a1a" stroke-width="3"></circle> <text x="112" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="25" font-weight="700" fill="#1a1a1a">DATA</text> </g> <g class="fragment rise" data-fragment-index="1"> <text x="112" y="285" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="19" font-weight="700" fill="#de7d02">Specify the query</text> <text x="112" y="312" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="16" fill="#475569">parameterize · structure · augment</text> </g> <text x="245" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="40" font-weight="700" fill="#1a1a1a">+</text> <g> <circle cx="385" cy="145" r="100" fill="#c2410c" stroke="#1a1a1a" stroke-width="3"></circle> <text x="385" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="25" font-weight="700" fill="#ffffff">VISUALS</text> </g> <g class="fragment rise" data-fragment-index="2"> <text x="385" y="285" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="19" font-weight="700" fill="#c2410c">Customize the message</text> <text x="385" y="312" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="16" fill="#475569">filter · highlight · construct</text> </g> <text x="523" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="40" font-weight="700" fill="#1a1a1a">+</text> <g> <circle cx="672" cy="145" r="107" fill="#eab308" stroke="#1a1a1a" stroke-width="3"></circle> <text x="672" y="155" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="24" font-weight="700" fill="#1a1a1a">INTERACTION</text> </g> <g class="fragment rise" data-fragment-index="3"> <text x="672" y="285" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="19" font-weight="700" fill="#a16207">Reify the control</text> <text x="672" y="312" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="16" fill="#475569">make the query a thing you can grab</text> </g> <text x="818" y="158" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="40" font-weight="700" fill="#1a1a1a">=</text> <g class="fragment rise" data-fragment-index="4"> <circle cx="985" cy="145" r="128" fill="#ea580c" stroke="#1a1a1a" stroke-width="3"></circle> <text x="985" y="138" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="24" font-weight="700" fill="#ffffff">Interactive</text> <text x="985" y="168" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-size="24" font-weight="700" fill="#ffffff">Visualization</text> <text x="985" y="285" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="19" font-weight="700" fill="#ea580c">Answer the hypothesis</text> </g>
-</svg>
+<div class="principle-solo">
+<div class="principle-pair">
+<div class="pp-item">
+<p><span class="pp-word">Express</span> <span class="pp-gl">match the gesture to the question</span></p>
+</div>
+<p><span class="pp-join">then</span></p>
+<div class="pp-item">
+<p><span class="pp-word">Adjust</span> <span class="pp-gl">reify it so the next question is cheap</span></p>
+</div>
+</div>
+</div>
+</section>
+<section id="three-parts-three-principles" class="slide level2" data-menu-title="Recap">
+<h2>Three parts, three principles</h2>
+<div class="mini-stages">
+<p><span class="dot s-data is-covered"></span><span class="dot s-visuals is-covered"></span><span class="dot s-inputs is-covered"></span><span class="lbl">RECAP</span></p>
+</div>
+<div class="bands">
+<div class="band fragment rise" data-fragment-index="1">
+<div class="band-dot b-data">
+<p>DATA</p>
+</div>
+<div class="band-copy">
+<p><span class="band-say">Treat interactions like data queries.</span> <span class="band-tag">Single Selection · Multi-Selection · Selection as Key</span></p>
+</div>
+</div>
+<div class="band fragment rise" data-fragment-index="2">
+<div class="band-dot b-visuals">
+<p>VISUALS</p>
+</div>
+<div class="band-copy">
+<p><span class="band-say">Strategically remove, edit and add elements.</span> <span class="band-tag">make the comparison easy to see</span></p>
+</div>
+</div>
+<div class="band fragment rise" data-fragment-index="3">
+<div class="band-dot b-inputs">
+<p>INPUTS</p>
+</div>
+<div class="band-copy">
+<p><span class="band-say">Make inputs as easy to adjust as they are to express.</span> <span class="band-tag">express, then adjust</span></p>
+</div>
+</div>
+<div class="band band-result fragment rise" data-fragment-index="4">
+<div class="band-dot b-result">
+<p>= IV</p>
+</div>
+<div class="band-copy">
+<p><span class="band-say">An interactive visualization that answers the question.</span></p>
+</div>
+</div>
+</div>
+</section>
+<section id="section-2" class="slide level2 no-rule wall-slide is-focused" data-menu-title="Over to Ryan">
+<h2></h2>
+<div class="exwall" aria-hidden="true">
+<figure class="excard" style="--i:0;left:-54px;top:-19px;width:248px;--rot:2.21deg" data-label="Pin and compare">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/pin-and-compare.jpg" width="1186" height="988"><source src="media/pin-and-compare.mp4" type="video/mp4"></video>
+  </figure>
+  <figure class="excard" style="--i:1;left:-54px;top:208px;width:248px;--rot:0.45deg" data-label="Multiple rectangular brushes">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/multi-rect-brush.jpg" width="1130" height="734"><source src="media/multi-rect-brush.mp4" type="video/mp4"></video>
+  </figure>
+  <figure class="excard" style="--i:2;left:-54px;top:386px;width:248px;--rot:0.68deg" data-label="Hover a bar → sparkline popup">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/bar-hover-sparkline.jpg" width="1106" height="714"><source src="media/bar-hover-sparkline.mp4" type="video/mp4"></video>
+  </figure>
+  <figure class="excard" style="--i:3;left:-61px;top:569px;width:248px;--rot:-1.02deg" data-label="Snapped pointer drives a reference line">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/snapped-pointer.jpg" width="1130" height="756"><source src="media/snapped-pointer.mp4" type="video/mp4"></video>
+  </figure>
+  <figure class="excard" style="--i:4;left:217px;top:-6px;width:275px;--rot:-2.38deg" data-label="Re-binning a linked histogram">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/histogram-binning.jpg" width="1230" height="516"><source src="media/histogram-binning.mp4" type="video/mp4"></video>
+  </figure>
+  <figure class="excard" style="--i:5;left:221px;top:133px;width:275px;--rot:0.8deg" data-label="SPLOM cohort brushing">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/splom-cohort-brush.jpg" width="1190" height="1080"><source src="media/splom-cohort-brush.mp4" type="video/mp4"></video>
+  </figure>
+  <figure class="excard" style="--i:6;left:208px;top:403px;width:275px;--rot:-2.52deg" data-label="Wind grid probe → nearest history">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/wind-grid-probe.jpg" width="1440" height="794"><source src="media/wind-grid-probe.mp4" type="video/mp4"></video>
+  </figure>
+  <figure class="excard" style="--i:7;left:206px;top:575px;width:275px;--rot:-1.61deg" data-label="Horizontal band brush">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/horizontal-band.jpg" width="1130" height="730"><source src="media/horizontal-band.mp4" type="video/mp4"></video>
+  </figure>
+  <figure class="excard" style="--i:8;left:508px;top:-31px;width:261px;--rot:-0.31deg" data-label="Brush to zoom">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/brush-to-zoom.jpg" width="1130" height="724"><source src="media/brush-to-zoom.mp4" type="video/mp4"></video>
+  </figure>
+  <figure class="excard" style="--i:9;left:509px;top:159px;width:261px;--rot:0.73deg" data-label="Multi-lasso heatmap → per-lasso histograms">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/multi-lasso-heatmap.jpg" width="1314" height="662"><source src="media/multi-lasso-heatmap.mp4" type="video/mp4"></video>
+  </figure>
+  <figure class="excard" style="--i:10;left:511px;top:310px;width:261px;--rot:-0.22deg" data-label="Circle brush">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/circle-brush.jpg" width="1124" height="722"><source src="media/circle-brush.mp4" type="video/mp4"></video>
+  </figure>
+  <figure class="excard" style="--i:11;left:516px;top:496px;width:261px;--rot:2.58deg" data-label="Multi-pin compare with mean">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/multi-pin-compare.jpg" width="1188" height="1016"><source src="media/multi-pin-compare.mp4" type="video/mp4"></video>
+  </figure>
+  <figure class="excard" style="--i:12;left:787px;top:-16px;width:280px;--rot:-1.41deg" data-label="Crosshair grid partition → region counts">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/grid-partition.jpg" width="1440" height="588"><source src="media/grid-partition.mp4" type="video/mp4"></video>
+  </figure>
+  <figure class="excard" style="--i:13;left:783px;top:117px;width:280px;--rot:1.38deg" data-label="Crosshair">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/crosshair.jpg" width="1130" height="722"><source src="media/crosshair.mp4" type="video/mp4"></video>
+  </figure>
+  <figure class="excard" style="--i:14;left:795px;top:315px;width:280px;--rot:-0.59deg" data-label="Draggable thresholds on grouped bars">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/grouped-bar-thresholds.jpg" width="834" height="578"><source src="media/grouped-bar-thresholds.mp4" type="video/mp4"></video>
+  </figure>
+  <figure class="excard" style="--i:15;left:795px;top:533px;width:280px;--rot:-2.6deg" data-label="Threshold slider on a histogram">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/threshold-histogram.jpg" width="808" height="632"><source src="media/threshold-histogram.mp4" type="video/mp4"></video>
+  </figure>
+  <figure class="excard" style="--i:16;left:1089px;top:-5px;width:245px;--rot:2.5deg" data-label="Drag to reorder bars">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/drag-reorder-bars.jpg" width="1200" height="776"><source src="media/drag-reorder-bars.mp4" type="video/mp4"></video>
+  </figure>
+  <figure class="excard" style="--i:17;left:1083px;top:172px;width:245px;--rot:0.67deg" data-label="Draggable histogram bin edges">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/draggable-bin-edges.jpg" width="860" height="730"><source src="media/draggable-bin-edges.mp4" type="video/mp4"></video>
+  </figure>
+  <figure class="excard" style="--i:18;left:1086px;top:402px;width:245px;--rot:-2.15deg" data-label="Hover reveals a country trajectory">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/trajectory-hover.jpg" width="1130" height="806"><source src="media/trajectory-hover.mp4" type="video/mp4"></video>
+  </figure>
+  <figure class="excard" style="--i:19;left:1097px;top:596px;width:245px;--rot:1.34deg" data-label="Brush over bars">
+    <video muted="" loop="" playsinline="" preload="auto" data-autoplay="" poster="media/brush-bars.jpg" width="1130" height="730"><source src="media/brush-bars.mp4" type="video/mp4"></video>
+  </figure>
+</div>
+<div class="exveil"></div>
+<div class="wall-copy">
+<h1 class="big-title">
+Now follow Ryan into the interaction zoo
+</h1>
+<p class="subtitle">
+with vibe widget — the tool that made every visualization in this talk
+</p>
+<p class="byline">
+Dylan Wootton, Ryan Yen &nbsp;·&nbsp; MIT Visualization Group
+</p>
 </div>
 
 </section>
@@ -856,7 +1023,7 @@ Dylan Wootton, Ryan Yen &nbsp;·&nbsp; MIT Visualization Group
         autoPlayMedia: null,
 
         // Global override for preloading lazy-loaded iframes (null/true/false)
-        preloadIframes: null,
+        preloadIframes: true,
 
         // Number of milliseconds between automatically proceeding to the
         // next slide, disabled when set to 0, this value can be overwritten
@@ -900,7 +1067,7 @@ Dylan Wootton, Ryan Yen &nbsp;·&nbsp; MIT Visualization Group
         backgroundTransition: 'none',
 
         // Number of slides away from the current that are visible
-        viewDistance: 3,
+        viewDistance: 30,
 
         // Number of slides away from the current that are visible on mobile
         // devices. It is advisable to set this to a lower number than

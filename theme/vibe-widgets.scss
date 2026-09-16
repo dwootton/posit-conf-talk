@@ -6,6 +6,11 @@
 //   bone #F2F0E9 · ink #1A1A1A · accent #F97316 / #EA580C
 //   Space Grotesk (display) + JetBrains Mono (data)
 //   2px borders, hard offset shadows, zero blur
+//
+// TYPE FLOOR: nothing on a slide is smaller than 24px, so the back of the room
+// can read it. The root is 30px, so the floor is 0.8em -- and 24 units in an
+// SVG viewBox, which renders about 1:1 at this stage size. `$floor` below is
+// that value; use it instead of writing a smaller number.
 // ===========================================================================
 
 @import "fonts";
@@ -20,6 +25,8 @@ $vw-accent-deep: #ea580c !default;
 $vw-blue:        #3f8bdb !default;
 $vw-green:       #478d4b !default;
 $vw-night:       #080a0c !default;
+
+$floor: 0.8em;   // 24px at the 30px root — the minimum size for slide text
 
 $font-family-sans-serif: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif !default;
 $font-family-monospace:  'JetBrains Mono', ui-monospace, SFMono-Regular, monospace !default;
@@ -40,7 +47,7 @@ $presentation-h2-font-size: 1.42em !default;
 $presentation-h3-font-size: 1.08em !default;
 $presentation-line-height: 1.35 !default;
 
-$code-block-font-size: 0.52em !default;
+$code-block-font-size: $floor !default;
 
 /*-- scss:rules --*/
 
@@ -62,6 +69,12 @@ $code-block-font-size: 0.52em !default;
   border-bottom: 3px solid $vw-ink;
   padding-bottom: 0.18em;
   margin-bottom: 0.5em;
+  // titles are now full sentences; keep a two-line one from pushing the body
+  // off the slide, and never let one wrap to three.
+  line-height: 1.12;
+  // keep the words clear of the section marker in the top-right corner; the
+  // rule underneath still runs the full width, since a border spans the padding
+  padding-right: 215px;
 }
 .reveal .no-rule h2 { border-bottom: 0; padding-bottom: 0; }
 
@@ -72,13 +85,13 @@ $code-block-font-size: 0.52em !default;
 
 .eyebrow {
   font-family: $font-family-monospace;
-  font-size: 0.42em;
+  font-size: $floor;
   font-weight: 700;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: $vw-accent-deep;
   display: block;
-  margin-bottom: 0.7em;
+  margin-bottom: 0.6em;
 }
 
 .rule-accent {
@@ -125,29 +138,16 @@ $code-block-font-size: 0.52em !default;
   font-weight: 500;
   margin: 0;
 }
-.reveal .title-slide .byline {
+.reveal .byline {
   font-family: $font-family-monospace;
-  font-size: 0.55em;
+  font-size: $floor;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: $vw-ink-soft;
-  margin-top: 1.6rem;
+  margin-top: 1.4rem;
   padding-top: 0.7rem;
   border-top: 2px solid $vw-ink;
-}
-.reveal .title-slide .title-art {
-  border: 3px solid $vw-ink;
-  box-shadow: 8px 8px 0 $vw-ink;
-  overflow: hidden;
-  align-self: center;
-  height: 78%;
-}
-// Quarto wraps images in <p>; that wrapper has to carry the height too,
-// otherwise object-fit has nothing to fit against and the photo letterboxes.
-.reveal .title-slide .title-art p { margin: 0; height: 100%; line-height: 0; display: block; }
-.reveal .title-slide .title-art img {
-  width: 100%; height: 100%; object-fit: cover; display: block; margin: 0;
 }
 
 // ------------------------------------------------------------------ cards --
@@ -156,6 +156,13 @@ $code-block-font-size: 0.52em !default;
   border: 2px solid $vw-ink;
   box-shadow: 4px 4px 0 $vw-ink;
   padding: 0.7rem 0.9rem;
+}
+
+// the question text inside a card: one size, everywhere it appears
+.qtext {
+  font-weight: 700;
+  font-size: $floor;
+  line-height: 1.28;
 }
 
 .reveal pre.sourceCode, .reveal div.sourceCode {
@@ -170,23 +177,12 @@ $code-block-font-size: 0.52em !default;
   background: transparent;
   color: #e7e3da;
   font-family: $font-family-monospace;
-  font-size: 0.94em;
-  line-height: 1.45;
+  font-size: 1em;
+  line-height: 1.4;
   padding: 0.6em 0.8em;
   max-height: none;
-  white-space: pre-wrap;
-  word-break: normal;
-  overflow-wrap: anywhere;
-}
-// the rail's code blocks sit under a stage row and must never clip
-.loop-rail .code-copy-outer-scaffold { margin-top: 0.55rem; }
-.loop-rail div.sourceCode { max-width: 100%; overflow: hidden; margin-top: 0.55rem; }
-.loop-rail pre.sourceCode { overflow: hidden; }
-.loop-rail pre code,
-.loop-rail pre code span {
-  font-size: 0.8em;
-  white-space: pre-wrap !important;
-  overflow-wrap: break-word;
+  white-space: pre;
+  overflow: visible;
 }
 .reveal .code-copy-button { display: none; }
 .reveal code { font-family: $font-family-monospace; }
@@ -195,6 +191,57 @@ $code-block-font-size: 0.52em !default;
   color: $vw-accent-deep;
   padding: 0.08em 0.3em;
   border-radius: 2px;
+}
+
+// ------------------------------------------- hand-written SQL, big enough --
+// The rail's queries are raw HTML rather than fenced blocks so the clause the
+// slide is about can be banded and the selected columns and the transforms can
+// be coloured. Sized at the floor, which caps a line at about 28 characters.
+// Sizing these in `em` does not work: Quarto sets `.reveal pre` to
+// $code-block-font-size and `.reveal pre code` to 1em of *that*, plus its own
+// padding, so an em here compounds twice and lands at 19px -- under the floor --
+// while the padding doubles up. Pixels, stated once, and outranking those two
+// rules. 26px in the rail holds 23 characters in a 464px column; 24px on the
+// queries slide holds 27 in a 520px one.
+.reveal .sqlblock      { font-size: 26px; padding: 10px 14px; }
+.reveal .sqlblock code { font-size: 26px; padding: 0; }
+.reveal .qgrid .sqlblock      { font-size: 24px; padding: 9px 12px; }
+.reveal .qgrid .sqlblock code { font-size: 24px; padding: 0; }
+
+.sqlblock {
+  background: $vw-night;
+  border: 2px solid $vw-ink;
+  border-left: 6px solid $vw-accent;
+  box-shadow: 4px 4px 0 $vw-ink;
+  margin: 0.55rem 0 0;
+  overflow: visible;
+
+  // content-box would let the padding and the 6px accent border push the block
+  // past its grid track and over the answer column
+  box-sizing: border-box;
+  min-width: 0;
+  max-width: 100%;
+  width: 100%;
+
+  code {
+    display: block;
+    background: transparent;
+    padding: 0;
+    color: #cfcabd;
+    font-family: $font-family-monospace;
+    font-weight: 500;
+    line-height: 1.4;
+    white-space: pre;
+  }
+
+  .kw  { color: #ffffff; font-weight: 700; }          // SELECT / FROM
+  .sel { color: $vw-accent; font-weight: 700; }       // the data being selected
+  .tx  { color: #8fd694; font-weight: 700; }          // transforms and clauses
+  // the clause this slide is about
+  .hl {
+    background: rgba(249, 115, 22, 0.26);
+    box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.85);
+  }
 }
 
 // ------------------------------------------------------- embedded widgets --
@@ -212,63 +259,63 @@ $code-block-font-size: 0.52em !default;
   margin: 0;
   background: $vw-bone;
 }
-.widget-cap {
-  font-family: $font-family-monospace;
-  font-size: 0.34em;
-  font-weight: 700;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: $vw-ink-soft;
-  margin-top: 0.45rem;
+// reveal sets `.reveal section iframe { max-width: 95%; max-height: 95% }`,
+// which shrinks every widget by 5% and caps the scaled ones at 95% of the size
+// the transform is counting on.
+.reveal .widget-wrap iframe { max-width: none; max-height: none; }
+
+// A widget shown at a size other than the one it was generated at. The iframe
+// keeps its native pixel size (so the widget's own layout is untouched) and is
+// transform-scaled; the wrapper is sized to the scaled result so it takes the
+// right amount of room in the grid. Pointer math inside the widget works off
+// its own getBoundingClientRect, which the browser reports through the
+// transform, so hit-testing survives the scale.
+@mixin scaled($w, $h, $s) {
+  width: $w * $s;
+  height: $h * $s;
+  flex: none;
+  iframe { width: $w; height: $h; transform: scale($s); transform-origin: top left; }
 }
-.widget-cap .live {
-  color: #fff;
-  background: $vw-accent;
-  border: 2px solid $vw-ink;
-  padding: 1px 6px;
-  margin-right: 8px;
-}
+$small-w: 352px; $small-h: 400px;   // the trio/scatter widgets
+$wide-w:  814px; $wide-h:  548px;   // the map + panel widgets
+
+.widget-wrap.sm-35  { @include scaled($small-w, $small-h, 0.35); }
+.widget-wrap.sm-45  { @include scaled($small-w, $small-h, 0.45); }
+.widget-wrap.sm-90  { @include scaled($small-w, $small-h, 0.90); }
+.widget-wrap.sm-120 { @include scaled($small-w, $small-h, 1.20); }
+.widget-wrap.wd-46  { @include scaled($wide-w,  $wide-h,  0.46); }
+.widget-wrap.wd-92  { @include scaled($wide-w,  $wide-h,  0.92); }
 
 // ---------------------------------------------------------- the loop rail --
-.loop-rail { display: flex; flex-direction: column; gap: 0.55rem; }
+.loop-rail { display: flex; flex-direction: column; gap: 0.5rem; min-width: 0; }
 
-// NOTE: Quarto flattens an empty `::: {}` wrapper, so .bar / h4 / p land as
+// NOTE: Quarto flattens an empty `::: {}` wrapper, so .bar / h4 land as
 // siblings. The grid is written to place them itself rather than assume nesting.
 .stage-row {
   display: grid;
   grid-template-columns: 14px minmax(0, 1fr);
-  grid-template-rows: auto auto;
   column-gap: 0.6rem;
-  row-gap: 0.1rem;
-  align-items: start;
+  align-items: center;
   background: $vw-bone-lift;
   border: 2px solid $vw-ink;
   box-shadow: 3px 3px 0 $vw-ink;
-  padding: 0.48rem 0.65rem;
-  transition: box-shadow .2s ease, transform .2s ease;
+  padding: 0.5rem 0.65rem;
+  transition: box-shadow .2s ease, transform .2s ease, opacity .2s ease;
 }
 .stage-row .bar {
   grid-column: 1;
-  grid-row: 1 / span 2;
   width: 100%;
   height: 100%;
-  min-height: 34px;
+  min-height: 30px;
   background: $vw-ink-faint;
 }
 .stage-row h4 {
-  grid-column: 2; grid-row: 1;
-  font-size: 0.5em;
+  grid-column: 2;
+  font-size: $floor;
   font-weight: 700;
   margin: 0;
   line-height: 1.2;
   letter-spacing: -0.01em;
-}
-.stage-row p {
-  grid-column: 2; grid-row: 2;
-  font-size: 0.355em;
-  line-height: 1.35;
-  color: $vw-ink-soft;
-  margin: 0;
 }
 .stage-row.s-param  .bar { background: $vw-blue; }
 .stage-row.s-param  h4  { color: $vw-blue; }
@@ -283,7 +330,8 @@ $code-block-font-size: 0.52em !default;
 // ------------------------------------------------------------ two-col grid --
 .cols { display: grid; gap: 1.1rem; align-items: center; }
 .cols.c-32 { grid-template-columns: 1.5fr 1fr; }
-.cols.c-13 { grid-template-columns: minmax(0, 0.82fr) minmax(0, 2.35fr); align-items: start; }
+// the rail column has to hold a 28-character line of 24px monospace
+.cols.c-13 { grid-template-columns: minmax(0, 1.3fr) minmax(0, 2.1fr); align-items: start; }
 .cols.c-11 { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
 .cols > div { min-width: 0; }
 
@@ -294,19 +342,6 @@ $code-block-font-size: 0.52em !default;
   background: #fff;
 }
 .shot img { display: block; width: 100%; margin: 0; }
-
-// two stacked screenshots that must together stay inside the slide
-.stack-two {
-  display: grid;
-  grid-template-rows: 1fr 1fr;
-  gap: 0.7rem;
-  height: 100%;
-  max-height: 560px;
-  min-height: 0;
-}
-.stack-two .shot { min-height: 0; overflow: hidden; display: flex; }
-.stack-two .shot p { margin: 0; width: 100%; min-height: 0; }
-.stack-two .shot img { height: 100%; width: 100%; object-fit: cover; object-position: top; }
 
 // ------------------------------------------------------------------ lists --
 .reveal ul { list-style: none; margin-left: 0; padding-left: 0; }
@@ -337,14 +372,6 @@ $code-block-font-size: 0.52em !default;
   padding: 2px 8px;
   right: 16px; bottom: 14px;
 }
-.reveal .footer {
-  font-family: $font-family-monospace;
-  font-size: 0.52rem !important;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: $vw-ink-faint;
-}
 .reveal .progress { color: $vw-accent; height: 5px; background: rgba(26,26,26,.14); }
 .reveal .controls { color: $vw-ink; }
 
@@ -354,8 +381,8 @@ $code-block-font-size: 0.52em !default;
   justify-content: center; height: 100%;
 }
 
-// ------------------------------------------------ hypotheses & their views --
-// a dot inside the hypothesis space and a card on the side share one colour
+// ---------------------------------------------- questions & their answers --
+// a dot inside the question space and a card on the side share one colour
 .vwcard.hyp {
   --hyp: #{$vw-accent-deep};
   border-left: 12px solid var(--hyp);
@@ -373,7 +400,16 @@ $code-block-font-size: 0.52em !default;
 }
 .reveal .slides section .fragment.hyp-dot { transition: opacity .25s ease; }
 
-// three live widgets across one slide, one per hypothesis
+// the grey framing question above the question space on the opening slide
+.lead-q {
+  display: block;
+  font-size: 0.85em;
+  font-weight: 500;
+  color: $vw-ink-faint;
+  margin-bottom: 0.5rem;
+}
+
+// three live widgets across one slide
 .trio {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -382,12 +418,22 @@ $code-block-font-size: 0.52em !default;
 }
 .trio .trio-item { min-width: 0; }
 .trio .widget-wrap { box-shadow: 5px 5px 0 $vw-ink; }
-.trio .vwcard.hyp { margin-top: 0.8rem; box-shadow: 3px 3px 0 $vw-ink; padding: 0.4rem 0.7rem; }
+.trio .vwcard.hyp { margin-top: 0.8rem; box-shadow: 3px 3px 0 $vw-ink; padding: 0.45rem 0.7rem; }
+// the principle slides put a label above each column
+.colhd {
+  display: block;
+  font-family: $font-family-monospace;
+  font-size: $floor;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.4rem;
+  color: $vw-accent-deep;
+}
 
 // ---------------------------------------------------- data + vis, merging --
-// slide "Overlap": two circles start apart and slide together into one on
-// click. They're visible from the start (override the default fragment
-// fade) -- only their position animates.
+// two circles start apart and slide together into one on click. They're
+// visible from the start (override the default fragment fade) -- only their
+// position animates.
 .reveal .fragment.merge-scene { opacity: 1; visibility: visible; }
 .merge-a, .merge-b {
   transition: transform 900ms cubic-bezier(.22, .68, .16, 1);
@@ -398,113 +444,124 @@ $code-block-font-size: 0.52em !default;
 .merge-scene.visible .merge-b { transform: translateX(0); }
 
 // --------------------------------------------------- mini stage indicator --
-// a tiny horizontal echo of slide 7's DATA + VISUALS + INTERACTION circles,
-// pinned top-right from the loop's chapter divider onward -- a "which of the
-// three ingredients is this part of the talk about" section marker, not a
-// query-parameterization/structuring/augmentation tracker.
+// "which of the three parts is this chapter about". Exactly one lights at a
+// time (all three only on the recap) -- a cumulative marker reads as a
+// progress bar, which is not what it means.
 .mini-stages {
   position: absolute;
-  top: 20px;
-  right: 26px;
+  top: 18px;
+  right: 24px;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
   z-index: 20;
 }
 .mini-stages .dot {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 18px;
-  height: 18px;
+  display: block;
+  width: 22px;
+  height: 22px;
   border-radius: 999px;
   border: 2px solid $vw-ink;
   background: $vw-ink-faint;
   filter: grayscale(1);
-  opacity: 0.4;
+  opacity: 0.35;
   transition: opacity .2s ease, filter .2s ease;
-  font-family: $font-family-monospace;
-  font-size: 8px;
-  font-weight: 700;
-  color: $vw-ink;
 }
 .mini-stages .dot.s-data { background: #e8a33d; }
-.mini-stages .dot.s-visuals { background: #c2410c; color: #fff; }
-.mini-stages .dot.s-interaction { background: #eab308; }
-.mini-stages .dot.is-covered {
-  filter: none;
-  opacity: 1;
+.mini-stages .dot.s-visuals { background: #c2410c; }
+.mini-stages .dot.s-inputs { background: #eab308; }
+.mini-stages .dot.is-covered { filter: none; opacity: 1; }
+// Pandoc wraps the dots and the label in a single <p>; that <p> has to be the
+// flex row, or the dots stack vertically. (This has regressed twice.)
+.mini-stages > p {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0;
+}
+.mini-stages .lbl {
+  font-family: $font-family-monospace;
+  font-size: $floor;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: $vw-ink-soft;
+  margin-left: 4px;
 }
 
-// -------------------------------------------------------- ask / see loop --
-#loop-ask, #loop-see { transition: fill .25s ease; }
-#loop-ask.is-bold, #loop-see.is-bold { fill: $vw-accent-deep !important; }
-
-.qa-answer {
-  margin-top: 0.4rem;
-  padding-top: 0.4rem;
-  border-top: 1px dashed $vw-ink-faint;
-}
-.qa-answer.force-hide { display: none; }
-
-// ---------------------------------------- a widget, shown at half size ----
-.widget-wrap.widget-scale-half {
-  width: 176px;
-  height: 200px;
-  flex: none;
-}
-.widget-wrap.widget-scale-half iframe {
-  width: 352px;
-  height: 400px;
-  transform: scale(0.5);
-  transform-origin: top left;
-}
-
-// ------------------------------------------- the interaction-effect zoo ----
-// five kinds of visual response to one interaction, each its own fragment so
-// the icons arrive one at a time.
+// --------------------------------------- the interaction zoo, five intents --
+// All five arrive at equal weight; then selection grows to about three times
+// the others; then it lights and the rest grey out.
 .taxo {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  display: flex;
   gap: 0.85rem;
   align-items: stretch;
-  // pushes the row down into the middle of the slide body; a margin here
-  // collapses against the section, padding does not.
-  padding-top: 76px;
+  // a margin here collapses against the section, padding does not
+  padding-top: 52px;
 }
+// the two empty spans that carry the grow/light states; pandoc wraps them in
+// one <p>, which must not become a flex item of its own
+.taxo > p { position: absolute; width: 0; height: 0; margin: 0; overflow: hidden; }
+
 .taxo-item {
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 306px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   text-align: center;
   gap: 1rem;
-  padding: 2rem 0.9rem 2.2rem;
+  padding: 1.6rem 0.7rem 1.8rem;
   background: $vw-bone-lift;
   border: 2px solid $vw-ink;
   box-shadow: 4px 4px 0 $vw-ink;
+  transition: flex-grow .6s cubic-bezier(.22,.68,.16,1),
+              opacity .45s ease, filter .45s ease,
+              background .45s ease, box-shadow .45s ease;
 }
-.taxo-item .ico { width: 128px; height: 128px; flex: none; }
+.taxo-item .ico { width: 62%; max-width: 150px; height: auto; flex: none; }
+.taxo-item > p {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0;
+}
 .taxo-item .nm {
   display: block;
-  font-family: $font-family-monospace;
-  font-size: 0.55em;
+  font-size: $floor;
   font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
+  letter-spacing: -0.01em;
 }
 .taxo-item .gl {
   display: block;
-  font-size: 0.45em;
-  line-height: 1.35;
+  font-size: $floor;
+  line-height: 1.3;
   color: $vw-ink-soft;
 }
-// the one category the talk actually opens up
-.taxo-item.is-focus {
+
+// step 2: selection takes three shares of the row, the rest one each. The four
+// shrunk cards drop their gloss rather than set it below the floor.
+.taxo:has(.st-grow.visible) .taxo-item.sel { flex-grow: 3; }
+.taxo:has(.st-grow.visible) .taxo-item:not(.sel) .gl {
+  opacity: 0; height: 0; overflow: hidden;
+}
+// step 3: selection lights, the rest recede
+.taxo:has(.st-lit.visible) .taxo-item:not(.sel) { filter: grayscale(1); opacity: 0.45; }
+.taxo:has(.st-lit.visible) .taxo-item.sel {
   background: #fff3e6;
   border-color: $vw-accent-deep;
-  box-shadow: 4px 4px 0 $vw-accent-deep;
+  box-shadow: 6px 6px 0 $vw-accent-deep;
+  .nm { color: $vw-accent-deep; }
 }
-.taxo-item.is-focus .nm { color: $vw-accent-deep; }
+
+.zoo-link {
+  margin-top: 1.1rem;
+  font-size: 0.85em;
+  color: $vw-ink-soft;
+  a { color: $vw-accent-deep; }
+}
 
 // fragments that rise as they appear, instead of only fading
 .reveal .slides section .fragment.rise {
@@ -513,102 +570,356 @@ $code-block-font-size: 0.52em !default;
 }
 .reveal .slides section .fragment.rise.visible { transform: translateY(0); }
 
-.footnote {
-  margin-top: 1.2rem;
-  font-size: 0.4em;
-  color: $vw-ink-soft;
-}
-.footnote a { color: $vw-accent-deep; }
-
-// ------------------------------------- labelled trios (not hypotheses) -----
-// same three-across shape as the hypothesis trio, but each cell is captioned
-// with what it demonstrates rather than which hypothesis it answers.
+// ------------------------------------- labelled trios (not the questions) --
 .trio .tcap {
   margin-top: 0.75rem;
-  padding: 0.45rem 0.7rem;
+  padding: 0.5rem 0.7rem;
   background: $vw-bone-lift;
   border: 2px solid $vw-ink;
   border-left: 12px solid var(--hyp, #{$vw-accent-deep});
   box-shadow: 3px 3px 0 $vw-ink;
 }
+.trio .tcap > p { margin: 0; }
 .trio .tcap .nm {
   display: block;
   font-family: $font-family-monospace;
-  font-size: 0.4em;
+  font-size: $floor;
   font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
+  letter-spacing: 0.02em;
   color: var(--hyp, #{$vw-accent-deep});
 }
 .trio .tcap .gl {
   display: block;
-  margin-top: 0.15rem;
-  font-size: 0.4em;
-  font-weight: 700;
-  line-height: 1.3;
+  margin-top: 0.2rem;
+  font-size: $floor;
+  font-weight: 500;
+  line-height: 1.25;
 }
-// a small ordinal badge for the reification ladder
-.trio .tcap .rung {
-  float: right;
-  font-family: $font-family-monospace;
-  font-size: 0.42em;
-  font-weight: 700;
-  color: $vw-ink-soft;
+// a bare gloss under a column on the visuals principle slide
+.trio-item > p > .gl {
+  display: block;
+  margin-top: 0.55rem;
+  font-size: $floor;
+  font-weight: 500;
+  line-height: 1.25;
 }
-
-// ------------------------------------------------- closing recap labels ----
-.recap-note {
-  margin-top: 0.5rem;
-  text-align: center;
-  font-size: 0.42em;
-  color: $vw-ink-soft;
-}
-
-// ---------------------------------------------------------------- fixes ----
-// Pandoc wraps the three dots in a <p>, and `.dot` is a block-level flex
-// container, so they stacked vertically instead of sitting in a row.
-.mini-stages > p {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin: 0;
-}
-
-// Same story inside the zoo and trio cards: the name and its gloss come out of
-// pandoc as sibling spans in one <p>, so they need to be stacked explicitly.
-.taxo-item > p {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.3rem;
-  margin: 0;
-}
-.trio .tcap > p { margin: 0; }
-
 
 // ------------------------------------------- the equation, term by term ----
-// Chapter dividers show the whole DATA + VISUALS + INTERACTION equation and
-// grayscale every term except the one that chapter is about. The result
-// circle is never dimmed -- it is the goal, not one of the three stages.
-.eq-term.is-dim { filter: grayscale(1); }
+// Chapter dividers grayscale every term but the one that chapter is about. The
+// result circle is never dimmed -- it is the goal, not one of the three parts.
+.eq-term { transition: filter .6s ease, opacity .6s ease; }
+.eq-term.is-dim { filter: grayscale(1); opacity: 0.45; }
 
+// The hand-off: a divider opens in the state the previous chapter left it, and
+// one advance dims the outgoing term while the incoming one lights, together.
+// `custom` keeps reveal from hiding the group outright, so both directions of
+// the transition are ours.
+.reveal .fragment.custom.go-dim { filter: none; opacity: 1; }
+.reveal .fragment.custom.go-dim.visible { filter: grayscale(1); opacity: 0.45; }
+.reveal .fragment.custom.go-lit { filter: grayscale(1); opacity: 0.45; }
+.reveal .fragment.custom.go-lit.visible { filter: none; opacity: 1; }
 
-// --------------------------------- the hypothesis space, per trio cell -----
-// Slide 16 pairs each visual response with the slide-2 hypothesis space,
-// shrunk: the same three dots every time, a different one reached. Scoped to
-// `.with-hyp` so slide 19's captions (which float an ordinal) are untouched.
-.trio .tcap.with-hyp {
+// ---------------------------------- the question space, shrunk per column --
+.hyp-mini { flex: none; width: 66px; height: 66px; }
+.qcap {
   display: flex;
   align-items: center;
   gap: 0.7rem;
+  margin-top: 0.6rem;
+  p { margin: 0; }
+  .gl {
+    display: block;
+    font-size: $floor;
+    font-weight: 500;
+    line-height: 1.22;
+  }
 }
-.trio .tcap.with-hyp > p {
+
+// ------------------------------------------------- principle slide, shared --
+// The chapter's claim is the h2; this is the qualifying half of the sentence.
+.principle-sub {
+  font-size: 0.92em;
+  font-weight: 500;
+  color: $vw-ink-soft;
+  margin: -0.25rem 0 1.1rem;
+}
+.trio.trio-wide { gap: 1.4rem; }
+
+// --------------------------------------- one widget, alone, with its claim --
+.solo {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 2.2rem;
+  align-items: center;
+  padding-top: 8px;
+}
+.solo-copy { min-width: 0; }
+.solo-copy .vwcard.hyp { box-shadow: 5px 5px 0 $vw-ink; padding: 1rem 1.1rem; }
+.solo-copy .qtext { font-size: 1.05em; line-height: 1.22; }
+.mech {
+  display: block;
+  margin-top: 1rem;
+  font-family: $font-family-monospace;
+  font-size: $floor;
+  font-weight: 700;
+  color: $vw-ink-soft;
+}
+
+// ------------------------------------------------- inputs: the two moments --
+.duo {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2rem;
+  padding-top: 64px;
+}
+.duo-card {
+  min-height: 322px;
+  justify-content: center;
   display: flex;
   flex-direction: column;
-  gap: 0.1rem;
+  align-items: center;
+  text-align: center;
+  gap: 1.1rem;
+  padding: 2.2rem 1.4rem 2.4rem;
+  background: $vw-bone-lift;
+  border: 2px solid $vw-ink;
+  box-shadow: 6px 6px 0 $vw-ink;
 }
-.hyp-mini {
-  flex: none;
-  width: 52px;
-  height: 52px;
+.duo-card .ico { width: 190px; height: auto; flex: none; }
+.duo-card > p {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0;
 }
+.duo-card .nm {
+  display: block;
+  font-family: $font-family-monospace;
+  font-size: 1.05em;
+  font-weight: 700;
+  color: $vw-accent-deep;
+}
+.duo-card .gl {
+  display: block;
+  font-size: $floor;
+  line-height: 1.3;
+  color: $vw-ink-soft;
+}
+
+// ----------------------------------------------- the inputs principle slide --
+.principle-solo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 78%;
+}
+.principle-pair {
+  display: flex;
+  align-items: center;
+  gap: 2.4rem;
+}
+.pp-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.7rem;
+  min-height: 250px;
+  padding: 2rem 2.2rem;
+  background: $vw-bone-lift;
+  border: 2px solid $vw-ink;
+  border-top: 10px solid $vw-accent;
+  box-shadow: 6px 6px 0 $vw-ink;
+  max-width: 19em;
+}
+.pp-word {
+  display: block;
+  font-size: 2.1em;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: $vw-accent-deep;
+}
+.pp-gl {
+  display: block;
+  font-size: $floor;
+  line-height: 1.28;
+  color: $vw-ink-soft;
+}
+.pp-join {
+  font-family: $font-family-monospace;
+  font-size: $floor;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: $vw-ink-faint;
+}
+
+// --------------------------------------------- questions as data queries ----
+// Three worked questions with the query that answers them, then a fourth whose
+// query nobody typed -- the interaction is the query.
+.qgrid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) 520px minmax(0, 0.62fr);
+  align-items: center;
+  column-gap: 1.25rem;
+  row-gap: 0.5rem;
+}
+.qgrid > p:first-child {          // the three column headings share one <p>
+  display: contents;
+}
+.qhead {
+  font-family: $font-family-monospace;
+  font-size: $floor;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: $vw-ink-faint;
+  padding-bottom: 0.2rem;
+  border-bottom: 2px solid $vw-ink-faint;
+}
+.qrow {
+  display: contents;              // the row's three cells join the outer grid
+}
+.qrow .sqlblock { margin: 0; }
+.qrow > p { margin: 0; }
+.qq {
+  font-size: $floor;
+  font-weight: 700;
+  line-height: 1.24;
+}
+.qa {
+  display: block;
+  font-size: $floor;
+  font-weight: 700;
+  color: $vw-green;
+}
+.qau {
+  display: block;
+  font-family: $font-family-monospace;
+  font-size: $floor;
+  font-weight: 700;
+  color: $vw-ink-soft;
+}
+.qmark {
+  font-family: $font-family-monospace;
+  font-size: 2.1em;
+  font-weight: 700;
+  color: $vw-accent;
+}
+.qrow-live .widget-wrap { box-shadow: 4px 4px 0 $vw-ink; }
+
+// ------------------------------------------------------------ the recap ----
+// Three bands, each carrying its principle as a full sentence. The equation
+// graphic cannot hold a 24px sentence per term; this can.
+.bands {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-top: 10px;
+}
+.band {
+  display: grid;
+  grid-template-columns: 132px minmax(0, 1fr);
+  align-items: center;
+  gap: 1.3rem;
+  padding: 0.75rem 1rem;
+  background: $vw-bone-lift;
+  border: 2px solid $vw-ink;
+  box-shadow: 4px 4px 0 $vw-ink;
+}
+.band-dot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 66px;
+  border: 3px solid $vw-ink;
+  border-radius: 999px;
+  font-family: $font-family-monospace;
+  font-size: 0.62em;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.band-dot.b-data    { background: #e8a33d; }
+.band-dot.b-visuals { background: #c2410c; color: #fff; }
+.band-dot.b-inputs  { background: #eab308; }
+.band-dot.b-result  { background: $vw-accent-deep; color: #fff; }
+.band-copy { min-width: 0; p { margin: 0; } }
+.band-say {
+  display: block;
+  font-size: 0.95em;
+  font-weight: 700;
+  line-height: 1.18;
+}
+.band-tag {
+  display: block;
+  margin-top: 0.2rem;
+  font-family: $font-family-monospace;
+  font-size: $floor;
+  font-weight: 500;
+  color: $vw-ink-soft;
+}
+.band.band-result { border-width: 3px; box-shadow: 6px 6px 0 $vw-accent-deep; }
+
+// ------------------------------------------------- the example-clip wall ----
+// Twenty recorded interaction techniques, laid out by the Meros deck's
+// layout.py against this same 1280x720 stage. The wall opens the talk and
+// closes it; one advance blurs it and washes a white veil in from the left so
+// the statement can sit on top.
+.wall-slide { overflow: hidden; }
+.exwall, .exveil { position: absolute; inset: 0; pointer-events: none; }
+.exwall {
+  overflow: hidden;
+  z-index: 1;
+  transform-origin: 50% 50%;
+  transition: filter 1.1s cubic-bezier(.4, 0, .2, 1),
+              transform 1.1s cubic-bezier(.4, 0, .2, 1);
+}
+.excard {
+  position: absolute;
+  margin: 0;
+  background: #fff;
+  border: 1px solid rgba(20, 20, 30, .09);
+  border-radius: 10px;
+  overflow: hidden;
+  transform: rotate(var(--rot));
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .04), 0 10px 24px -10px rgba(20, 20, 40, .28);
+  animation: excard-in .9s cubic-bezier(.2, .7, .2, 1) both;
+  animation-delay: calc(var(--i) * 45ms + 60ms);
+}
+.excard video { display: block; width: 100%; height: auto; }
+@keyframes excard-in {
+  from { opacity: 0; transform: rotate(var(--rot)) translateY(18px) scale(.97); }
+  to   { opacity: 1; transform: rotate(var(--rot)); }
+}
+// solid behind the left-aligned statement, gone by the right edge
+.exveil {
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 1.1s cubic-bezier(.4, 0, .2, 1);
+  background:
+    linear-gradient(90deg, rgba(242,240,233,.985) 0%, rgba(242,240,233,.95) 26%,
+      rgba(242,240,233,.80) 42%, rgba(242,240,233,.46) 58%,
+      rgba(242,240,233,.16) 76%, rgba(242,240,233,0) 90%);
+}
+.wall-copy {
+  position: absolute;
+  z-index: 3;
+  left: 72px;
+  top: 50%;
+  transform: translateY(-50%);
+  max-width: 19.5em;
+}
+.wall-copy .big-title { font-size: 2.1em; }
+.wall-copy .subtitle {
+  font-size: 0.92em;
+  font-weight: 500;
+  color: $vw-ink-soft;
+  margin: 0;
+}
+// the statement rides in with the blur
+.wall-slide .wall-copy.fragment { transition: opacity .95s cubic-bezier(.2,.7,.2,1) .3s,
+                                              transform .95s cubic-bezier(.2,.7,.2,1) .3s; }
+.wall-slide:has(.wall-copy.visible) .exwall,
+.wall-slide.is-focused .exwall { filter: blur(7px) saturate(.9); transform: scale(1.03); }
+.wall-slide:has(.wall-copy.visible) .exveil,
+.wall-slide.is-focused .exveil { opacity: 1; }
